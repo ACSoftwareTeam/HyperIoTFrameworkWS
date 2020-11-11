@@ -1,0 +1,42 @@
+version = '1.0.0'
+
+dependencies {
+	//OSGi Basic Imports
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+
+    compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseName,version: project.cxfJoseVersion
+    compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseJaxrsName,version: project.cxfJoseJaxrsVersion
+
+    compileOnly project(":modules:HyperIoTBase:HyperIoTBase-api")
+    compileOnly project(":modules:HyperIoTBase:HyperIoTBase-actions")
+    compileOnly project(":modules:HyperIoTBase:HyperIoTBase-model")
+    compileOnly project(":modules:HyperIoTBase:HyperIoTBase-repository")
+    compileOnly project(":modules:HyperIoTBase:HyperIoTBase-util")
+    compileOnly project(":modules:HyperIoTBase:HyperIoTBase-security")
+
+    compileOnly group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-api", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-model", version:project.hyperIoTVersion
+}
+
+jar {
+	manifest {
+		attributes('dsannotations': '*')
+	}
+}
+
+task buildHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install' ]
+}
+
+task publishHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install','publish' ]
+}
+
+publishing {
+    	publications {
+        	hyperiot(MavenPublication) {
+            	from components.java
+        	}
+    }
+ }

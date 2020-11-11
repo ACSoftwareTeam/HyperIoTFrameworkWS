@@ -1,0 +1,22 @@
+Import-Package: \
+    javax.persistence;version='[2.1.0,3)',\
+    org.apache.aries*,\
+    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.service;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.shared.entity.model;version=1.0.0,\
+    it.acsoftware.hyperiot.shared.entity.repository;version=1.0.0,\
+    javax.validation;version='[2.0.1.Final,3)',\
+    org.hibernate.validator;version='[6,7)',\
+    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.service.entity;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.security.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.action.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.action;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.shared.entity.api;version=1.0.0 ,\
+    it.acsoftware.hyperiot.shared.entity.actions;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.huser.model;version='[1.0.0,2)'
+Export-Package: it.acsoftware.hyperiot.shared.entity.service
+DynamicImport-Package:  org.hibernate.proxy, javassist.util.proxy, *
+Bundle-Version: 1.0.0

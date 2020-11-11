@@ -1,0 +1,9 @@
+  - id: "bolt-kafka-realtime-%projectId%"
+    className: "org.apache.storm.kafka.bolt.KafkaBolt"
+    configMethods:
+      - name: "withProducerProperties"
+        args: [ref: "boltConfig-realtime"]
+      - name: "withTopicSelector"
+        args: [ref: "boltConfig-realtime-topic-%projectId%"]
+      - name: "withTupleToKafkaMapper"
+        args: [ref: "boltConfig-realtime-mapper"]

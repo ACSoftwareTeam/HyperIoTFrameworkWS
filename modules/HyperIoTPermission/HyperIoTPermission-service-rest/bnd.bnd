@@ -1,0 +1,12 @@
+Export-Package: it.acsoftware.hyperiot.permission.service.rest
+Import-Package: \
+    it.acsoftware.hyperiot.permission.model;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.permission.api;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.service.rest;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.security.rest;version='[1.0.0,2)',\
+    com.fasterxml.jackson.jaxrs.json,\
+    *
+Bundle-Version: 1.0.0

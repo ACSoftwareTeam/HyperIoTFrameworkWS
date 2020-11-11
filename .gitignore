@@ -1,0 +1,12 @@
+.settings
+.idea
+.DS_store
+build/*
+build/*
+bin/
+bin/*
+target/*
+*/target/*
+*/build/*
+out/*
+*/out/*

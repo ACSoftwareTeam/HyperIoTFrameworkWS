@@ -1,0 +1,6 @@
+Export-Package: \
+    it.acsoftware.hyperiot.osgi.util.filter,\
+    it.acsoftware.hyperiot.base.util,\
+    it.acsoftware.hyperiot.query.util.filter
+Bundle-Version: 1.0.0
+

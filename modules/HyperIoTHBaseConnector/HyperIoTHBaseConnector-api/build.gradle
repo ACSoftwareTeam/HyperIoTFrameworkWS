@@ -1,0 +1,33 @@
+version = '1.0.0'
+
+dependencies {
+	//OSGi Basic Imports
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
+	//HyperIoTBase Dependencies
+	compile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
+	compile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
+	//HyperIoTHPacket Dependencies
+	compileOnly group: "it.acsoftware.hyperiot.hpacket", name: "HyperIoTHPacket-model", version:project.hyperIoTVersion
+	//HBase dependencies
+	compile group: 'com.google.protobuf', name: 'protobuf-java', version: project.googleProtobufVersion
+	//Project dependencies
+	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-model")
+	
+}
+
+task buildHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install' ]
+}
+
+task publishHIT(type: GradleBuild) {
+		tasks = [ 'clean','build','install','publish' ]
+}
+
+
+publishing {
+    	publications {
+        	hyperiot(MavenPublication) {
+            	from components.java
+        	}
+    }
+ }

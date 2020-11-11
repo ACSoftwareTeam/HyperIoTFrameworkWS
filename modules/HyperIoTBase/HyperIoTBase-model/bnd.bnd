@@ -1,0 +1,21 @@
+Import-Package: \
+    javax.persistence*;version='[2.1.0,3)',\
+    javax.validation*;version='[2.0.1.Final,3)',\
+    org.hibernate.*;version='[5,6)',\
+    org.hibernate.proxy;version='[5,6)',\
+    javassist.util.proxy;version='[3.20.0.GA,4.0.0)',\
+    org.osgi.framework,\
+    org.postgresql,\
+    com.fasterxml.jackson*,\
+    javax.ws.rs.ext,\
+    javax.ws.rs.core,\
+    org.apache.cxf*,\
+    it.acsoftware.hyperiot.base.validation;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)'
+Export-Package: \
+    it.acsoftware.hyperiot.base.model,\
+    it.acsoftware.hyperiot.base.exception
+Bundle-Version: 1.0.0
+
+

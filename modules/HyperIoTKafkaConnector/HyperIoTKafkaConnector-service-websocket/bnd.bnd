@@ -1,0 +1,25 @@
+Import-Package: \
+     it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.osgi.util.filter;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.base.service;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.base.service.websocket*;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.kafka.connector.api;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.kafka.connector.model;version='[1.0.0,2)',\
+     org.apache.kafka.clients,\
+     org.apache.kafka.clients.admin,\
+     org.apache.kafka.common,\
+     org.apache.kafka.common.serialization,\
+     javax.crypto,\
+     reactor.core,\
+     reactor.core.publisher,\
+     reactor.kafka.receiver,\
+     org.apache.kafka.clients.producer,\
+     org.eclipse.jetty.websocket.api,\
+     org.osgi.service*,\
+     org.osgi.framework*
+Export-Package: \
+     it.acsoftware.hyperiot.kafka.connector.service.websocket
+Bundle-Version: 1.0.0
+

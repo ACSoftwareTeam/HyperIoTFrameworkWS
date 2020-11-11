@@ -1,0 +1,19 @@
+Import-Package: \
+    javax.persistence;version='[2.1.0,3)',\
+    it.acsoftware.hyperiot.mail.model;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.mail.repository;version='[1.0.0,2)',\
+    javax.validation;version='[2.0.1.Final,3)',\
+    org.hibernate.validator;version='[6,7)',\
+    org.hibernate.proxy;version='[5,6)',\
+    javassist.util.proxy;version='[3.20.0.GA,4.0.0)',\
+    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.mail.api;version='[1.0.0,2)' ,\
+    it.acsoftware.hyperiot.mail.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.service.entity;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.service;version='[1.0.0,2)',\
+    javax.mail.*,\
+    freemarker.*
+Export-Package: it.acsoftware.hyperiot.mail.service
+Bundle-Version: 1.0.0
+

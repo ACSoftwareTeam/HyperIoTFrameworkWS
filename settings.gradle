@@ -1,0 +1,74 @@
+/*buildscript {
+	repositories { 
+		mavenCentral() 
+	}
+	dependencies { 
+	 classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:${bnd_version}"
+	 classpath "com.github.lburgazzoli:gradle-karaf-plugin:0.5.1"
+	}
+	
+	def bndPlugin = files(configurations.classpath.files)
+	gradle.rootProject { buildscript { dependencies { classpath bndPlugin } } }
+	def file = new File("${project(":").projectDir}/settings.gradle").absolutePath
+	def modulesPath = file.replace("settings.gradle","")+"/modules"
+	//println "found following modules:"
+	ConfigurableFileTree tree = fileTree(dir: modulesPath);
+	tree.include '*.gradle'
+	tree.visit { FileVisitDetails details -> 
+	    def fileName = details.getName()
+		if(fileName.equalsIgnoreCase("build.gradle")){
+			def modulePath = details.file.path.substring((details.file.path.indexOf("/modules/")+8)).replace("/build.gradle","").replace("/",":").replace("\\",":");
+			def module = ":modules"+modulePath
+			//println module
+		    include module
+		}
+	}
+}*/
+
+apply plugin: 'biz.aQute.bnd.workspace'
+
+
+buildscript {
+	repositories { 
+		mavenCentral()
+		maven {
+			url 'http://central.maven.org/maven2'
+		}
+	}
+	dependencies { 
+	 classpath "biz.aQute.bnd:biz.aQute.bnd.gradle:${bnd_version}"
+	 classpath "com.github.lburgazzoli:gradle-karaf-plugin:0.5.1"
+	}
+	def projects = [];
+	if(System.getProperty('projectsToBuild') != null)
+		projects = System.getProperty('projectsToBuild').split(",")
+	else
+		projects = null;
+	/* Add bnd gradle plugin to buildscript classpath of rootProject */
+	def bndPlugin = files(configurations.classpath.files)
+	gradle.rootProject { buildscript { dependencies { classpath bndPlugin } } }
+	def file = new File("${project(":").projectDir}"+File.separator+"settings.gradle").absolutePath
+	def modulesPath = file.replace(File.separator+"settings.gradle","")+File.separator+"modules"
+	println "found following modules:"
+	if(projects == null){
+		ConfigurableFileTree tree = fileTree(dir: modulesPath,exclude: ['**/build/**', '**/target/**','**/bin/**','**/src/**','**/.*/**'],include:'**/build.gradle');
+		tree.visit { FileVisitDetails details -> 
+		    def fileName = details.getName()
+			if(fileName.equalsIgnoreCase("build.gradle")){
+				def modulePath = details.file.path.substring((details.file.path.indexOf(File.separator+"modules"+File.separator)+8)).replace(File.separator+"build.gradle","").replace(File.separator,":");
+				def module = ":modules"+modulePath
+				println module
+			    include module
+			}
+		}
+	} else {
+		projects.each{
+		 def module = ":modules:"+"${it}".replace(File.separator,":").replace("/",":");
+		 println("Including: "+module);
+		 include module
+		}
+	}
+}
+
+apply plugin: 'biz.aQute.bnd.workspace'
+

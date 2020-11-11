@@ -1,0 +1,39 @@
+
+version = '1.0.0'
+
+dependencies {
+	//OSGi Basic Imports
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
+	//Swagger
+	compileOnly group: project.cxfJoseGroup ,name: project.cxfSwaggerName,version: project.cxfSwaggerVersion
+	//Hibernate
+	compileOnly group: "org.hibernate.javax.persistence", name: "hibernate-jpa-2.1-api",version: project.hibernateJpaApiVersion
+	//Validation
+	compileOnly group: "javax.validation", name: "validation-api",version:project.javaxValidationVersion
+	compileOnly group: "org.hibernate",name: "hibernate-validator",version:project.hibernateValidatorVersion
+	
+	//Jackson
+	compileOnly group:"com.fasterxml.jackson.module",name:"jackson-module-jaxb-annotations",version:project.jacksonVersion
+	//HyperIoTBase Dependencies
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-validation", version:project.hyperIoTVersion
+	
+}
+
+task buildHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install' ]
+}
+
+task publishHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install','publish' ]
+}
+
+publishing {
+        publications {
+            hyperiot(MavenPublication) {
+            	from components.java
+        	}
+    }
+ }

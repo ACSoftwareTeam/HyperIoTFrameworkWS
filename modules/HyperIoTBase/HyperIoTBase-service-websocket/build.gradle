@@ -1,0 +1,45 @@
+version = '1.0.0'
+
+dependencies {
+	//OSGi Basic Imports
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseName,version: project.cxfJoseVersion
+	compileOnly group:"com.fasterxml.jackson.jaxrs",name:"jackson-jaxrs-json-provider",version:project.jacksonVersion
+	// WebSocket service
+	compileOnly group: 'org.eclipse.jetty.websocket', name: 'websocket-servlet', version: '9.4.18.v20190429'
+	compileOnly group: "javax.servlet", name:"javax.servlet-api",version:project.javaxServletVersion
+	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseName,version: project.cxfJoseVersion
+	//Jax RS
+	compileOnly group: "javax.ws.rs", name: "javax.ws.rs-api",version:project.jaxWsRsApiVersion
+	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseName,version: project.cxfJoseVersion
+
+	compileOnly group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-api", version:project.hyperIoTVersion
+	//Project dependencies
+	compileOnly project(":modules:HyperIoTBase:HyperIoTBase-api")
+	compileOnly project(":modules:HyperIoTBase:HyperIoTBase-util")
+	compileOnly project(":modules:HyperIoTBase:HyperIoTBase-model")
+	compileOnly project(":modules:HyperIoTBase:HyperIoTBase-security")
+}
+
+jar {
+	manifest {
+		attributes('dsannotations': '*')
+	}
+}
+
+task buildHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install' ]
+}
+
+task publishHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install','publish' ]
+}
+
+publishing {
+    	publications {
+        	hyperiot(MavenPublication) {
+            	from components.java
+        	}
+    }
+ }

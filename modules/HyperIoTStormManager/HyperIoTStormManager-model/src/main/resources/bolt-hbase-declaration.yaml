@@ -1,0 +1,24 @@
+  - id: "hbase-avro-bolt-%projectId%"
+    className: "org.apache.storm.hbase.bolt.HBaseBolt"
+    constructorArgs:
+      - "avro_hproject_%projectId%"
+      - ref: "avroMapper"
+    configMethods:
+      - name: "withConfigKey"
+        args: ["hbase.conf"]
+  - id: "hbase-timeline-bolt-%projectId%"
+    className: "org.apache.storm.hbase.bolt.HBaseBolt"
+    constructorArgs:
+      - "timeline_hproject_%projectId%"
+      - ref: "timelineMapper"
+    configMethods:
+      - name: "withConfigKey"
+        args: ["hbase.conf"]
+  - id: "hbase-error-bolt-%projectId%"
+    className: "org.apache.storm.hbase.bolt.HBaseBolt"
+    constructorArgs:
+      - "hproject_error_%projectId%"
+      - ref: "errorMapper"
+    configMethods:
+      - name: "withConfigKey"
+        args: ["hbase.conf"]

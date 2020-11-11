@@ -1,0 +1,23 @@
+Import-Package: \
+    javax.persistence*;version='[2.1.0,3)',\
+    javax.validation*;version='[2.0.1.Final,3)',\
+    org.hibernate.*;version='[6,7)',\
+    org.hibernate.proxy;version='[5,6)',\
+    javassist.util.proxy;version='[3.20.0.GA,4.0.0)',\
+    org.osgi.framework,\
+    org.postgresql,\
+    com.fasterxml.jackson*,\
+    it.acsoftware.hyperiot.base.validation;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.model;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.osgi.util.filter;version='[1.0.0,2)',\
+    com.fasterxml.jackson*,\
+    org.apache.kafka*
+Export-Package: \
+    it.acsoftware.hyperiot.kafka.connector.model,\
+    it.acosftware.hyperiot.kafka.connector.util,\
+    it.acsoftware.hyperiot.kafka.connector.model.mqtt,\
+    it.acsoftware.hyperiot.kafka.connector.model.messages.types
+Bundle-Version: 1.0.0
+

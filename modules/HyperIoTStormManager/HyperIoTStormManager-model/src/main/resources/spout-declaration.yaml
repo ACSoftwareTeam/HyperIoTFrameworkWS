@@ -1,0 +1,5 @@
+  # Kafka raw messages spout
+  - id: "kafka-spout-raw-%projectId%"
+    className: "org.apache.storm.kafka.spout.KafkaSpout"
+    constructorArgs:
+      - ref: "spoutConfig-raw-%projectId%"

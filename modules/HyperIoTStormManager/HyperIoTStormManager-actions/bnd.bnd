@@ -1,0 +1,9 @@
+Bundle-Activator: it.acsoftware.hyperiot.stormmanager.actions.StormManagerActionsBundleActivator
+Import-Package: \
+    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.action;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.action.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.stormmanager.model;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.hproject.model;version='[1.0.0,2)'
+Export-Package: it.acsoftware.hyperiot.stormmanager.actions
+Bundle-Version: 1.0.0

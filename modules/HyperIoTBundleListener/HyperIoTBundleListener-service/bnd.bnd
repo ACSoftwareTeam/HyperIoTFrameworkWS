@@ -1,0 +1,14 @@
+Import-Package: \
+    javax.persistence;version="[2.1.0,3)",\
+    org.apache.aries*,\
+    it.acsoftware.hyperiot.base.api;version="[1.0.0,2)",\
+    it.acsoftware.hyperiot.base.service;version="[1.0.0,2)",\
+    javax.validation;version="[2.0.1.Final,3)",\
+    org.hibernate.validator;version="[6,7)",\
+    org.osgi.framework,\
+    org.osgi.util.tracker,\
+    it.acsoftware.hyperiot.base.util;version="[1.0.0,2)",\
+    it.acsoftware.hyperiot.bundle.listener.api;version="[1.0.0,2)",\
+    it.acsoftware.hyperiot.bundle.listener.model;version="[1.0.0,2)"
+Export-Package: it.acsoftware.hyperiot.bundle.listener.service
+Bundle-Version: 1.0.0

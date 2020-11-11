@@ -1,0 +1,6 @@
+Export-Package: it.acsoftware.hyperiot.asset.category.api
+Import-Package: \
+    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.asset.category.model;version='[1.0.0,2)' ,\
+    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)'
+Bundle-Version: 1.0.0

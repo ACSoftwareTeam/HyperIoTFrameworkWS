@@ -1,0 +1,40 @@
+version = '1.0.0'
+
+dependencies {
+	//OSGi Basic Imports
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
+	//Jax RS
+	compileOnly group: "javax.ws.rs", name: "javax.ws.rs-api",version:project.jaxWsRsApiVersion
+	//Swagger
+	compileOnly group: project.cxfJoseGroup ,name: project.cxfSwaggerName,version: project.cxfSwaggerVersion
+	//Project Base dependencies
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-service-rest", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-security", version:project.hyperIoTVersion
+	
+	compileOnly project(":modules:HyperIoTPermission:HyperIoTPermission-model")
+	compileOnly project(":modules:HyperIoTPermission:HyperIoTPermission-api")
+	compileOnly project(":modules:HyperIoTPermission:HyperIoTPermission-actions")
+	
+}
+
+task buildHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install' ]
+}
+
+task publishHIT(type: GradleBuild) {
+	tasks = ['publish']
+}
+
+publishing {
+    	publications {
+        	hyperiot(MavenPublication) {
+            	from components.java
+        	}
+    }
+ }
+

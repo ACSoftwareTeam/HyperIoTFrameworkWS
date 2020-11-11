@@ -1,0 +1,5 @@
+Export-Package: \
+    it.acsoftware.hyperiot.base.action.util,\
+    it.acsoftware.hyperiot.base.action
+Bundle-Version: 1.0.0
+

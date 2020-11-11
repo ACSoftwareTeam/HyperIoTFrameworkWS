@@ -1,0 +1,41 @@
+version = '1.0.0'
+
+dependencies {
+	//OSGi Basic Imports
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
+
+    compileOnly group: project.cxfJoseGroup ,name:project.cxfJoseJaxrsName,version: project.cxfJoseJaxrsVersion
+    compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseJaxrsName,version: project.cxfJoseJaxrsVersion
+
+    compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
+
+	// Jaas
+	compileOnly group: 'org.apache.karaf.jaas', name: 'org.apache.karaf.jaas.config', version: project.karafVersion
+	compileOnly group: 'org.apache.karaf.jaas', name: 'org.apache.karaf.jaas.boot', version: project.karafVersion
+}
+
+jar {
+	manifest {
+		attributes('dsannotations': '*')
+	}
+}
+
+task buildHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install' ]
+}
+
+task publishHIT(type: GradleBuild) {
+	tasks = ['publish']
+}
+
+
+publishing {
+    	publications {
+        	hyperiot(MavenPublication) {
+            	from components.java
+        	}
+    }
+ }

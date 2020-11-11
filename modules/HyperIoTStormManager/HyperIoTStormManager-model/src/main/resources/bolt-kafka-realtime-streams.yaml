@@ -1,0 +1,13 @@
+  # From enrichment bolt (bolt-enrichment) to realtime bolt (bolt-kafka-realtime-%projectId%) (sending back to enriched kafka topic using AVRO schema)
+  - name: "bolt-enrichment --> bolt-kafka-realtime-%projectId%"
+    from: "bolt-enrichment"
+    to: "bolt-kafka-realtime-%projectId%"
+    grouping:
+      type: SHUFFLE
+  # From deserialization bolt (bolt-deserialization) to realtime bolt (alive tick signal stream)
+  - name: "bolt-deserialization --> bolt-kafka-realtime-%projectId%"
+    from: "bolt-deserialization"
+    to: "bolt-kafka-realtime-%projectId%"
+    grouping:
+      type: SHUFFLE
+      streamId: "systemTick"

@@ -1,0 +1,7 @@
+Bundle-Activator: it.acsoftware.hyperiot.asset.category.actions.AssetCategoryActionsBundleActivator
+Import-Package: \
+    it.acsoftware.hyperiot.base.action;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.action.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.asset.category.model;version='[1.0.0,2)'
+Export-Package: it.acsoftware.hyperiot.asset.category.actions
+Bundle-Version: 1.0.0

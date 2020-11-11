@@ -1,0 +1,16 @@
+Export-Package: it.acsoftware.hyperiot.kafka.connector.service.rest
+Import-Package: \
+    it.acsoftware.hyperiot.kafka.connector.api;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.kafka.connector.api.mqtt;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.kafka.connector.model;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.kafka.connector.model.mqtt;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.service.rest;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.security.rest;version='[1.0.0,2)',\
+    com.fasterxml.jackson.jaxrs.json,\
+    io.swagger.jaxrs,\
+    io.swagger.annotations,\
+    *
+Bundle-Version: 1.0.0

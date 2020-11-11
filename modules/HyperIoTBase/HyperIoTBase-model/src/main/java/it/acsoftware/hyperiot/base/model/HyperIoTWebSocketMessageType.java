@@ -1,0 +1,27 @@
+package it.acsoftware.hyperiot.base.model;
+
+public enum HyperIoTWebSocketMessageType {
+    APPLICATION("APPLICATION"),
+    AUDIO("AUDIO"),
+    CONNECTION_OK("CONNECTION_OK"),
+    CONNECTION_OWNER_LEAVING("CONNECTION_OWNER_LEAVING"),
+    DISCONNECTING("DISCONNECTING"),
+    ERROR("ERROR"),
+    HEARTBEAT("HEARTBEAT"),
+    INFO("INFO"),
+    PARTECIPANT_ADDED("PARTECIPANT_ADDED"),
+    PARTECIPANT_GONE("PARTECIPANT_GONE"),
+    PING("PING"),
+    PONG("PONG"),
+    PROCESS_ON_SERVER("PROCESS_ON_SERVER"),
+    PROCESS_ON_SERVER_RESULT("PROCESS_ON_SERVER_RESULT"),
+    WEBSOCKET_POLICY_WARNING("WEB_SOCKET_POLICY_WARNING"),
+    SET_ENCRYPTION_KEY("SET_ENCRYPTION_KEY"),
+    WARNING("ERROR");
+
+    private String type;
+
+    private HyperIoTWebSocketMessageType(String type) {
+        this.type = type;
+    }
+}

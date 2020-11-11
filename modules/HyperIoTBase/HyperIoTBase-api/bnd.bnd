@@ -1,0 +1,7 @@
+Export-Package: \
+    it.acsoftware.hyperiot.base.api,\
+    it.acsoftware.hyperiot.base.api.entity,\
+    com.fasterxml*
+DynamicImport-Package: *
+Bundle-Version: 1.0.0
+

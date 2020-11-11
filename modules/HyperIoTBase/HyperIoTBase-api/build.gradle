@@ -1,0 +1,32 @@
+version = '1.0.0'
+
+dependencies {
+	//OSGi Basic Imports
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
+	compileOnly group: "javax.ws.rs", name: "javax.ws.rs-api",version:project.jaxWsRsApiVersion	
+	compileOnly group: 'org.apache.cxf.dosgi', name: 'cxf-dosgi-common', version: '2.3.0'
+	compileOnly group: project.cxfJoseGroup ,name:project.cxfJoseName,version: project.cxfJoseVersion
+	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseJaxrsName,version: project.cxfJoseJaxrsVersion
+	compileOnly group:"com.fasterxml.jackson.jaxrs",name:"jackson-jaxrs-json-provider",version:project.jacksonVersion
+	//Aries and Jpa
+	compileOnly group: "javax.transaction", name: "javax.transaction-api",version: project.javaxTransactionVersion
+	compileOnly group: "org.apache.aries.jpa", name: "org.apache.aries.jpa.api", version: project.apacheAriesJpaVersion
+	// WebSocket service
+	compileOnly group: 'org.eclipse.jetty.websocket', name: 'websocket-servlet', version: '9.4.18.v20190429'
+}
+
+task buildHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install' ]
+}
+
+task publishHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install','publish' ]
+}
+
+publishing {
+    	publications {
+        	hyperiot(MavenPublication) {
+            	from components.java
+        	}
+    }
+ }

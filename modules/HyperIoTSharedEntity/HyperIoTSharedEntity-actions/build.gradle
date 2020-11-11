@@ -1,0 +1,36 @@
+
+version = '1.0.0'
+
+dependencies {
+	//OSGi Basic Imports
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+	//Project Dependencies
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:"1.0.0"
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:"1.0.0"
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:"1.0.0"
+	
+	compileOnly project(":modules:HyperIoTSharedEntity:HyperIoTSharedEntity-model")
+}
+
+jar {
+	manifest {
+		attributes('dsannotations': '*')
+	}
+}
+
+task buildHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install' ]
+}
+
+task publishHIT(type: GradleBuild) {
+	tasks = [ 'clean','build','install','publish' ]
+}
+
+publishing {
+    	publications {
+        	hyperiot(MavenPublication) {
+            	from components.java
+        	}
+    }
+ }

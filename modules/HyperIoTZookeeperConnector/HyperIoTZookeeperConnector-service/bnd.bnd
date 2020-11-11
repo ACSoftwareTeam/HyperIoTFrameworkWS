@@ -1,0 +1,34 @@
+Import-Package: \
+    org.osgi.framework,\
+    org.osgi.service.cm,\
+    org.osgi.util.tracker,\
+    org.slf4j;version=1.7.25,\
+    org.hibernate.validator;version='[6,7)',\
+    org.apache.curator.framework,\
+    org.apache.curator.framework.api,\
+    org.apache.curator.framework.recipes.leader,\
+    org.apache.curator,\
+    org.apache.curator.retry,\
+    org.osgi.service.components*,\
+    org.apache.zookeeper*,\
+    javax.persistence;version='[2.1.0,3)',\
+    javax.net.ssl,\
+    javax.security.sasl,\
+    javax.security.auth.login,\
+    javax.validation;version='[2.0.1.Final,3)',\
+    com.google.common*,\
+    it.acsoftware.hyperiot.base.action;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.action.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.security.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.service;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.zookeeper.connector.actions;version=1.0.0,\
+    it.acsoftware.hyperiot.zookeeper.connector.api;version=1.0.0,\
+    it.acsoftware.hyperiot.zookeeper.connector.model;version=1.0.0
+Export-Package: \
+    it.acsoftware.hyperiot.zookeeper.connector.service
+Bundle-Version: 1.0.0
+
+

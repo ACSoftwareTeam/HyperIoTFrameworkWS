@@ -1,0 +1,15 @@
+Import-Package: \
+     org.apache.karaf.jaas*,\
+     javax.ws.rs.ext,\
+     javax.ws.rs.core,\
+     org.apache.cxf*,\
+     it.acsoftware.hyperiot.base.validation;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.base.util;version='[1.0.0,2)'
+Export-Package: \
+    it.acsoftware.hyperiot.authentication.model,\
+    it.acsoftware.hyperiot.authentication.model.principal,\
+    it.acsoftware.hyperiot.authentication.model.context
+Bundle-Version: 1.0.0
+

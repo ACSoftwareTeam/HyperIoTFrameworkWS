@@ -1,0 +1,10 @@
+{
+    "generator-hyperiot": {
+        "inner-project": true,
+        "project-type": "test",
+        "projectName": "HyperIoTRole",
+        "projectGroupId": "it.acsoftware.hyperiot.role",
+        "projectVersion": "1.0.0",
+        "projectFolder": "HyperIoTRole-test"
+    }
+}

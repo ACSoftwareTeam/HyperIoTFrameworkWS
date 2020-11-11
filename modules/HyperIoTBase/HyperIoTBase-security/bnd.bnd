@@ -1,0 +1,13 @@
+Import-Package: \
+    org.osgi.framework*,\
+    org.osgi.service*,\
+    org.bouncycastle*,\
+    javax.crypto*,\
+    javax.ws.rs*,\
+    javax.security*,\
+    org.apache.cxf*,\
+    it.acsoftware.hyperiot*
+Export-Package: \
+    it.acsoftware.hyperiot.base.security.rest,\
+    it.acsoftware.hyperiot.base.security.util
+Bundle-Version: 1.0.0

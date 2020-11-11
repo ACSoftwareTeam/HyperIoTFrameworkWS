@@ -1,0 +1,18 @@
+  # KAFKA Spout
+  - id: "spoutConfigBuilder-raw-%projectId%"
+    className: "org.apache.storm.kafka.spout.KafkaSpoutConfig$Builder"
+    constructorArgs:
+      - "${spout.kafka_servers}"
+      - ["streaming.%projectId%"]
+    configMethods:
+      - name: "setProp"
+        args:
+          - {
+            "key.deserializer" : "org.apache.kafka.common.serialization.ByteArrayDeserializer",
+            "value.deserializer": "org.apache.kafka.common.serialization.ByteArrayDeserializer",
+            "group.id" : "group-%projectId%"
+          }
+  - id: "spoutConfig-raw-%projectId%"
+    className: "org.apache.storm.kafka.spout.KafkaSpoutConfig"
+    constructorArgs:
+      - ref: "spoutConfigBuilder-raw-%projectId%"
