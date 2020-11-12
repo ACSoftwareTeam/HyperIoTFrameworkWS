@@ -7,11 +7,15 @@ import it.acsoftware.hyperiot.base.exception.HyperIoTDuplicateEntityException;
 import it.acsoftware.hyperiot.base.exception.HyperIoTEntityNotFound;
 import it.acsoftware.hyperiot.base.model.HyperIoTPaginatedResult;
 import it.acsoftware.hyperiot.base.util.HyperIoTUtil;
+import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilter;
+import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilterBuilder;
 import it.acsoftware.hyperiot.query.util.filter.*;
 import org.apache.aries.jpa.template.EmConsumer;
 import org.apache.aries.jpa.template.EmFunction;
 import org.apache.aries.jpa.template.JpaTemplate;
 import org.apache.aries.jpa.template.TransactionType;
+import org.apache.commons.lang3.ClassUtils;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Reference;
 
 import javax.persistence.NoResultException;
@@ -35,7 +39,7 @@ import java.util.logging.Logger;
  * entities that interact with the HyperIoT platform.
  */
 public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
-        implements HyperIoTBaseRepository<T> {
+    implements HyperIoTBaseRepository<T> {
     protected Logger log = Logger.getLogger("it.acsoftware.hyperiot");
 
     /**
@@ -108,7 +112,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
     @Override
     public T save(T entity) {
         log.log(Level.FINE,
-                "Repository Saving entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
+            "Repository Saving entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
         this.checkDuplicate(entity);
         return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
             log.log(Level.FINE, "Transaction found, invoke persist");
@@ -127,9 +131,9 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
     @Override
     public T update(T entity) {
         log.log(Level.FINE,
-                "Repository Update entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
+            "Repository Update entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
         this.checkDuplicate(entity);
-        if(entity.getId() > 0) {
+        if (entity.getId() > 0) {
             return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
                 log.log(Level.FINE, "Transaction found, invoke find and merge");
                 T dbEntity = (T) entityManager.find(entity.getClass(), entity.getId());
@@ -140,7 +144,10 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                 manageAssets(entity, false);
                 entityManager.flush();
                 log.log(Level.FINE, "Entity merged: {0}", entity);
-                HyperIoTUtil.invokePostActions(entity, HyperIoTPostUpdateAction.class); // execute post actions after updating
+                //Invoking global post actions
+                HyperIoTUtil.invokePostActions(entity, HyperIoTPostUpdateAction.class);
+                //invoking detailed update actions, for who wants identify what is changed inside entity
+                invokePostUpdateDetailedAction(dbEntity, entity); // execute post actions after updating
                 return updateEntity;
             });
         }
@@ -153,7 +160,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
     @Override
     public void remove(long id) {
         log.log(Level.FINE,
-                "Repository Remove entity {0} with id: {1}", new Object[]{this.type.getSimpleName(), id});
+            "Repository Remove entity {0} with id: {1}", new Object[]{this.type.getSimpleName(), id});
         this.getJpa().tx(TransactionType.Required, entityManager -> {
             log.log(Level.FINE, "Transaction found, invoke remove");
             T entity = find(id, null);
@@ -161,7 +168,8 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
             manageAssets(entity, true);
             entityManager.flush();
             log.log(Level.FINE,
-                    "Entity {0}  with id: {1}  removed", new Object[]{this.type.getSimpleName(), id});
+                "Entity {0}  with id: {1}  removed", new Object[]{this.type.getSimpleName(), id});
+            //we can use global post actions since there's no need to pass "before" entity
             HyperIoTUtil.invokePostActions(entity, HyperIoTPostRemoveAction.class); // execute post actions after removing
         });
     }
@@ -170,7 +178,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
     @Override
     public T find(long id, HashMap<String, Object> filter) {
         log.log(Level.FINE,
-                "Repository Find entity {0} with id: {1}", new Object[]{this.type.getSimpleName(), id});
+            "Repository Find entity {0} with id: {1}", new Object[]{this.type.getSimpleName(), id});
         return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
             log.log(Level.FINE, "Transaction found, invoke find");
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -185,12 +193,11 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                     String field = it.next();
                     Object value = filter.get(field);
 
-                    if(value instanceof HyperIoTQueryFilter) {
+                    if (value instanceof HyperIoTQueryFilter) {
                         //found a filter of HyperIoTQueryFilter type
-                        HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter)value;
+                        HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter) value;
                         filterCondition = createPredicateByQueryFilter(entityDef, criteriaBuilder, queryFilter);
-                    }
-                    else {
+                    } else {
                         //simple (name, value) filter
                         String[] dottedRelationships = field.split("\\.");
                         Path p = entityDef.get(dottedRelationships[0]);
@@ -201,7 +208,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                         filterCondition = criteriaBuilder.equal(p, filter.get(field));
                     }
 
-                    if(filterCondition != null) {
+                    if (filterCondition != null) {
                         condition = criteriaBuilder.and(condition, filterCondition);
                     }
                 }
@@ -242,12 +249,11 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                     String field = it.next();
                     Object value = filter.get(field);
 
-                    if(value instanceof HyperIoTQueryFilter) {
+                    if (value instanceof HyperIoTQueryFilter) {
                         //found a filter of HyperIoTQueryFilter type
-                        HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter)value;
+                        HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter) value;
                         filterCondition = createPredicateByQueryFilter(entityDef, criteriaBuilder, queryFilter);
-                    }
-                    else {
+                    } else {
                         //simple (name, value) filter
                         String[] dottedRelationships = field.split("\\.");
                         Path p = entityDef.get(dottedRelationships[0]);
@@ -257,7 +263,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                         filterCondition = criteriaBuilder.equal(p, filter.get(field));
                     }
 
-                    if(filterCondition != null) {
+                    if (filterCondition != null) {
                         if (condition != null)
                             condition = criteriaBuilder.and(condition, filterCondition);
                         else
@@ -285,87 +291,86 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
     public HyperIoTPaginatedResult<T> findAll(int delta, int page, HashMap<String, Object> filter) {
         log.log(Level.FINE, "Repository Find All entities {0}", this.type.getSimpleName());
         return (HyperIoTPaginatedResult<T>) this.getJpa().txExpr(TransactionType.RequiresNew,
-                entityManager -> {
-                    log.log(Level.FINE, "Transaction found, invoke findAll");
-                    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            entityManager -> {
+                log.log(Level.FINE, "Transaction found, invoke findAll");
+                CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-                    //constructing query and count query
-                    CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
-                    CriteriaQuery<T> query = criteriaBuilder.createQuery(this.type);
-                    Root<T> entityCountDef = countQuery.from(this.type);
-                    Root<T> entityDef = query.from(this.type);
-                    CriteriaQuery<Long> count = criteriaBuilder.createQuery(Long.class);
-                    Predicate conditionCount = null;
-                    Predicate condition = null;
-                    if (filter != null && filter.size() > 0) {
-                        Iterator<String> it = filter.keySet().iterator();
-                        while (it.hasNext()) {
-                            Predicate filterCountCondition = null;
-                            Predicate filterCondition = null;
+                //constructing query and count query
+                CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+                CriteriaQuery<T> query = criteriaBuilder.createQuery(this.type);
+                Root<T> entityCountDef = countQuery.from(this.type);
+                Root<T> entityDef = query.from(this.type);
+                CriteriaQuery<Long> count = criteriaBuilder.createQuery(Long.class);
+                Predicate conditionCount = null;
+                Predicate condition = null;
+                if (filter != null && filter.size() > 0) {
+                    Iterator<String> it = filter.keySet().iterator();
+                    while (it.hasNext()) {
+                        Predicate filterCountCondition = null;
+                        Predicate filterCondition = null;
 
-                            String field = it.next();
-                            Object value = filter.get(field);
+                        String field = it.next();
+                        Object value = filter.get(field);
 
-                            if(value instanceof HyperIoTQueryFilter) {
-                                //found a filter of HyperIoTQueryFilter type
-                                HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter)value;
-                                filterCondition = createPredicateByQueryFilter(entityDef, criteriaBuilder, queryFilter);
-                                filterCountCondition = createPredicateByQueryFilter(entityCountDef, criteriaBuilder, queryFilter);
+                        if (value instanceof HyperIoTQueryFilter) {
+                            //found a filter of HyperIoTQueryFilter type
+                            HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter) value;
+                            filterCondition = createPredicateByQueryFilter(entityDef, criteriaBuilder, queryFilter);
+                            filterCountCondition = createPredicateByQueryFilter(entityCountDef, criteriaBuilder, queryFilter);
+                        } else {
+                            //simple (name, value) filter
+                            String[] dottedRelationships = field.split("\\.");
+                            Path p = entityDef.get(dottedRelationships[0]);
+                            Path pCount = entityCountDef.get(dottedRelationships[0]);
+                            for (int i = 1; i < dottedRelationships.length; i++) {
+                                p = p.get(dottedRelationships[i]);
+                                pCount = pCount.get(dottedRelationships[i]);
                             }
-                            else {
-                                //simple (name, value) filter
-                                String[] dottedRelationships = field.split("\\.");
-                                Path p = entityDef.get(dottedRelationships[0]);
-                                Path pCount = entityCountDef.get(dottedRelationships[0]);
-                                for (int i = 1; i < dottedRelationships.length; i++) {
-                                    p = p.get(dottedRelationships[i]);
-                                    pCount = pCount.get(dottedRelationships[i]);
-                                }
-                                filterCountCondition = criteriaBuilder.equal(pCount, filter.get(field));
-                                filterCondition = criteriaBuilder.equal(p, filter.get(field));
-                            }
+                            filterCountCondition = criteriaBuilder.equal(pCount, filter.get(field));
+                            filterCondition = criteriaBuilder.equal(p, filter.get(field));
+                        }
 
-                            if(filterCountCondition != null) {
-                                if (conditionCount != null)
-                                    conditionCount = criteriaBuilder.and(conditionCount, filterCountCondition);
-                                else
-                                    conditionCount = filterCountCondition;
-                            }
+                        if (filterCountCondition != null) {
+                            if (conditionCount != null)
+                                conditionCount = criteriaBuilder.and(conditionCount, filterCountCondition);
+                            else
+                                conditionCount = filterCountCondition;
+                        }
 
-                            if(filterCondition != null) {
-                                if (condition != null)
-                                    condition = criteriaBuilder.and(condition, filterCondition);
-                                else
-                                    condition = filterCondition;
-                            }
+                        if (filterCondition != null) {
+                            if (condition != null)
+                                condition = criteriaBuilder.and(condition, filterCondition);
+                            else
+                                condition = filterCondition;
                         }
                     }
-                    countQuery = (conditionCount != null) ? countQuery.select(criteriaBuilder.count(entityCountDef)).where(conditionCount) : countQuery.select(criteriaBuilder.count(entityCountDef));
-                    query = (condition != null) ? query.select(entityCountDef).where(conditionCount) : query.select(entityCountDef);
-                    //Executing count query
-                    Query countQueryFinal = entityManager.createQuery(countQuery);
-                    Long countResults = (Long) countQueryFinal.getSingleResult();
-                    int lastPageNumber = (int) (Math.ceil(countResults / delta));
-                    int nextPage = (page <= lastPageNumber - 1) ? page + 1 : 1;
-                    //Executing paginated query
-                    Query q = entityManager.createQuery(query);
-                    int firstResult = (lastPageNumber - 1) * delta;
-                    if (lastPageNumber == 0) {
-                        firstResult = 0;
-                    }
-                    q.setFirstResult(firstResult);
-                    q.setMaxResults(delta);
-                    try {
-                        Collection<T> results = q.getResultList();
-                        HyperIoTPaginatedResult<T> paginatedResult = new HyperIoTPaginatedResult<>(
-                                lastPageNumber, page, delta, nextPage, results);
-                        log.log(Level.FINE, "Query results: {0}", results);
-                        return paginatedResult;
-                    } catch (Exception e) {
-                        log.log(Level.SEVERE, e.getMessage(), e);
-                        throw e;
-                    }
-                });
+                }
+                countQuery = (conditionCount != null) ? countQuery.select(criteriaBuilder.count(entityCountDef)).where(conditionCount) : countQuery.select(criteriaBuilder.count(entityCountDef));
+                query = (condition != null) ? query.select(entityCountDef).where(conditionCount) : query.select(entityCountDef);
+                //Executing count query
+                Query countQueryFinal = entityManager.createQuery(countQuery);
+                Long countResults = (Long) countQueryFinal.getSingleResult();
+                int lastPageNumber = (int) (Math.ceil(countResults / delta));
+                int nextPage = (page <= lastPageNumber - 1) ? page + 1 : 1;
+                //Executing paginated query
+                Query q = entityManager.createQuery(query);
+                int firstResult = (lastPageNumber - 1) * delta;
+                if (lastPageNumber == 0) {
+                    firstResult = 0;
+                }
+                q.setFirstResult(firstResult);
+                q.setMaxResults(delta);
+                try {
+                    Collection<T> results = q.getResultList();
+                    HyperIoTPaginatedResult<T> paginatedResult = new HyperIoTPaginatedResult<>(
+                        lastPageNumber, page, delta, nextPage, results);
+                    log.log(Level.FINE, "Query results: {0}", results);
+                    return paginatedResult;
+                } catch (Exception e) {
+                    log.log(Level.SEVERE, e.getMessage(), e);
+                    throw e;
+                }
+            });
     }
 
     /**
@@ -377,31 +382,31 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                                                          HashMap<String, Object> params, int delta, int page) {
         log.log(Level.FINE, "Repository queryForResultList {0}", new Object[]{query, params});
         return (HyperIoTPaginatedResult<T>) this.getJpa().txExpr(TransactionType.RequiresNew,
-                entityManager -> {
-                    log.log(Level.FINE, "Transaction found, invoke findAll");
-                    Query countQuery = entityManager.createQuery(
-                            "Select count(*) " + query.substring(query.indexOf("from")));
-                    Query q = entityManager.createQuery(query, this.type);
-                    Iterator<String> it = params.keySet().iterator();
-                    while (it.hasNext()) {
-                        String paramName = it.next();
-                        q.setParameter(paramName, params.get(paramName));
-                        countQuery.setParameter(paramName, params.get(paramName));
-                    }
-                    Long countResults = (Long) countQuery.getSingleResult();
-                    int lastPageNumber = (int) (Math.ceil(countResults / delta));
-                    int nextPage = (page <= lastPageNumber - 1) ? page + 1 : 1;
-                    try {
-                        Collection<T> results = q.getResultList();
-                        HyperIoTPaginatedResult<T> paginatedResult = new HyperIoTPaginatedResult<>(
-                                lastPageNumber, page, delta, nextPage, results);
-                        log.log(Level.FINE, "Query results: {0}", results);
-                        return paginatedResult;
-                    } catch (Exception e) {
-                        log.log(Level.SEVERE, e.getMessage(), e);
-                        throw e;
-                    }
-                });
+            entityManager -> {
+                log.log(Level.FINE, "Transaction found, invoke findAll");
+                Query countQuery = entityManager.createQuery(
+                    "Select count(*) " + query.substring(query.indexOf("from")));
+                Query q = entityManager.createQuery(query, this.type);
+                Iterator<String> it = params.keySet().iterator();
+                while (it.hasNext()) {
+                    String paramName = it.next();
+                    q.setParameter(paramName, params.get(paramName));
+                    countQuery.setParameter(paramName, params.get(paramName));
+                }
+                Long countResults = (Long) countQuery.getSingleResult();
+                int lastPageNumber = (int) (Math.ceil(countResults / delta));
+                int nextPage = (page <= lastPageNumber - 1) ? page + 1 : 1;
+                try {
+                    Collection<T> results = q.getResultList();
+                    HyperIoTPaginatedResult<T> paginatedResult = new HyperIoTPaginatedResult<>(
+                        lastPageNumber, page, delta, nextPage, results);
+                    log.log(Level.FINE, "Query results: {0}", results);
+                    return paginatedResult;
+                } catch (Exception e) {
+                    log.log(Level.SEVERE, e.getMessage(), e);
+                    throw e;
+                }
+            });
     }
 
     /**
@@ -513,7 +518,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                         }
 
                         String getterMethod = "get" + fieldName.substring(0, 1).toUpperCase()
-                                + fieldName.substring(1);
+                            + fieldName.substring(1);
                         try {
                             Method m = this.type.getMethod(getterMethod);
                             Object value = null;
@@ -526,12 +531,12 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                                 // entity
                             else {
                                 String getterInnerMethod = "get"
-                                        + innerField.substring(0, 1).toUpperCase()
-                                        + innerField.substring(1);
+                                    + innerField.substring(0, 1).toUpperCase()
+                                    + innerField.substring(1);
                                 Object innerEntity = m.invoke(entity);
                                 if (innerEntity != null) {
                                     Method innerMethod = innerEntity.getClass()
-                                            .getMethod(getterInnerMethod);
+                                        .getMethod(getterInnerMethod);
                                     value = innerMethod.invoke(innerEntity);
                                 } else {
                                     value = null;
@@ -546,7 +551,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                             } else {
                                 if (value != null) {
                                     sb.append(fieldName).append(".").append(innerField).append("=:")
-                                            .append(fieldName).append(innerField);
+                                        .append(fieldName).append(innerField);
                                     params.put(fieldName + innerField, value);
                                 } else {
                                     sb.append(fieldName).append(".").append(innerField).append(" is null");
@@ -576,10 +581,10 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
         if (this.assetCategoryManager != null && entity.getCategoryIds() != null) {
             if (!removed) {
                 this.assetCategoryManager.addAssetCategories(entity.getResourceName(),
-                        entity.getId(), entity.getCategoryIds());
+                    entity.getId(), entity.getCategoryIds());
             } else {
                 this.assetCategoryManager.removeAssetCategories(entity.getResourceName(),
-                        entity.getId(), entity.getCategoryIds());
+                    entity.getId(), entity.getCategoryIds());
             }
 
         }
@@ -587,28 +592,28 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
         if (this.assetTagManager != null && entity.getTagIds() != null) {
             if (!removed) {
                 this.assetTagManager.addAssetTags(entity.getResourceName(), entity.getId(),
-                        entity.getTagIds());
+                    entity.getTagIds());
             } else {
                 this.assetTagManager.removeAssetTags(entity.getResourceName(), entity.getId(),
-                        entity.getTagIds());
+                    entity.getTagIds());
             }
 
         }
     }
 
     private Predicate createPredicateByQueryFilter(Root<T> entityDef, CriteriaBuilder criteriaBuilder, HyperIoTQueryFilter filter) {
-        if(filter instanceof HyperIoTQueryEqualsFilter) {
-            return createEqualPredicate(entityDef, criteriaBuilder, (HyperIoTQueryEqualsFilter)filter);
+        if (filter instanceof HyperIoTQueryEqualsFilter) {
+            return createEqualPredicate(entityDef, criteriaBuilder, (HyperIoTQueryEqualsFilter) filter);
         }
-        if(filter instanceof HyperIoTQueryInFilter) {
-            return createInPredicate(entityDef, criteriaBuilder, (HyperIoTQueryInFilter)filter);
+        if (filter instanceof HyperIoTQueryInFilter) {
+            return createInPredicate(entityDef, criteriaBuilder, (HyperIoTQueryInFilter) filter);
         }
 
-        if(filter instanceof HyperIoTQueryFilterAndCondition) {
-            return createAndPredicate(entityDef, criteriaBuilder, (HyperIoTQueryFilterAndCondition)filter);
+        if (filter instanceof HyperIoTQueryFilterAndCondition) {
+            return createAndPredicate(entityDef, criteriaBuilder, (HyperIoTQueryFilterAndCondition) filter);
         }
-        if(filter instanceof HyperIoTQueryFilterOrCondition) {
-            return createOrPredicate(entityDef, criteriaBuilder, (HyperIoTQueryFilterOrCondition)filter);
+        if (filter instanceof HyperIoTQueryFilterOrCondition) {
+            return createOrPredicate(entityDef, criteriaBuilder, (HyperIoTQueryFilterOrCondition) filter);
         }
         return null;
     }
@@ -630,7 +635,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
         Predicate rightPredicate = createPredicateByQueryFilter(entityDef, criteriaBuilder, right);
         Predicate andPredicate = criteriaBuilder.and(leftPredicate, rightPredicate);
 
-        if(filter.isNot()) {
+        if (filter.isNot()) {
             return andPredicate.not();
         }
         return andPredicate;
@@ -642,7 +647,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
 
         Path<?> p = getPath(entityDef, name);
 
-        if(filter.isNot()) {
+        if (filter.isNot()) {
             return criteriaBuilder.notEqual(p, value);
         }
         return criteriaBuilder.equal(p, value);
@@ -654,7 +659,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
 
         Path<?> p = getPath(entityDef, name);
 
-        if(filter.isNot()) {
+        if (filter.isNot()) {
             return criteriaBuilder.not(p.in(value));
         }
         return p.in(value);
@@ -668,9 +673,42 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
         Predicate rightPredicate = createPredicateByQueryFilter(entityDef, criteriaBuilder, right);
         Predicate orPredicate = criteriaBuilder.or(leftPredicate, rightPredicate);
 
-        if(filter.isNot()) {
+        if (filter.isNot()) {
             return orPredicate.not();
         }
         return orPredicate;
+    }
+
+    /**
+     * @param beforeCrudAction Entity before Crud Action
+     * @param afterCrudAction  Entity after Crud Action
+     */
+    private void invokePostUpdateDetailedAction(HyperIoTBaseEntity beforeCrudAction, HyperIoTBaseEntity afterCrudAction) {
+        log.log(Level.FINE, "Fetch post actions of type: PostUpdateAction");
+
+        OSGiFilter osgiFilter = OSGiFilterBuilder.createFilter("type", beforeCrudAction.getClass().getName());
+
+        //include OSGi filters for all interfaces implemented by resource and its superclasses
+        String filter = ClassUtils.getAllInterfaces(beforeCrudAction.getClass())
+            .stream()
+            .map(interfaceClass -> OSGiFilterBuilder.createFilter("type", interfaceClass.getName()))
+            .reduce(osgiFilter, OSGiFilter::or)
+            .getFilter();
+
+        ServiceReference<? extends HyperIoTPostUpdateDetailedAction>[] serviceReferences =
+            HyperIoTUtil.getServices(HyperIoTPostUpdateAction.class, filter);
+        if (serviceReferences == null)
+            log.log(Level.FINE, "There are not post actions of type post update action");
+        else {
+            log.log(Level.FINE, "{0} post actions fetched", serviceReferences.length);
+            for (ServiceReference<? extends HyperIoTPostUpdateDetailedAction> serviceReference : serviceReferences)
+                try {
+                    log.log(Level.FINE, "Executing post action: {0}", serviceReference);
+                    HyperIoTPostUpdateDetailedAction hyperIoTPostDetailedAction = HyperIoTUtil.getBundleContext(HyperIoTPostUpdateDetailedAction.class).getService(serviceReference);
+                    hyperIoTPostDetailedAction.execute(beforeCrudAction, afterCrudAction);
+                } catch (Throwable e) {
+                    log.log(Level.SEVERE, e.getMessage(), e);
+                }
+        }
     }
 }
