@@ -9,7 +9,7 @@ dependencies {
 	compileOnly group: project.cxfJoseGroup ,name: project.cxfSwaggerName,version: project.cxfSwaggerVersion
 	//Hibernate
 	compileOnly group: "org.hibernate.javax.persistence", name: "hibernate-jpa-2.1-api",version: project.hibernateJpaApiVersion
-	compileOnly group: 'org.hibernate', name: 'hibernate-annotations', version: '3.5.6-Final'
+	compileOnly group: 'org.hibernate', name: 'hibernate-annotations', version: project.hibernateAnnotationVersion
 	//Validation
 	compileOnly group: "javax.validation", name: "validation-api",version:project.javaxValidationVersion
 	compileOnly group: "org.hibernate",name: "hibernate-validator",version:project.hibernateValidatorVersion

@@ -7,8 +7,6 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 	//Swagger
 	compileOnly group: project.cxfJoseGroup ,name: project.cxfSwaggerName,version: project.cxfSwaggerVersion
-	//DOSGi
-	compileOnly group: 'org.apache.cxf.dosgi', name: 'cxf-dosgi-common', version: '2.3.0'
 	//Hibernate
 	compileOnly group: "org.hibernate.javax.persistence", name: "hibernate-jpa-2.1-api",version: project.hibernateJpaApiVersion
 	//Validation

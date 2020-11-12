@@ -14,7 +14,7 @@ configurations {
 }
 
 dependencies {
-    base 'org.passay:passay:1.4.0'
+    base 'org.passay:passay:'+project.passayVersion
     base 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:' + project.jacksonVersion
     base 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:' + project.jacksonVersion
     base 'com.fasterxml.jackson.core:jackson-annotations:' + project.jacksonVersion

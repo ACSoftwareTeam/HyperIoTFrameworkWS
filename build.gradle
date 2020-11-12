@@ -17,6 +17,7 @@ project.ext.set("acsMavenRepository","https://nexus.acsoftware.it/nexus/reposito
 project.ext.set("karafVersion", "4.2.6")
 project.ext.set("activemqVersion", "5.15.9")
 
+project.ext.set("passayVersion","1.4.0")
 project.ext.set("jacksonVersion", "2.9.6")
 project.ext.set("hyperIoTVersion", "1.0.0")
 
@@ -30,6 +31,7 @@ project.ext.set("postgresDriverVersion","42.2.9")
 
 project.ext.set("apacheAriesJpaVersion","2.7.1")
 
+project.ext.set("hibernateAnnotationVersion","3.5.6-Final")
 project.ext.set("hibernateValidatorVersion","6.0.12.Final")
 project.ext.set("hibernateJpaApiVersion","1.0.2.Final")
 
