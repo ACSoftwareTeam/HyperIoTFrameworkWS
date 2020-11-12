@@ -2,7 +2,7 @@
 
 dependencies {
 	//OSGi Basic Imports
-	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgVersion
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
