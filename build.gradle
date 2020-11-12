@@ -4,7 +4,6 @@ wrapper {
   jarFile = rootProject.file('.gradle-wrapper/gradle-wrapper.jar')
 }
 
-
 task buildHIT {
 	dependsOn gradle.includedBuilds*.task(':buildHIT')
 }
@@ -17,13 +16,14 @@ project.ext.set("acsMavenRepository","https://nexus.acsoftware.it/nexus/reposito
 project.ext.set("karafVersion", "4.2.6")
 project.ext.set("activemqVersion", "5.15.9")
 
-project.ext.set("passayVersion","1.4.0")
-project.ext.set("jacksonVersion", "2.9.6")
 project.ext.set("hyperIoTVersion", "1.0.0")
 
+project.ext.set("jacksonVersion", "2.9.6")
+project.ext.set("passayVersion","1.4.0")
 project.ext.set("osgiVersion", "6.0.0")
 project.ext.set("osgiCompendiumVersion", "5.0.0")
 
+project.ext.set("jaxWsRsApiVersion","2.0.1")
 project.ext.set("javaxValidationVersion","2.0.1.Final")
 project.ext.set("javaxTransactionVersion","1.2")
 project.ext.set("javaxServletVersion","3.1.0")
@@ -35,19 +35,18 @@ project.ext.set("hibernateAnnotationVersion","3.5.6-Final")
 project.ext.set("hibernateValidatorVersion","6.0.12.Final")
 project.ext.set("hibernateJpaApiVersion","1.0.2.Final")
 
-project.ext.set("jaxWsRsApiVersion","2.0.1")
-
-//name parameters
 project.ext.set("bouncyCastleVersion","1.66")
 project.ext.set("cxfJoseGroup","org.apache.cxf")
 project.ext.set("cxfJoseJaxrsName","cxf-rt-rs-security-jose-jaxrs")
 project.ext.set("cxfSwaggerName","cxf-rt-rs-service-description-swagger")
 project.ext.set("cxfSwaggerVersion","3.2.0")
-project.ext.set("swaggerUIVersion","3.20.5")
 project.ext.set("cxfJoseName","cxf-rt-rs-security-jose")
 project.ext.set("cxfJoseVersion","3.2.5");
 project.ext.set("cxfJoseJaxrsVersion","3.2.5");
 project.ext.set("cxfVersion","3.2.5");
+
+project.ext.set("swaggerUIVersion","3.20.5")
+
 project.ext.set("quartzVersion", "2.3.2_1")
 
 project.ext.set("hbaseVersion", "1.4.9")
