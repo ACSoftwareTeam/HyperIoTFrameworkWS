@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -22,12 +22,12 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-security", version:project.hyperIoTVersion
-	
-	//Project Dependencies	
+
+	//Project Dependencies
 	compileOnly project(":modules:HyperIoTRole:HyperIoTRole-actions")
 	compileOnly project(":modules:HyperIoTRole:HyperIoTRole-api")
 	compileOnly project(":modules:HyperIoTRole:HyperIoTRole-model")
-	compileOnly project(":modules:HyperIoTRole:HyperIoTRole-repository")	
+	compileOnly project(":modules:HyperIoTRole:HyperIoTRole-repository")
 }
 
 jar {

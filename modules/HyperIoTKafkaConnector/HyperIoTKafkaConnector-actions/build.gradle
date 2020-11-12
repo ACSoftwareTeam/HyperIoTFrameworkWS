@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -8,9 +8,9 @@ dependencies {
 	//Project Dependencies
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:"1.0.0"
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:"1.0.0"
-	
+
 	compileOnly project(":modules:HyperIoTKafkaConnector:HyperIoTKafkaConnector-model")
-	
+
 }
 
 jar {

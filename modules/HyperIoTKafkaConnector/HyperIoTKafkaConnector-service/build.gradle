@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -32,11 +32,11 @@ dependencies {
 	// Other dependencies
 	compileOnly group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.4'
 
-	//Project Dependencies	
+	//Project Dependencies
 	compileOnly project(":modules:HyperIoTKafkaConnector:HyperIoTKafkaConnector-actions")
 	compileOnly project(":modules:HyperIoTKafkaConnector:HyperIoTKafkaConnector-api")
 	compileOnly project(":modules:HyperIoTKafkaConnector:HyperIoTKafkaConnector-model")
-	
+
 }
 
 jar {

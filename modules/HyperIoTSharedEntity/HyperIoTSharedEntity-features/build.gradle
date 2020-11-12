@@ -2,23 +2,22 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	sharedEntity {
 		transitive = false
 	}
       sharedEntityRest {
 		transitive = false
-	} 
+	}
 }
 
 dependencies {
-	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-actions:1.0.0'
- 	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-api:1.0.0'
-	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-service:1.0.0'
-	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-model:1.0.0'
-	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-repository:1.0.0'
- 	sharedEntityRest 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-service-rest:1.0.0'
+	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-actions:'+project.version
+ 	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-api:'+project.version
+	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-service:'+project.version
+	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-model:'+project.version
+	sharedEntity 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-repository:'+project.version
+ 	sharedEntityRest 'it.acsoftware.hyperiot.shared.entity:HyperIoTSharedEntity-service-rest:'+project.version
 }
 
 
@@ -35,25 +34,25 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-sharedentity'
             description = 'All  HyperIoT HyperIoTSharedEntity modules'
-            
+
             feature 'hyperiot-base'
-            configurations 'sharedEntity','sharedEntityRest' 
-            
+            configurations 'sharedEntity','sharedEntityRest'
+
         }
-        
-     
+
+
         feature {
             name        = 'hyperiot-sharedentity-basic'
             description = 'All  HyperIoT HyperIoTSharedEntity modules with NO rest services'
 
             feature 'hyperiot-base-basic'
             configurations 'sharedEntity'
-        }  
-          
+        }
+
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -70,7 +69,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -78,7 +77,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

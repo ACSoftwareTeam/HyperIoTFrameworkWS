@@ -2,7 +2,6 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	kafkaConnector {
 		transitive = false
@@ -21,12 +20,12 @@ dependencies {
     kafkaConnector 'org.reactivestreams:reactive-streams:1.0.2'
     kafkaConnector 'io.projectreactor:reactor-core:3.2.6.RELEASE'
     kafkaConnector 'io.projectreactor.kafka:reactor-kafka:1.1.0.RELEASE'
-    kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-actions:1.0.0'
-	kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-api:1.0.0'
-    kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-model:1.0.0'
-	kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-service:1.0.0'
-	kafkaConnectorRest 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-service-rest:1.0.0'
-    kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-service-websocket:1.0.0'
+    kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-actions:'+project.version
+    kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-api:'+project.version
+    kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-model:'+project.version
+	kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-service:'+project.version
+	kafkaConnectorRest 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-service-rest:'+project.version
+    kafkaConnector 'it.acsoftware.hyperiot.kafka.connector:HyperIoTKafkaConnector-service-websocket:'+project.version
 }
 
 

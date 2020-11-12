@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -13,7 +13,7 @@ dependencies {
 	//Validation
 	compileOnly group: "javax.validation", name: "validation-api",version:project.javaxValidationVersion
 	compileOnly group: "org.hibernate",name: "hibernate-validator",version:project.hibernateValidatorVersion
-	
+
 	//Jackson
 	compileOnly group:"com.fasterxml.jackson.module",name:"jackson-module-jaxb-annotations",version:project.jacksonVersion
 	//HyperIoTBase Dependencies

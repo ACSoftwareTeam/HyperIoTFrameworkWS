@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -12,7 +12,7 @@ dependencies {
 	compile group: 'com.google.protobuf', name: 'protobuf-java', version: project.googleProtobufVersion
 	//Project dependencies
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-model")
-	
+
 }
 
 task buildHIT(type: GradleBuild) {

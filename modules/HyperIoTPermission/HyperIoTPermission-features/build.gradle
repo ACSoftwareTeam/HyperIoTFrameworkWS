@@ -2,12 +2,11 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	hyperiot{
 		transitive = false
 	}
-	
+
 	hyperiotRest{
 		transitive = false
 	}
@@ -16,12 +15,12 @@ configurations {
 dependencies {
 	//Need Role model beacuse permissions use Role class
     hyperiot 'it.acsoftware.hyperiot.role:HyperIoTRole-model:'+project.hyperIoTVersion
-    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-actions:'+project.hyperIoTVersion
-    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-api:'+project.hyperIoTVersion
-    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-model:'+project.hyperIoTVersion
-    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-repository:'+project.hyperIoTVersion
-    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-service:'+project.hyperIoTVersion
-    hyperiotRest 'it.acsoftware.hyperiot.permission:HyperIoTPermission-service-rest:'+project.hyperIoTVersion
+    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-actions:'+project.version
+    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-api:'+project.version
+    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-model:'+project.version
+    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-repository:'+project.version
+    hyperiot 'it.acsoftware.hyperiot.permission:HyperIoTPermission-service:'+project.version
+    hyperiotRest 'it.acsoftware.hyperiot.permission:HyperIoTPermission-service-rest:'+project.version
 }
 
 
@@ -36,7 +35,7 @@ karaf {
         includeProject = false
 
         // Add in extra repositories to the features xml file
-        
+
 
 		feature {
             name        = 'hyperiot-permission'
@@ -46,7 +45,7 @@ karaf {
             feature 'hyperiot-base'
             configurations 'hyperiot','hyperiotRest'
         }
-        
+
         feature {
             name        = 'hyperiot-permission-basic'
             description = 'All Hyperiot Permission Modules with NO rest services'
@@ -72,7 +71,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -80,7 +79,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

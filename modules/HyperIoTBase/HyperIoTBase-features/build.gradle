@@ -2,50 +2,49 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 
-	base {
-		transitive = false
-	}
+    base {
+        transitive = false
+    }
 
-	baseRest {
-		transitive = false
-	}
+    baseRest {
+        transitive = false
+    }
 }
 
 dependencies {
-	base 'org.passay:passay:1.4.0'
-	base 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.9.6'
-	base 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.9.6'
-	base 'com.fasterxml.jackson.core:jackson-annotations:2.9.6'
-	base 'com.fasterxml.jackson.core:jackson-core:2.9.6'
-	base 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
-	base 'org.webjars:swagger-ui:'+project.swaggerUIVersion
-    base 'javax.validation:validation-api:2.0.1.Final'
-    base 'org.bouncycastle:bcprov-jdk15on:1.66'
-    base 'org.bouncycastle:bcpkix-jdk15on:1.66'
-    base 'org.bouncycastle:bcmail-jdk15on:1.66'
-    base 'org.postgresql:postgresql:42.2.9'
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-api:'+project.hyperIoTVersion
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-model:'+project.hyperIoTVersion
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-security:'+project.hyperIoTVersion
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-actions:'+project.hyperIoTVersion
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-command:'+project.hyperIoTVersion
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-util:'+project.hyperIoTVersion
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-validation:'+project.hyperIoTVersion
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-repository:'+project.hyperIoTVersion
-    base 'it.acsoftware.hyperiot.base:HyperIoTBase-service:'+project.hyperIoTVersion
-    baseRest 'it.acsoftware.hyperiot.base:HyperIoTBase-service-rest:'+project.hyperIoTVersion
-    baseRest 'it.acsoftware.hyperiot.base:HyperIoTBase-service-websocket:'+project.hyperIoTVersion
+    base 'org.passay:passay:1.4.0'
+    base 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:' + project.jacksonVersion
+    base 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:' + project.jacksonVersion
+    base 'com.fasterxml.jackson.core:jackson-annotations:' + project.jacksonVersion
+    base 'com.fasterxml.jackson.core:jackson-core:' + project.jacksonVersion
+    base 'com.fasterxml.jackson.core:jackson-databind:' + project.jacksonVersion
+    base 'org.webjars:swagger-ui:' + project.swaggerUIVersion
+    base 'javax.validation:validation-api:' + project.javaxValidationVersion
+    base 'org.bouncycastle:bcprov-jdk15on:' + project.bouncyCastleVersion
+    base 'org.bouncycastle:bcpkix-jdk15on:' + project.bouncyCastleVersion
+    base 'org.bouncycastle:bcmail-jdk15on:' + project.bouncyCastleVersion
+    base 'org.postgresql:postgresql:' + project.postgresDriverVersion
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-api:' + project.version
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-model:' + project.version
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-security:' + project.version
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-actions:' + project.version
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-command:' + project.version
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-util:' + project.version
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-validation:' + project.version
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-repository:' + project.version
+    base 'it.acsoftware.hyperiot.base:HyperIoTBase-service:' + project.version
+    baseRest 'it.acsoftware.hyperiot.base:HyperIoTBase-service-rest:' + project.version
+    baseRest 'it.acsoftware.hyperiot.base:HyperIoTBase-service-websocket:' + project.version
 }
 
 
 karaf {
     features {
         // See section below for karaf 4 support if using 1.3.0
-        xsdVersion  = '1.2.0'
-        version     = '4.0.0' // Your project version
+        xsdVersion = '1.2.0'
+        version = '4.0.0' // Your project version
         description = 'Karaf features'
 
         // Include the current project, false by default
@@ -59,7 +58,7 @@ karaf {
         //repository "mvn:org.apache.servicemix.features/servicemix-features/7.0.1/xml/features"
 
         feature {
-            name        = 'hyperiot-base-karaf-features'
+            name = 'hyperiot-base-karaf-features'
             description = 'All Hyperiot HyperIoTBase Modules'
 
             // Add feature dependency (newest)
@@ -67,11 +66,11 @@ karaf {
             feature 'jndi'
             feature 'aries-blueprint'
             feature 'transaction'
-            feature ('jpa')
-            feature ('hibernate') {
-            	version = '[5,6)'
+            feature('jpa')
+            feature('hibernate') {
+                version = '[5,6)'
             }
-            feature ('hibernate-validator') {
+            feature('hibernate-validator') {
                 version = '[6,6.2)'
             }
             feature 'pax-jdbc'
@@ -87,7 +86,7 @@ karaf {
         }
 
         feature {
-            name        = 'hyperiot-base'
+            name = 'hyperiot-base'
             description = 'All Hyperiot HyperIoTBase Modules'
 
             // Add feature dependency (newest)
@@ -96,10 +95,10 @@ karaf {
         }
 
         feature {
-            name        = 'hyperiot-base-basic'
+            name = 'hyperiot-base-basic'
             description = 'Hyperiot HyperIoTBase Modules with NO rest services'
 
-			// Add feature dependency (newest)
+            // Add feature dependency (newest)
             feature 'hyperiot-base-karaf-features'
             configurations 'base'
         }
@@ -123,7 +122,7 @@ task buildHIT(type: GradleBuild) {
 }
 
 task buildFeatures(type: GradleBuild) {
-	tasks = [ 'clean','generateFeatures','build','install' ]
+    tasks = ['clean', 'generateFeatures', 'build', 'install']
 }
 
 task publishHIT(type: GradleBuild) {
@@ -131,10 +130,10 @@ task publishHIT(type: GradleBuild) {
 }
 
 task publishFeatures(type: GradleBuild) {
-	tasks = [ 'clean','generateFeatures','build','install','publish' ]
+    tasks = ['clean', 'generateFeatures', 'build', 'install', 'publish']
 }
 
-def featureFile = 'build/karaf/features/'+project.name+'-'+project.version+'.xml'
+def featureFile = 'build/karaf/features/' + project.name + '-' + project.version + '.xml'
 publishing {
     publications {
         hyperiot(MavenPublication) {
@@ -142,4 +141,4 @@ publishing {
             artifact source: featureFile, classifier: 'features'
         }
     }
- }
+}

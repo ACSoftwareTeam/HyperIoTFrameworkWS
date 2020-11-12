@@ -2,7 +2,6 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	stormManager {
 		transitive = false
@@ -11,13 +10,13 @@ configurations {
 
 dependencies {
 
-    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-actions:1.0.0'
-    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-api:1.0.0'
-    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-model:1.0.0'
-    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-service:1.0.0'
-    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-client:1.0.0'
-    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-service-rest:1.0.0'
-    stormManager 'it.acsoftware.hyperiot.storm.topology:storm-kafkatopic-topology:1.0.0'
+    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-actions:'+project.version
+    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-api:'+project.version
+    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-model:'+project.version
+    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-service:'+project.version
+    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-client:'+project.version
+    stormManager 'it.acsoftware.hyperiot.stormmanager:HyperIoTStormManager-service-rest:'+project.version
+    stormManager 'it.acsoftware.hyperiot.storm.topology:storm-kafkatopic-topology:'+project.version
 }
 
 karaf {
@@ -33,17 +32,17 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-stormmanager'
             description = 'All Hyperiot HyperIoTStormManager modules'
-            
+
             feature 'hyperiot-base-basic'
             configurations 'stormManager'
-            
+
         }
-        
-           
+
+
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -60,7 +59,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -68,7 +67,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -21,13 +21,13 @@ dependencies {
 	// https://mvnrepository.com/artifact/javax.mail/mail
 	compileOnly group: 'javax.mail', name: 'mail', version: '1.4'
 	compileOnly group: 'org.freemarker', name: 'freemarker', version: '2.3.28'
-	//Project Dependencies	
+	//Project Dependencies
 	compileOnly project(":modules:HyperIoTMail:HyperIoTMail-api")
-	
+
 	compileOnly project(":modules:HyperIoTMail:HyperIoTMail-model")
 	compileOnly project(":modules:HyperIoTMail:HyperIoTMail-repository")
 	compileOnly project(":modules:HyperIoTMail:HyperIoTMail-util")
-	
+
 }
 
 jar {

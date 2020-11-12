@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -25,7 +25,7 @@ dependencies {
 	testCompile group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-model", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-service", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-service-rest", version:project.hyperIoTVersion
-	
+
 	testCompile group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-api", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-model", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-service-rest", version:project.hyperIoTVersion
@@ -94,7 +94,7 @@ dependencies {
 	testCompile project(":modules:HyperIoTHUser:HyperIoTHUser-repository")
 	testCompile project(":modules:HyperIoTHUser:HyperIoTHUser-service")
 	testCompile project(":modules:HyperIoTHUser:HyperIoTHUser-service-rest")
-	
+
 	//Test dependencies
 	testCompile group: "org.apache.karaf.itests", name:"common", version:"4.2.3"
 	testCompile group: "org.apache.karaf", name:"apache-karaf", version:"4.2.3"
@@ -111,11 +111,11 @@ dependencies {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 publishing {

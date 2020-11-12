@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -8,9 +8,9 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
-	
+
 	compileOnly project(":modules:HyperIoTHUser:HyperIoTHUser-model")
-	
+
 }
 
 jar {

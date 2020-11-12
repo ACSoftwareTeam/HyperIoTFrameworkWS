@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -24,7 +24,7 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.mail", name: "HyperIoTMail-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.mail", name: "HyperIoTMail-util", version:project.hyperIoTVersion
-	//Project Dependencies	
+	//Project Dependencies
 	compileOnly project(":modules:HyperIoTHUser:HyperIoTHUser-model")
 	compileOnly project(":modules:HyperIoTHUser:HyperIoTHUser-api")
 	compileOnly project(":modules:HyperIoTHUser:HyperIoTHUser-repository")

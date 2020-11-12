@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -19,17 +19,17 @@ dependencies {
 	testCompile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-test", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-validation", version:project.hyperIoTVersion
-	
+
 	testCompile group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-api", version:project.hyperIoTVersion
-	
+
 	testCompile group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-api", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-model", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-service-rest", version:project.hyperIoTVersion
-	
+
 	testCompile group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-api", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-model", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-service-rest", version:project.hyperIoTVersion
-	
+
 	//Project dependencies
 	testCompile project(":modules:HyperIoTPermission:HyperIoTPermission-model")
 	testCompile project(":modules:HyperIoTPermission:HyperIoTPermission-repository")
@@ -37,7 +37,7 @@ dependencies {
 	testCompile project(":modules:HyperIoTPermission:HyperIoTPermission-service-rest")
 	testCompile project(":modules:HyperIoTPermission:HyperIoTPermission-service")
 	testCompile project(":modules:HyperIoTPermission:HyperIoTPermission-actions")
-	
+
 	//Test dependencies
 	testCompile group: "org.apache.karaf.itests", name:"common", version:"4.2.3"
 	testCompile group: "org.apache.karaf", name:"apache-karaf", version:"4.2.3"

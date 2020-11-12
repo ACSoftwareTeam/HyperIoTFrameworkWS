@@ -6,8 +6,6 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
-
 configurations {
 	core {
 		transitive = false

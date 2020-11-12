@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -19,7 +19,7 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
 	//Kafka
 	compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.3.1'
-	
+
 }
 
 task buildHIT(type: GradleBuild) {

@@ -1,7 +1,7 @@
-version = '1.0.0'
+
 
 dependencies {
-	
+
 	//OSGi Basic Imports
 	testCompile group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
 	testCompile group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
@@ -20,25 +20,25 @@ dependencies {
 	testCompile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-security", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-test", version:project.hyperIoTVersion
-	
+
 	testCompile group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-api", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-model", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-service", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.authentication", name: "HyperIoTAuthentication-service-rest", version:project.hyperIoTVersion
-	
+
 	testCompile group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-api", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-model", version:project.hyperIoTVersion
-	
+
 	testCompile group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-api", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-model", version:project.hyperIoTVersion
 
 	testCompile group: "it.acsoftware.hyperiot.permission", name: "HyperIoTPermission-api", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.permission", name: "HyperIoTPermission-model", version:project.hyperIoTVersion
 	//Project dependencies
-	
+
 	testCompile project(":modules:HyperIoTSparkManager:HyperIoTSparkManager-api")
-	
-		
+
+
 	//Test dependencies
 	testCompile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-test", version:project.hyperIoTVersion
 	testCompile group: "org.apache.karaf.itests", name:"common", version:"4.2.3"

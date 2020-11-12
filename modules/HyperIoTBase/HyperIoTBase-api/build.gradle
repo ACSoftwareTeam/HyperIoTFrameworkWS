@@ -1,9 +1,9 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
-	compileOnly group: "javax.ws.rs", name: "javax.ws.rs-api",version:project.jaxWsRsApiVersion	
+	compileOnly group: "javax.ws.rs", name: "javax.ws.rs-api",version:project.jaxWsRsApiVersion
 	compileOnly group: 'org.apache.cxf.dosgi', name: 'cxf-dosgi-common', version: '2.3.0'
 	compileOnly group: project.cxfJoseGroup ,name:project.cxfJoseName,version: project.cxfJoseVersion
 	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseJaxrsName,version: project.cxfJoseJaxrsVersion

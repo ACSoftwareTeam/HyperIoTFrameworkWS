@@ -1,11 +1,11 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 	//Hibernate
-	compileOnly group: "org.hibernate.javax.persistence", name: "hibernate-jpa-2.1-api",version: project.hibernateJpaApiVersion	
+	compileOnly group: "org.hibernate.javax.persistence", name: "hibernate-jpa-2.1-api",version: project.hibernateJpaApiVersion
 	compileOnly group: "javax.transaction", name: "javax.transaction-api",version: project.javaxTransactionVersion
 	compileOnly group: "org.apache.aries.jpa", name: "org.apache.aries.jpa.api", version: project.apacheAriesJpaVersion
 	//HyperIoTBase Dependencies

@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -13,7 +13,7 @@ dependencies {
 	//Validation
 	compileOnly group: "javax.validation", name: "validation-api",version:project.javaxValidationVersion
 	compileOnly group: "org.hibernate",name: "hibernate-validator",version:project.hibernateValidatorVersion
-	
+
 	//HyperIoT Base Dependencies
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-service", version:project.hyperIoTVersion
@@ -24,8 +24,8 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-service", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-actions", version:project.hyperIoTVersion
-	
-	//Project Dependencies	
+
+	//Project Dependencies
 	compileOnly project(":modules:HyperIoTPermission:HyperIoTPermission-api")
 	compileOnly project(":modules:HyperIoTPermission:HyperIoTPermission-model")
 	compileOnly project(":modules:HyperIoTPermission:HyperIoTPermission-repository")

@@ -26,6 +26,7 @@ project.ext.set("osgiCompendiumVersion", "5.0.0")
 project.ext.set("javaxValidationVersion","2.0.1.Final")
 project.ext.set("javaxTransactionVersion","1.2")
 project.ext.set("javaxServletVersion","3.1.0")
+project.ext.set("postgresDriverVersion","42.2.9")
 
 project.ext.set("apacheAriesJpaVersion","2.7.1")
 
@@ -35,6 +36,7 @@ project.ext.set("hibernateJpaApiVersion","1.0.2.Final")
 project.ext.set("jaxWsRsApiVersion","2.0.1")
 
 //name parameters
+project.ext.set("bouncyCastleVersion","1.66")
 project.ext.set("cxfJoseGroup","org.apache.cxf")
 project.ext.set("cxfJoseJaxrsName","cxf-rt-rs-security-jose-jaxrs")
 project.ext.set("cxfSwaggerName","cxf-rt-rs-service-description-swagger")

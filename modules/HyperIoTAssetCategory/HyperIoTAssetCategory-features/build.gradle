@@ -1,24 +1,22 @@
 apply plugin: 'com.github.lburgazzoli.karaf'
-
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	assetCategory {
 		transitive = false
 	}
       assetCategoryRest {
 		transitive = false
-	} 
+	}
 }
 
 dependencies {
-	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-actions:1.0.0'
- 	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-api:1.0.0'
-	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-service:1.0.0'
-	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-model:1.0.0'
-	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-repository:1.0.0'
- 	assetCategoryRest 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-service-rest:1.0.0'
+	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-actions:'+project.version
+ 	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-api:'+project.version
+	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-service:'+project.version
+	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-model:'+project.version
+	assetCategory 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-repository:'+project.version
+ 	assetCategoryRest 'it.acsoftware.hyperiot.asset.category:HyperIoTAssetCategory-service-rest:'+project.version
 }
 
 
@@ -35,25 +33,25 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-assetcategory'
             description = 'All  Hyperiot HyperIoTAssetCategory modules'
-            
+
             feature 'hyperiot-base'
-            configurations 'assetCategory','assetCategoryRest' 
-            
+            configurations 'assetCategory','assetCategoryRest'
+
         }
-        
-     
+
+
         feature {
             name        = 'hyperiot-assetcategory-basic'
             description = 'All  Hyperiot HyperIoTAssetCategory modules with NO rest services'
 
             feature 'hyperiot-base-basic'
             configurations 'assetCategory'
-        }  
-          
+        }
+
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -70,7 +68,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -78,7 +76,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

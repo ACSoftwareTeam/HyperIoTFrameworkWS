@@ -2,7 +2,6 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	zookeeperConnector {
 		transitive = false
@@ -15,13 +14,13 @@ configurations {
 dependencies {
     zookeeperConnector 'com.google.guava:failureaccess:1.0.1'
     zookeeperConnector 'com.google.guava:guava:27.1-jre'
-	zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-actions:1.0.0'
-	zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-api:1.0.0'
-	zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-service:1.0.0'
-    zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-model:1.0.0'
-    zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-util:1.0.0'
-    zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-zkbundles:1.0.0'
-    zookeeperConnectorRest 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-service-rest:1.0.0'
+	zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-actions:'+project.version
+	zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-api:'+project.version
+	zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-service:'+project.version
+    zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-model:'+project.version
+    zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-util:'+project.version
+    zookeeperConnector 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-zkbundles:'+project.version
+    zookeeperConnectorRest 'it.acsoftware.hyperiot.zookeeper.connector:HyperIoTZookeeperConnector-service-rest:'+project.version
 }
 
 karaf {
@@ -37,14 +36,14 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-zookeeperconnector'
             description = 'All  HyperIoT HyperIoTZookeeperConnector modules'
-            
+
             feature 'hyperiot-base-karaf-features'
             configurations 'zookeeperConnector','zookeeperConnectorRest'
-            
+
         }
 
 
@@ -71,7 +70,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -79,7 +78,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

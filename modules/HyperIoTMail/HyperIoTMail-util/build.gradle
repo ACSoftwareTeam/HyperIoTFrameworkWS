@@ -1,10 +1,10 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
-	
+
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
 }
 

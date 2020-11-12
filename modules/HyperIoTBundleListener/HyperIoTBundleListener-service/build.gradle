@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -20,7 +20,7 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:project.hyperIoTVersion
-	//Project Dependencies	
+	//Project Dependencies
 	compileOnly project(":modules:HyperIoTBundleListener:HyperIoTBundleListener-api")
 	compileOnly project(":modules:HyperIoTBundleListener:HyperIoTBundleListener-model")
 

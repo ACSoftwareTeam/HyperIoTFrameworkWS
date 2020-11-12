@@ -1,12 +1,12 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
-	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion	
+	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
 	//HyperIoTBase Dependencies
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
-	compileOnly group: project.cxfJoseGroup ,name:project.cxfJoseName,version: project.cxfJoseVersion	
-	
+	compileOnly group: project.cxfJoseGroup ,name:project.cxfJoseName,version: project.cxfJoseVersion
+
 	compileOnly project(":modules:HyperIoTAuthentication:HyperIoTAuthentication-model")
 }
 

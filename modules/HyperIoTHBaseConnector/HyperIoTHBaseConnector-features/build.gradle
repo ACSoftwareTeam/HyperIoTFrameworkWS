@@ -2,24 +2,24 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
+
 configurations {
     hBaseConnector {
 		transitive = false
 	}
     hBaseConnectorRest {
 		transitive = false
-	} 
+	}
 }
 
 dependencies {
-    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-util:1.0.0'
-    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-actions:1.0.0'
-    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-api:1.0.0'
-    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-model:1.0.0'
-    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-service:1.0.0'
-    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-service-rest:1.0.0'
-    hBaseConnectorRest 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-service-rest:1.0.0'
+    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-util:'+project.version
+    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-actions:'+project.version
+    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-api:'+project.version
+    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-model:'+project.version
+    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-service:'+project.version
+    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-service-rest:'+project.version
+    hBaseConnectorRest 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-service-rest:'+project.version
 
 }
 
@@ -37,25 +37,25 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-hbaseconnector'
             description = 'All  HyperIoT HyperIoTHBaseConnector modules'
-            
+
             feature 'hyperiot-base'
             configurations 'hBaseConnector','hBaseConnectorRest'
 
         }
-        
-     
+
+
         feature {
             name        = 'hyperiot-hbaseconnector-basic'
             description = 'All  HyperIoT HyperIoTHBaseConnector modules with NO rest services'
 
             feature 'hyperiot-base-basic'
             configurations 'hBaseConnector'
-        }  
-          
+        }
+
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -72,7 +72,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -80,7 +80,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

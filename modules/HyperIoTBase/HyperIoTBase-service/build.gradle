@@ -1,13 +1,13 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
-	
+
 	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseJaxrsName,version: project.cxfJoseJaxrsVersion
-	
+
 	//JPA Dependencies
 	compileOnly group: "javax.transaction", name: "javax.transaction-api",version: project.javaxTransactionVersion
 	compileOnly group: "org.apache.aries.jpa", name: "org.apache.aries.jpa.api", version:project.apacheAriesJpaVersion
@@ -17,8 +17,8 @@ dependencies {
 	//Validation
 	compileOnly group: "javax.validation", name: "validation-api",version:project.javaxValidationVersion
 	compileOnly group: "org.hibernate",name: "hibernate-validator",version:project.hibernateValidatorVersion
-	
-	//Project Dependencies	
+
+	//Project Dependencies
 	compileOnly project(":modules:HyperIoTBase:HyperIoTBase-api")
 	compileOnly project(":modules:HyperIoTBase:HyperIoTBase-actions")
 	compileOnly project(":modules:HyperIoTBase:HyperIoTBase-model")

@@ -2,23 +2,21 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
-
 configurations {
 	authentication {
 		transitive = false
 	}
-	
+
 	authenticationRest {
 		transitive = false
 	}
 }
 
 dependencies {
-    authentication 'it.acsoftware.hyperiot.authentication:HyperIoTAuthentication-api:'+project.hyperIoTVersion
-    authentication 'it.acsoftware.hyperiot.authentication:HyperIoTAuthentication-model:'+project.hyperIoTVersion
-    authentication 'it.acsoftware.hyperiot.authentication:HyperIoTAuthentication-service:'+project.hyperIoTVersion
-    authenticationRest 'it.acsoftware.hyperiot.authentication:HyperIoTAuthentication-service-rest:'+project.hyperIoTVersion
+    authentication 'it.acsoftware.hyperiot.authentication:HyperIoTAuthentication-api:'+project.version
+    authentication 'it.acsoftware.hyperiot.authentication:HyperIoTAuthentication-model:'+project.version
+    authentication 'it.acsoftware.hyperiot.authentication:HyperIoTAuthentication-service:'+project.version
+    authenticationRest 'it.acsoftware.hyperiot.authentication:HyperIoTAuthentication-service-rest:'+project.version
 }
 
 
@@ -35,7 +33,7 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-authentication'
             description = 'All Hyperiot HyperIoTAuthentication modules with rest services'
@@ -43,14 +41,14 @@ karaf {
             feature 'hyperiot-base'
             configurations 'authentication','authenticationRest'
         }
-        
+
         feature {
             name        = 'hyperiot-authentication-basic'
             description = 'Hyperiot HyperIoTAuthentication basic modules with NO rest services exposed'
 
             feature 'hyperiot-base-basic'
             configurations 'authentication'
-        }        
+        }
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -67,7 +65,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -75,7 +73,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

@@ -2,21 +2,20 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	bundleListener {
 		transitive = false
 	}
       bundleListenerRest {
 		transitive = false
-	} 
+	}
 }
 
 dependencies {
-	bundleListener 'it.acsoftware.hyperiot.bundle.listener:HyperIoTBundleListener-api:1.0.0'
-    bundleListener 'it.acsoftware.hyperiot.bundle.listener:HyperIoTBundleListener-model:1.0.0'
-	bundleListener 'it.acsoftware.hyperiot.bundle.listener:HyperIoTBundleListener-service:1.0.0'
-	bundleListenerRest 'it.acsoftware.hyperiot.bundle.listener:HyperIoTBundleListener-service-rest:1.0.0'
+	bundleListener 'it.acsoftware.hyperiot.bundle.listener:HyperIoTBundleListener-api:'+project.version
+    bundleListener 'it.acsoftware.hyperiot.bundle.listener:HyperIoTBundleListener-model:'+project.version
+	bundleListener 'it.acsoftware.hyperiot.bundle.listener:HyperIoTBundleListener-service:'+project.version
+	bundleListenerRest 'it.acsoftware.hyperiot.bundle.listener:HyperIoTBundleListener-service-rest:'+project.version
 }
 
 
@@ -33,25 +32,25 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-bundlelistener'
             description = 'All  HyperIoT HyperIoTBundleListener modules'
-            
+
             feature 'hyperiot-base'
-            configurations 'bundleListener','bundleListenerRest' 
-            
+            configurations 'bundleListener','bundleListenerRest'
+
         }
-        
-     
+
+
         feature {
             name        = 'hyperiot-bundlelistener-basic'
             description = 'All  HyperIoT HyperIoTBundleListener modules with NO rest services'
 
             feature 'hyperiot-base-basic'
             configurations 'bundleListener'
-        }  
-          
+        }
+
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -68,7 +67,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -76,7 +75,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

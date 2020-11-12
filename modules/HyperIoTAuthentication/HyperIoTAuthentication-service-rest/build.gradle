@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -12,17 +12,17 @@ dependencies {
 	//Swagger
 	compileOnly group: project.cxfJoseGroup ,name: project.cxfSwaggerName,version: project.cxfSwaggerVersion
 	compileOnly group: "org.webjars" ,name:"swagger-ui",version: project.swaggerUIVersion
-	      
+
 	//Project Base dependencies
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-service-rest", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
 	//Project dependencies
-	
+
 	compileOnly project(":modules:HyperIoTAuthentication:HyperIoTAuthentication-api")
 	compileOnly project(":modules:HyperIoTAuthentication:HyperIoTAuthentication-model")
-	
+
 	//Test dependencies
 	testCompile group: "org.apache.karaf.itests", name:"common", version:"4.2.3"
 	testCompile group: "org.apache.karaf", name:"apache-karaf", version:"4.2.3"

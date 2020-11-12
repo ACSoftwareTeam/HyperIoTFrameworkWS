@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -35,7 +35,7 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.hproject", name: "HyperIoTHProject-model", version:project.hyperIoTVersion
 	//HyperIoTStormManagerDependencies
 	compileOnly group: "it.acsoftware.hyperiot.stormmanager", name: "HyperIoTStormManager-model", version:project.hyperIoTVersion
-	//Project Dependencies	
+	//Project Dependencies
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-api")
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-model")
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-actions")

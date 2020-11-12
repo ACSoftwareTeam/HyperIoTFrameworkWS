@@ -2,20 +2,19 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	hadoopManager {
 		transitive = false
 	}
-     
+
 }
 
 dependencies {
-	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-actions:1.0.0'
- 	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-api:1.0.0'
-	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-model:1.0.0'
-	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-service:1.0.0'
-	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-util:1.0.0'
+	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-actions:'+project.version
+ 	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-api:'+project.version
+	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-model:'+project.version
+	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-service:'+project.version
+	hadoopManager 'it.acsoftware.hyperiot.hadoopmanager:HyperIoTHadoopManager-util:'+project.version
 }
 
 
@@ -32,17 +31,17 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-hadoopmanager'
             description = 'All  HyperIoT HyperIoTHadoopManager modules'
-            
+
             feature 'hyperiot-base-basic'
             configurations 'hadoopManager'
-            
+
         }
-        
-           
+
+
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -59,7 +58,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -67,7 +66,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

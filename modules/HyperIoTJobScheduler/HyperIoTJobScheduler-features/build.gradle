@@ -2,20 +2,19 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	jobScheduler {
 		transitive = false
 	}
-     
+
 }
 
 dependencies {
-	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-actions:1.0.0'
- 	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-api:1.0.0'
- 	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-model:1.0.0'
-	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-service:1.0.0'
-    jobScheduler 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.quartz:2.3.2_1'
+	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-actions:'+project.version
+ 	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-api:'+project.version
+ 	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-model:'+project.version
+	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-service:'+project.version
+    jobScheduler 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.quartz:'+project.quartzVersion
 }
 
 
@@ -32,17 +31,17 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-jobscheduler'
             description = 'All  HyperIoT HyperIoTJobScheduler modules'
-            
+
             feature 'hyperiot-base-basic'
             configurations 'jobScheduler'
-            
+
         }
-        
-           
+
+
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -59,7 +58,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -67,7 +66,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -9,8 +9,8 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-service", version:project.hyperIoTVersion
 	//Project Dependencies
 	compileOnly project(":modules:HyperIoTAssetCategory:HyperIoTAssetCategory-model")
-	
-	
+
+
 }
 
 task buildHIT(type: GradleBuild) {

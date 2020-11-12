@@ -2,25 +2,24 @@ apply plugin: 'com.github.lburgazzoli.karaf'
 
 jar.enabled = false
 
-version = '1.0.0'
 configurations {
 	util {
 		transitive = false
 	}
       utilRest {
 		transitive = false
-	} 
+	}
 }
 
 dependencies {
 	util 'org.freemarker:freemarker:2.3.28'
-	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-actions:1.0.0'
- 	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-api:1.0.0'
-	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-service:1.0.0'
-	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-model:1.0.0'
-	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-repository:1.0.0'
-	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-util:1.0.0'
- 	utilRest 'it.acsoftware.hyperiot.mail:HyperIoTMail-service-rest:1.0.0'
+	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-actions:'+project.version
+ 	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-api:'+project.version
+	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-service:'+project.version
+	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-model:'+project.version
+	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-repository:'+project.version
+	util 'it.acsoftware.hyperiot.mail:HyperIoTMail-util:'+project.version
+ 	utilRest 'it.acsoftware.hyperiot.mail:HyperIoTMail-service-rest:'+project.version
 }
 
 
@@ -37,25 +36,25 @@ karaf {
         // Add in extra repositories to the features xml file
         //Example:
         //repository "mvn:org.code-house.jackson/features/2.8.7/xml/features"
-		
+
         feature {
             name        = 'hyperiot-mail'
             description = 'All  Hyperiot HyperIoTMail modules'
-            
+
             feature 'hyperiot-base'
-            configurations 'util','utilRest' 
-            
+            configurations 'util','utilRest'
+
         }
-        
-     
+
+
         feature {
             name        = 'hyperiot-mail-basic'
             description = 'All  Hyperiot HyperIoTMail modules with NO rest services'
 
             feature 'hyperiot-base-basic'
             configurations 'util'
-        }  
-          
+        }
+
     }
 
     // Enable generation of Karaf Archive KAR based on features defined above.
@@ -72,7 +71,7 @@ karaf {
 
 
 task buildHIT(type: GradleBuild) {
-	
+
 }
 
 task buildFeatures(type: GradleBuild) {
@@ -80,7 +79,7 @@ task buildFeatures(type: GradleBuild) {
 }
 
 task publishHIT(type: GradleBuild) {
-	
+
 }
 
 task publishFeatures(type: GradleBuild) {

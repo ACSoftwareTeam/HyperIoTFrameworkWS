@@ -1,5 +1,5 @@
 
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -16,11 +16,11 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-security", version:project.hyperIoTVersion
-	
+
 	compileOnly group: 'javax.mail', name: 'mail', version: '1.4'
 	compileOnly group: 'org.freemarker', name: 'freemarker', version: '2.3.28'
 	//Project dependencies
-	
+
 	compileOnly project(":modules:HyperIoTMail:HyperIoTMail-model")
 	compileOnly project(":modules:HyperIoTMail:HyperIoTMail-api")
 	compileOnly project(":modules:HyperIoTMail:HyperIoTMail-util")

@@ -1,4 +1,4 @@
-version = '1.0.0'
+
 
 dependencies {
 	//OSGi Basic Imports
@@ -11,8 +11,8 @@ dependencies {
 	compileOnly group: 'javax.mail', name: 'mail', version: '1.4'
 	//Project Dependencies
 	compileOnly project(":modules:HyperIoTMail:HyperIoTMail-model")
-	
-	
+
+
 }
 
 task buildHIT(type: GradleBuild) {
