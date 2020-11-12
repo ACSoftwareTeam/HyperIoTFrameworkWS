@@ -1,7 +1,0 @@
-  # From deserialization bolt (bolt-deserialization) to hbase kafka error bolt %projectId% (hbase-kafka-error-bolt-%projectId%)
-  - name: "bolt-deserialization --> hbase-kafka-error-bolt-%projectId%"
-    from: "bolt-deserialization"
-    to: "hbase-kafka-error-bolt-%projectId%"
-    grouping:
-      type: SHUFFLE
-      streamId: "kafka_error_%projectId%"

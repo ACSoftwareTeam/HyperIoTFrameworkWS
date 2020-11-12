@@ -1,6 +1,0 @@
-  # From Kafka raw messages spout (kafka-spout-raw) to deserialization bolt (bolt-deserialization)
-  - name: "kafka-spout-raw-%projectId% --> bolt-deserialization"
-    from: "kafka-spout-raw-%projectId%"
-    to: "bolt-deserialization"
-    grouping:
-      type: SHUFFLE

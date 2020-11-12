@@ -1,7 +1,0 @@
-  # From deserialization bolt (bolt-deserialization) to hbase error bolt %projectId% (hbase-error-bolt-%projectId%)
-  - name: "bolt-deserialization --> hbase-error-bolt-%projectId%"
-    from: "bolt-deserialization"
-    to: "hbase-error-bolt-%projectId%"
-    grouping:
-      type: SHUFFLE
-      streamId: "hproject_error_%projectId%"

@@ -1,8 +1,0 @@
-  - id: "hbase-kafka-error-bolt-%projectId%"
-    className: "org.apache.storm.hbase.bolt.HBaseBolt"
-    constructorArgs:
-      - "kafka_error_%projectId%"
-      - ref: "errorMapper"
-    configMethods:
-      - name: "withConfigKey"
-        args: ["hbase.conf"]
