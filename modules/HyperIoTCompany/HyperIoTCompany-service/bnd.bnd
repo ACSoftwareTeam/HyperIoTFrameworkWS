@@ -1,18 +1,18 @@
-Import-Package: \javax.persistence;version='[2.1.0,3)',\
-    it.acsoftware.hyperiot.company.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.company.repository;version='[1.0.0,2)',\
-    org.hibernate.proxy;version='[5,6)',\
-    javassist.util.proxy;version='[3.20.0.GA,4.0.0)',\
-    javax.validation;version='[2.0.1.Final,3)',\
-    org.hibernate.validator;version='[6,7)',\
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.company.api;version='[1.0.0,2)' ,\
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.security.*;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.service.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.permission.api;version='[1.0.0,2)',\
+Import-Package: \javax.persistence;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.company.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.company.repository;version='${range;[===,+)}',\
+    org.hibernate.proxy;version='${range;[=,+)}',\
+    javassist.util.proxy;version='${range;[====,+)}',\
+    javax.validation;version='${range;[====,+)}',\
+    org.hibernate.validator;version='${range;[=,+)}',\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.company.api;version='${range;[===,+)}' ,\
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.exception;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.security.*;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.service.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.permission.api;version='${range;[===,+)}',\
     org.osgi.framework*
 Export-Package: it.acsoftware.hyperiot.company.service
 

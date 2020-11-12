@@ -2,7 +2,7 @@ Export-Package: \
      it.acsoftware.hyperiot.kafka.connector.api,\
      it.acsoftware.hyperiot.kafka.connector.api.mqtt
 Import-Package: \
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.kafka.connector.model;version='[1.0.0,2)'
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.kafka.connector.model;version='${range;[===,+)}'
 

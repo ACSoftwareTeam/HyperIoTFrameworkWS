@@ -1,7 +1,7 @@
 Bundle-Activator: it.acsoftware.hyperiot.zookeeper.connector.actions.ZookeeperConnectorActionsBundleActivator
 Import-Package: \
-    it.acsoftware.hyperiot.base.action;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.action.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.zookeeper.connector.model;version=1.0.0
+    it.acsoftware.hyperiot.base.action;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.action.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.zookeeper.connector.model;version='${range;[===,+)}'
 Export-Package: it.acsoftware.hyperiot.zookeeper.connector.actions
 

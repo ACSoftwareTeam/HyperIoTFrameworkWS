@@ -1,19 +1,19 @@
 Import-Package: \
-    javax.persistence*;version='[2.1.0,3)',\
-    javax.validation*;version='[2.0.1.Final,3)',\
-    org.hibernate.*;version='[6,7)',\
-    org.hibernate.proxy;version='[5,6)',\
-    javassist.util.proxy;version='[3.20.0.GA,4.0.0)',\
+    javax.persistence*;version='${range;[===,+)}',\
+    javax.validation*;version='${range;[====,+)}',\
+    org.hibernate.*;version='${range;[=,+)}',\
+    org.hibernate.proxy;version='${range;[=,+)}',\
+    javassist.util.proxy;version='${range;[====,+)}',\
     org.osgi.framework,\
     org.postgresql,\
     com.fasterxml.jackson*,\
-    it.acsoftware.hyperiot.base.validation;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.huser.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.role.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.permission.api;version='[1.0.0,2)'
+    it.acsoftware.hyperiot.base.validation;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.huser.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.role.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.permission.api;version='${range;[===,+)}'
 Export-Package: it.acsoftware.hyperiot.asset.category.model
 
 

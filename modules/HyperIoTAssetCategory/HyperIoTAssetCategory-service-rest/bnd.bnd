@@ -1,12 +1,12 @@
 Export-Package: it.acsoftware.hyperiot.asset.category.service.rest
 Import-Package: \
-    it.acsoftware.hyperiot.asset.category.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.asset.category.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.service.rest;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.security.rest;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.asset.category.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.asset.category.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.service.rest;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.security.rest;version='${range;[===,+)}',\
     com.fasterxml.jackson.jaxrs.json,\
     io.swagger.jaxrs,\
     io.swagger.annotations,\

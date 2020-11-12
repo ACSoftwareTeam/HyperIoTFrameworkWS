@@ -1,8 +1,8 @@
 Export-Package: it.acsoftware.hyperiot.stormmanager.service
 Import-Package: \
-    javax.persistence;version='[2.1.0,3)',\
-    javax.validation;version='[2.0.1.Final,3)',\
-    org.hibernate.validator;version='[6,7)',\
+    javax.persistence;version='${range;[===,+)}',\
+    javax.validation;version='${range;[====,+)}',\
+    org.hibernate.validator;version='${range;[=,+)}',\
     com.fasterxml.jackson.core.*,\
     com.fasterxml.jackson.databind.*,\
     org.osgi.framework.*,\
@@ -23,31 +23,31 @@ Import-Package: \
     org.apache.storm.kafka*;version=2.1.0,\
     org.apache.kafka.*,\
     org.apache.avro.io,\
-    it.acsoftware.hyperiot.avro;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.storm.runtime.bolt;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.storm.operations.bolt;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.storm.hdfs.partitioner;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.action;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.action.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.service;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.security.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.permission.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hdevice.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hdevice.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.rule.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.rule.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hpacket.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hpacket.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hpacket.actions;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hproject.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hproject.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hproject.actions;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.stormmanager.actions;version='[1.0.0,2)', \
-    it.acsoftware.hyperiot.stormmanager.api;version='[1.0.0,2)', \
-    it.acsoftware.hyperiot.stormmanager.model;version='[1.0.0,2)', \
+    it.acsoftware.hyperiot.avro;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.storm.runtime.bolt;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.storm.operations.bolt;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.storm.hdfs.partitioner;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.action;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.action.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.exception;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.service;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.security.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.permission.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hdevice.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hdevice.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.rule.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.rule.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hpacket.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hpacket.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hpacket.actions;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hproject.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hproject.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hproject.actions;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.stormmanager.actions;version='${range;[===,+)}', \
+    it.acsoftware.hyperiot.stormmanager.api;version='${range;[===,+)}', \
+    it.acsoftware.hyperiot.stormmanager.model;version='${range;[===,+)}', \
     org.apache.http*
 

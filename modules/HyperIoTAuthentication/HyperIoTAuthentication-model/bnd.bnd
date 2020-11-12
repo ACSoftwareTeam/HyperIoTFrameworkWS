@@ -3,10 +3,10 @@ Import-Package: \
      javax.ws.rs.ext,\
      javax.ws.rs.core,\
      org.apache.cxf*,\
-     it.acsoftware.hyperiot.base.validation;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.base.util;version='[1.0.0,2)'
+     it.acsoftware.hyperiot.base.validation;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.base.util;version='${range;[===,+)}'
 Export-Package: \
     it.acsoftware.hyperiot.authentication.model,\
     it.acsoftware.hyperiot.authentication.model.principal,\

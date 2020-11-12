@@ -1,11 +1,11 @@
 Export-Package: it.acsoftware.hyperiot.role.service.rest
 Import-Package: \
-    it.acsoftware.hyperiot.role.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.role.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.service.rest;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.role.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.role.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.service.rest;version='${range;[===,+)}',\
     com.fasterxml.jackson.jaxrs.json,\
     it.acsoftware.hyperiot.base.security.rest,\
     io.swagger.jaxrs,\

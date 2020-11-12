@@ -1,7 +1,7 @@
 Import-Package: \
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.sparkmanager.api;version=1.0.0,\
-    it.acsoftware.hyperiot.sparkmanager.model;version=1.0.0,\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.sparkmanager.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.sparkmanager.model;version='${range;[===,+)}',\
     org.osgi.service.cm,\
     org.osgi.service.components*,\
     org.osgi.service*,\

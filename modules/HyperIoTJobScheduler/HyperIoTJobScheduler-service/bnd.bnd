@@ -1,20 +1,20 @@
 Import-Package: \
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.service;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.algorithm.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hproject.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hproject.algorithm.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hproject.algorithm.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.jobscheduler.api;version=1.0.0,\
-    it.acsoftware.hyperiot.zookeeper.connector.api;version='[1.0.0,2)',\
-    javax.persistence;version='[2.1.0,3)',\
-    javax.validation;version='[2.0.1.Final,3)',\
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.service;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.algorithm.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hproject.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hproject.algorithm.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hproject.algorithm.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.jobscheduler.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.zookeeper.connector.api;version='${range;[===,+)}',\
+    javax.persistence;version='${range;[===,+)}',\
+    javax.validation;version='${range;[====,+)}',\
     org.apache.aries*,\
     org.apache.curator.framework.recipes.leader,\
-    org.hibernate.validator;version='[6,7)',\
+    org.hibernate.validator;version='${range;[=,+)}',\
     org.osgi.framework,\
     org.quartz,\
     org.quartz.impl,\

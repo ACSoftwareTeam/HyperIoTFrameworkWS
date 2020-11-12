@@ -7,14 +7,14 @@ Export-Package: \
     it.acsoftware.hyperiot.base.service.websocket.encryption.mode,\
     it.acsoftware.hyperiot.base.service.websocket.compression
 Import-Package: \
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.security.rest;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.security.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.authentication.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.authentication.model*;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.exception;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.security.rest;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.security.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.authentication.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.authentication.model*;version='${range;[===,+)}',\
     com.fasterxml*,\
     org.osgi.service*,\
     org.osgi.framework*,\

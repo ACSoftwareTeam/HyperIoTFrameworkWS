@@ -1,6 +1,6 @@
 Export-Package: it.acsoftware.hyperiot.company.api
 Import-Package: \
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.company.model;version='[1.0.0,2)' ,\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)'
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.company.model;version='${range;[===,+)}' ,\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}'
 

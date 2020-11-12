@@ -29,14 +29,14 @@ Import-Package: \
     org.apache.avro.io,\
     it.acsoftware.hyperiot.storm.topology,\
     it.acsoftware.hyperiot.stormmanager.api,\
-    it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hpacket.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.rule.service;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.avro;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.storm.runtime.bolt;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.storm.operations.bolt;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.storm.hdfs.partitioner;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.base.exception;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hpacket.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.rule.service;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.avro;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.storm.runtime.bolt;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.storm.operations.bolt;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.storm.hdfs.partitioner;version='${range;[===,+)}',\
     org.apache.storm.flux;version=1.2.2,\
     org.apache.storm.flux.parser;version=1.2.2,\
     org.apache.storm.flux.model;version=1.2.2,\

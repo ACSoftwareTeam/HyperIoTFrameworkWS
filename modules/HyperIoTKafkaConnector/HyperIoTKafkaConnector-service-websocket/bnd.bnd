@@ -1,12 +1,12 @@
 Import-Package: \
-     it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.osgi.util.filter;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.base.service;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.base.service.websocket*;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.kafka.connector.api;version='[1.0.0,2)',\
-     it.acsoftware.hyperiot.kafka.connector.model;version='[1.0.0,2)',\
+     it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.osgi.util.filter;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.base.service;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.base.service.websocket*;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.base.exception;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.kafka.connector.api;version='${range;[===,+)}',\
+     it.acsoftware.hyperiot.kafka.connector.model;version='${range;[===,+)}',\
      org.apache.kafka.clients,\
      org.apache.kafka.clients.admin,\
      org.apache.kafka.common,\

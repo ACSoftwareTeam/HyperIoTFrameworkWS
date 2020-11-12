@@ -1,7 +1,7 @@
 Export-Package: it.acsoftware.hyperiot.hbase.connector.api
 Import-Package: \
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hbase.connector.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.hpacket.model;version='[1.0.0,2)'
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hbase.connector.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.hpacket.model;version='${range;[===,+)}'
 

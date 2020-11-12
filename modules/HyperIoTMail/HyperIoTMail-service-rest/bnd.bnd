@@ -1,13 +1,13 @@
 Export-Package: it.acsoftware.hyperiot.mail.service.rest
 Import-Package: \
-    it.acsoftware.hyperiot.mail.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.mail.model;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.service.rest;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.base.security.rest;version='[1.0.0,2)',\
-    it.acsoftware.hyperiot.mail.util;version='[1.0.0,2)',\
+    it.acsoftware.hyperiot.mail.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.mail.model;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.service.rest;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.base.security.rest;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.mail.util;version='${range;[===,+)}',\
     com.fasterxml.jackson.jaxrs.json,\
     io.swagger.jaxrs,\
     io.swagger.annotations,\
