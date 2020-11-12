@@ -2,8 +2,8 @@
 
 dependencies {
 	//OSGi Basic Imports
-	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
-	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgVersion
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 
 	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseName,version: project.cxfJoseVersion
 	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseJaxrsName,version: project.cxfJoseJaxrsVersion

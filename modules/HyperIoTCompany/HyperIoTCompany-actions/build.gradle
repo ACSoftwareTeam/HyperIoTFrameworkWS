@@ -3,11 +3,11 @@
 
 dependencies {
 	//OSGi Basic Imports
-	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
-	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgVersion
+	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 	//Project Dependencies
-	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:"1.0.0"
-	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:"1.0.0"
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version: project.hyperiotVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version: project.hyperiotVersion
 
 	compileOnly project(":modules:HyperIoTCompany:HyperIoTCompany-model")
 
