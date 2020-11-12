@@ -8,4 +8,4 @@ Import-Package: \
     it.acsoftware.hyperiot.base.exception;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.hdevice.model;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.stormmanager.model;version='[1.0.0,2)'
-Bundle-Version: 1.0.0
+

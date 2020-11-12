@@ -24,5 +24,5 @@ Import-Package: \
     org.eclipse.jetty.websocket*,\
     javax.ws*,\
     org.apache.cxf*
-Bundle-Version: 1.0.0
+
 

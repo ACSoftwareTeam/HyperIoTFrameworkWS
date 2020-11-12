@@ -29,6 +29,6 @@ Import-Package: \
     it.acsoftware.hyperiot.zookeeper.connector.model;version=1.0.0
 Export-Package: \
     it.acsoftware.hyperiot.zookeeper.connector.service
-Bundle-Version: 1.0.0
+
 
 

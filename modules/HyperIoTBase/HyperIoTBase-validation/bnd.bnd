@@ -2,5 +2,5 @@ Export-Package: \
     it.acsoftware.hyperiot.base.validation,\
     it.acsoftware.hyperiot.base.validators,\
     it.acsoftware.hyperiot.base.validation.converters'
-Bundle-Version: 1.0.0
+
 

@@ -19,5 +19,5 @@ Import-Package: \
     it.acsoftware.hyperiot.mail.api;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.mail.util;version='[1.0.0,2)'
 Export-Package: it.acsoftware.hyperiot.huser.service
-Bundle-Version: 1.0.0
+
 

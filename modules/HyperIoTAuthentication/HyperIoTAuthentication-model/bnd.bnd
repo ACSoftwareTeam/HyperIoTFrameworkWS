@@ -11,5 +11,5 @@ Export-Package: \
     it.acsoftware.hyperiot.authentication.model,\
     it.acsoftware.hyperiot.authentication.model.principal,\
     it.acsoftware.hyperiot.authentication.model.context
-Bundle-Version: 1.0.0
+
 

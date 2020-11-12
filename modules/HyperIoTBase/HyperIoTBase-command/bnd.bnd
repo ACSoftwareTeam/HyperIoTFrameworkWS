@@ -7,4 +7,4 @@ Import-Package: \
     it.acsoftware.hyperiot*
 Export-Package: \
     it.acsoftware.hyperiot.base.command
-Bundle-Version: 1.0.0
+

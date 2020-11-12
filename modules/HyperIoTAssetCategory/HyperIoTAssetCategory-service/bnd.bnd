@@ -17,5 +17,5 @@ Import-Package: \
     it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.permission.api;version='[1.0.0,2)'
 Export-Package: it.acsoftware.hyperiot.asset.category.service
-Bundle-Version: 1.0.0
+
 

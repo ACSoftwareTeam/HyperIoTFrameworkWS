@@ -6,5 +6,5 @@ Import-Package: \
     org.osgi.service*,\
     org.osgi.framework
 Export-Package: it.acsoftware.hyperiot.hadoopmanager.util
-Bundle-Version: 1.0.0
+
 

@@ -34,5 +34,5 @@ Import-Package: \
 Export-Package: \
    it.acsoftware.hyperiot.authentication.service,\
    it.acsoftware.hyperiot.authentication.service.jaas
-Bundle-Version: 1.0.0
+
 

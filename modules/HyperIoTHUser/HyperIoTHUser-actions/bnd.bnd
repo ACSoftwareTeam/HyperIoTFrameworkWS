@@ -4,5 +4,5 @@ Import-Package: \
     it.acsoftware.hyperiot.base.action.util;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.huser.model;version='[1.0.0,2)'
 Export-Package: it.acsoftware.hyperiot.huser.actions
-Bundle-Version: 1.0.0
+
 

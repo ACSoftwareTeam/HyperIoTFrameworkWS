@@ -19,4 +19,4 @@ Import-Package: \
     it.acsoftware.hyperiot.huser.model;version='[1.0.0,2)'
 Export-Package: it.acsoftware.hyperiot.shared.entity.service
 DynamicImport-Package:  org.hibernate.proxy, javassist.util.proxy, *
-Bundle-Version: 1.0.0
+

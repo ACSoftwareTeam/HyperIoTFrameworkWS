@@ -17,5 +17,5 @@ Import-Package: \
     it.acsoftware.hyperiot.mail.model;version='[1.0.0,2)'
 Export-Package: it.acsoftware.hyperiot.mail.repository
 Meta-Persistence: META-INF/persistence.xml
-Bundle-Version: 1.0.0
+
 

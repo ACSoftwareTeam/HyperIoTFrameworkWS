@@ -9,4 +9,4 @@ Import-Package: \
     it.acsoftware.hyperiot.base.security.rest;version='[1.0.0,2)',\
     com.fasterxml.jackson.jaxrs.json,\
     *
-Bundle-Version: 1.0.0
+

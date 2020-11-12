@@ -19,5 +19,5 @@ Export-Package: \
     it.acosftware.hyperiot.kafka.connector.util,\
     it.acsoftware.hyperiot.kafka.connector.model.mqtt,\
     it.acsoftware.hyperiot.kafka.connector.model.messages.types
-Bundle-Version: 1.0.0
+
 

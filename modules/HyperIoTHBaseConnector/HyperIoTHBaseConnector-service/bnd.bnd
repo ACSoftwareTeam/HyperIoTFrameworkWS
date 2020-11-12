@@ -29,4 +29,4 @@ Import-Package: \
     javax.management*,\
     javax.net*
 Export-Package: it.acsoftware.hyperiot.hbase.connector.service
-Bundle-Version: 1.0.0
+

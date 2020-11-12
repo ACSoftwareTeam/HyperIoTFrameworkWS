@@ -22,4 +22,4 @@ Import-Package: \
     org.apache.curator,\
     org.slf4j
 Export-Package: it.acsoftware.hyperiot.jobscheduler.service
-Bundle-Version: 1.0.0
+

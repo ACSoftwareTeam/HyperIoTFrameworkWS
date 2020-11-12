@@ -29,5 +29,5 @@ Import-Package: \
     reactor.kafka.receiver,\
     org.apache.kafka*
 Export-Package: it.acsoftware.hyperiot.kafka.connector.service
-Bundle-Version: 1.0.0
+
 

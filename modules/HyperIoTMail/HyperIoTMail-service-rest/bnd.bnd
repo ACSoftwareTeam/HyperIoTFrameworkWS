@@ -12,4 +12,4 @@ Import-Package: \
     io.swagger.jaxrs,\
     io.swagger.annotations,\
     *
-Bundle-Version: 1.0.0
+

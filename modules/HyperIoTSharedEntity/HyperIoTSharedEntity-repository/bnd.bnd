@@ -20,4 +20,4 @@ Import-Package: \
     it.acsoftware.hyperiot.permission.model;version=1.0.0
 Export-Package: it.acsoftware.hyperiot.shared.entity.repository
 Meta-Persistence: META-INF/persistence.xml
-Bundle-Version: 1.0.0
+

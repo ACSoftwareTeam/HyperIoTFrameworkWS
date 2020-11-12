@@ -1,6 +1,7 @@
 
 allprojects {
     group 'it.acsoftware.hyperiot.stormmanager'
+    version project.hyperIoTVersion
     repositories{
       mavenCentral()
       mavenLocal()
@@ -19,15 +20,15 @@ allprojects {
          url = project.acsMavenRepository
       }
     }
-    
+
    apply plugin: 'maven'
 	apply plugin: 'biz.aQute.bnd.builder'
 	apply plugin: 'maven-publish'
-	
+
    configurations {
 	    testCompile.extendsFrom compileOnly
 	}
-	
+
 
 	publishing {
 		repositories {

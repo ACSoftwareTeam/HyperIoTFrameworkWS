@@ -16,5 +16,5 @@ Import-Package: \
 Export-Package: \
     it.acsoftware.hyperiot.huser.model,\
     it.acsoftware.hyperiot.huser.model.validation
-Bundle-Version: 1.0.0
+
 

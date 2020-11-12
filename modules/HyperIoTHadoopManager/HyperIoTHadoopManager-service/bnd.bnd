@@ -20,4 +20,4 @@ Import-Package: \
     org.w3c.dom;version=0.0.0,\
     org.xml.sax;version=0.0.0
 Export-Package: it.acsoftware.hyperiot.hadoopmanager.service
-Bundle-Version: 1.0.0
+

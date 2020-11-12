@@ -17,5 +17,5 @@ Import-Package: \
     org.apache.cxf*
 Bundle-Activator: \
     it.acsoftware.hyperiot.base.service.rest.HyperIoTBaseRestActivator
-Bundle-Version: 1.0.0
+
 

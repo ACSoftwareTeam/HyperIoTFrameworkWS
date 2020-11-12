@@ -24,4 +24,4 @@ Import-Package: \
     javax.persistence;version='[2.1.0,3)',\
     javax.validation;version='[2.0.1.Final,3)'
 Export-Package: it.acsoftware.hyperiot.sparkmanager.service
-Bundle-Version: 1.0.0
+

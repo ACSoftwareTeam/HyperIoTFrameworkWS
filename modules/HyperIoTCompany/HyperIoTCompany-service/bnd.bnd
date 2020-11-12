@@ -15,4 +15,4 @@ Import-Package: \javax.persistence;version='[2.1.0,3)',\
     it.acsoftware.hyperiot.permission.api;version='[1.0.0,2)',\
     org.osgi.framework*
 Export-Package: it.acsoftware.hyperiot.company.service
-Bundle-Version: 1.0.0
+

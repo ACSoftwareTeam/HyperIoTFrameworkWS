@@ -12,4 +12,4 @@ Import-Package: \
     it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.base.model;version='[1.0.0,2)'
 Export-Package: it.acsoftware.hyperiot.sparkmanager.model
-Bundle-Version: 1.0.0
+

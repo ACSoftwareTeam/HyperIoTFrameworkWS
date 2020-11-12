@@ -16,6 +16,6 @@ Import-Package: \
 Export-Package: \
     it.acsoftware.hyperiot.base.model,\
     it.acsoftware.hyperiot.base.exception
-Bundle-Version: 1.0.0
+
 
 

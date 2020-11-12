@@ -10,4 +10,4 @@ Import-Package: \
 Export-Package: \
     it.acsoftware.hyperiot.base.security.rest,\
     it.acsoftware.hyperiot.base.security.util
-Bundle-Version: 1.0.0
+

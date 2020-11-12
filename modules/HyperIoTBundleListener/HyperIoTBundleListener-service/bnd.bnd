@@ -11,4 +11,4 @@ Import-Package: \
     it.acsoftware.hyperiot.bundle.listener.api;version="[1.0.0,2)",\
     it.acsoftware.hyperiot.bundle.listener.model;version="[1.0.0,2)"
 Export-Package: it.acsoftware.hyperiot.bundle.listener.service
-Bundle-Version: 1.0.0
+

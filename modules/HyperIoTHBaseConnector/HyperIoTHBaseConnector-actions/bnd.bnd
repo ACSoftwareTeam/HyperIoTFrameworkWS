@@ -4,4 +4,4 @@ Import-Package: \
     it.acsoftware.hyperiot.base.action.util;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.hbase.connector.model;version=1.0.0
 Export-Package: it.acsoftware.hyperiot.hbase.connector.actions
-Bundle-Version: 1.0.0
+

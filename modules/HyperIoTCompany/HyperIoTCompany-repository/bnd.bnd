@@ -17,4 +17,4 @@ Import-Package: \
    it.acsoftware.hyperiot.role.model;version='[1.0.0,2)'
 Export-Package: it.acsoftware.hyperiot.company.repository
 Meta-Persistence: META-INF/persistence.xml
-Bundle-Version: 1.0.0
+

@@ -2,4 +2,4 @@ Export-Package: it.acsoftware.hyperiot.zookeeper.connector.api
 Import-Package: \
     it.acsoftware.hyperiot.base.api;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)'
-Bundle-Version: 1.0.0
+

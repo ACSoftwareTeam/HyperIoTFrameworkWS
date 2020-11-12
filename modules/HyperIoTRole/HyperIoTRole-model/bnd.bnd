@@ -15,5 +15,5 @@ Import-Package: \
     it.acsoftware.hyperiot.huser.model;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.base.validation;version='[1.0.0,2)'
 Export-Package: it.acsoftware.hyperiot.role.model
-Bundle-Version: 1.0.0
+
 

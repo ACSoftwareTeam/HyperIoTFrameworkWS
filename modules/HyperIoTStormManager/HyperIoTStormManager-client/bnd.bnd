@@ -56,4 +56,4 @@ Import-Package: \
     org.apache.storm.hbase.common;version=1.2.2,\
     org.apache.storm.hbase.state;version=1.2.2,\
     org.apache.kafka.*
-Bundle-Version: 1.0.0
+

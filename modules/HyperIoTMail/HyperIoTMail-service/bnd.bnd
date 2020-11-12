@@ -15,5 +15,5 @@ Import-Package: \
     javax.mail.*,\
     freemarker.*
 Export-Package: it.acsoftware.hyperiot.mail.service
-Bundle-Version: 1.0.0
+
 

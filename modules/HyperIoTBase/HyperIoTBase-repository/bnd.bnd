@@ -13,5 +13,5 @@ Import-Package: \
     it.acsoftware.hyperiot.base.util;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.query.util.filter
 Export-Package: it.acsoftware.hyperiot.base.repository
-Bundle-Version: 1.0.0
+
 

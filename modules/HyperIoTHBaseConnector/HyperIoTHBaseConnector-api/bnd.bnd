@@ -4,4 +4,4 @@ Import-Package: \
     it.acsoftware.hyperiot.base.api.entity;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.hbase.connector.model;version='[1.0.0,2)',\
     it.acsoftware.hyperiot.hpacket.model;version='[1.0.0,2)'
-Bundle-Version: 1.0.0
+
