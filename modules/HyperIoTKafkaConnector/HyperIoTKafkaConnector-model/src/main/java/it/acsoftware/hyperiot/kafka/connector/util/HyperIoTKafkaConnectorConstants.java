@@ -45,9 +45,19 @@ public class HyperIoTKafkaConnectorConstants {
      */
     public static final String HYPERIOT_KAFKA_OSGI_BASIC_TOPIC = "hyperiot_layer";
     /**
+     * Microservices Kafka topic
+     */
+    public static final String HYPERIOT_KAFKA_OSGI_MICROSERVICES_TOPIC =
+            HYPERIOT_KAFKA_OSGI_BASIC_TOPIC + "_microservices";
+    /**
      * Property used inside OSGi component registration/loading to filter components for specifics topics
      */
     public static final String HYPERIOT_KAFKA_OSGI_CONNECT_URL = "it.acsoftware.hyperiot.kafka.connect.url";
+
+    /**
+     * Property used to identify process event as a system message type
+     */
+    public static final String HYPERIOT_KAFKA_SYSTEM_MESSAGE_TYPE_PROCESS_EVENT = "PROCESS_EVENT";
 
     /**
      * Key Prefix for kafka key, for websocket bridge communication messages
