@@ -1,4 +1,5 @@
-Import-Package: \javax.persistence;version='${range;[===,+)}',\
+Import-Package: \
+    javax.persistence;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.company.model;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.company.repository;version='${range;[===,+)}',\
     org.hibernate.proxy;version='${range;[=,+)}',\

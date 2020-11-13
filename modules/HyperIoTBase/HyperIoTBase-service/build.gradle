@@ -12,6 +12,7 @@ dependencies {
 	compileOnly group: "javax.transaction", name: "javax.transaction-api",version: project.javaxTransactionVersion
 	compileOnly group: "org.apache.aries.jpa", name: "org.apache.aries.jpa.api", version:project.apacheAriesJpaVersion
 	//Hibernate
+    compileOnly group: 'org.hibernate', name: 'hibernate-core', version: project.hibernateVersion
 	compileOnly group: "org.hibernate.javax.persistence", name: "hibernate-jpa-2.1-api",version: project.hibernateJpaApiVersion
 
 	//Validation

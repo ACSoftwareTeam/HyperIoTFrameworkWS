@@ -22,8 +22,13 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.huser", name: "HyperIoTHUser-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-security", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-actions", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-model", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-api", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-repository", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.permission", name: "HyperIoTPermission-api", version:project.hyperIoTVersion
 
-	//Project Dependencies
+    //Project Dependencies
 	compileOnly project(":modules:HyperIoTRole:HyperIoTRole-actions")
 	compileOnly project(":modules:HyperIoTRole:HyperIoTRole-api")
 	compileOnly project(":modules:HyperIoTRole:HyperIoTRole-model")

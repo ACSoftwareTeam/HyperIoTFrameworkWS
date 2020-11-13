@@ -6,6 +6,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 	//JPA Dependenc ies
+    compile group: 'org.hibernate', name: 'hibernate-core', version: project.hibernateVersion
 	compileOnly group: "javax.transaction", name: "javax.transaction-api",version: project.javaxTransactionVersion
 	compileOnly group: "org.apache.aries.jpa", name: "org.apache.aries.jpa.api", version: project.apacheAriesJpaVersion
 	compileOnly group: project.cxfJoseGroup ,name: project.cxfJoseJaxrsName,version: project.cxfJoseJaxrsVersion

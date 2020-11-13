@@ -9,9 +9,9 @@ Import-Package: \
     it.acsoftware.hyperiot.base.model;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.base.repository;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.query.util.filter
+    it.acsoftware.hyperiot.osgi.util.filter;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.query.util.filter;version='${range;[===,+)}'
 Export-Package: it.acsoftware.hyperiot.base.repository
 
 

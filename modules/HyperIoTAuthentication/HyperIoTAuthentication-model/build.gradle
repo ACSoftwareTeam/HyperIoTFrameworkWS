@@ -11,6 +11,7 @@ dependencies {
     compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-validation", version:project.hyperIoTVersion
 
 	// Jaas
 	compileOnly group: 'org.apache.karaf.jaas', name: 'org.apache.karaf.jaas.config', version: project.karafVersion

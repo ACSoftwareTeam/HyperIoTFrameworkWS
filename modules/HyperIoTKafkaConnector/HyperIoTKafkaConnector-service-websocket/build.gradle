@@ -10,7 +10,8 @@ dependencies {
 
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
-	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-service-websocket", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-service", version:project.hyperIoTVersion
+    compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-service-websocket", version:project.hyperIoTVersion
     compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
     compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-security", version:project.hyperIoTVersion
 	//Jetty web socket

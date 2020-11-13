@@ -7,6 +7,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 	//Hibernate
 	compileOnly group: "org.hibernate.javax.persistence", name: "hibernate-jpa-2.1-api",version: project.hibernateJpaApiVersion
+    compileOnly group: 'org.hibernate', name: 'hibernate-core', version: project.hibernateVersion
 	//Validation
 	compileOnly group: "javax.validation", name: "validation-api",version:project.javaxValidationVersion
 	compileOnly group: "org.hibernate",name: "hibernate-validator",version:project.hibernateValidatorVersion

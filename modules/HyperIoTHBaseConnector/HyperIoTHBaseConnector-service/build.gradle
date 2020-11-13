@@ -39,6 +39,7 @@ dependencies {
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-api")
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-model")
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-actions")
+    compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-util")
 
 	compileOnly group: "it.acsoftware.hyperiot.permission", name: "HyperIoTPermission-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-util", version:project.hyperIoTVersion

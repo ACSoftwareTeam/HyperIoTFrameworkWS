@@ -1,6 +1,5 @@
 Import-Package: \
     javax.persistence;version='${range;[===,+)}',\
-    javax.validation;version='${range;[====,+)}',\
     org.hibernate.proxy;version='${range;[=,+)}',\
     javassist.util.proxy;version='${range;[====,+)}',\
     org.osgi.framework,\

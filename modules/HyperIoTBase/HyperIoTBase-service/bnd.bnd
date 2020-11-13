@@ -13,9 +13,7 @@ Import-Package: \
     it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.exception;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.security.*;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.base.service.entity;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.permission.api;version='${range;[===,+)}',\
     org.osgi.framework,\
     it.acsoftware.hyperiot.query.util.filter,\
     it.acsoftware.hyperiot.shared.entity.api;version='${range;[===,+)}'
