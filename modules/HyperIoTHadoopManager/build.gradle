@@ -60,3 +60,4 @@ task publishHIT {
 	dependsOn gradle.includedBuilds*.task(':publishHIT')
 }
 
+project.ext.set("hadoopClientVersion","2.7.4")
