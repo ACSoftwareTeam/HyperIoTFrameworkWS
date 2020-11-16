@@ -4,6 +4,7 @@ Import-Package: \
     org.hibernate.*;version='${range;[=,+)}',\
     org.hibernate.proxy;version='${range;[=,+)}',\
     javassist.util.proxy;version='${range;[====,+)}',\
+    javax.xml.bind.annotation;version='${range;[=,+)}',\
     org.osgi.framework,\
     org.postgresql,\
     com.fasterxml.jackson*,\
