@@ -22,6 +22,7 @@ project.ext.set("jacksonVersion", "2.9.6")
 project.ext.set("passayVersion","1.4.0")
 project.ext.set("osgiVersion", "6.0.0")
 project.ext.set("osgiCompendiumVersion", "5.0.0")
+project.ext.set("osgiFrameworkVersion", "1.9.0")
 
 project.ext.set("jaxWsRsApiVersion","2.0.1")
 project.ext.set("javaxValidationVersion","2.0.1.Final")
