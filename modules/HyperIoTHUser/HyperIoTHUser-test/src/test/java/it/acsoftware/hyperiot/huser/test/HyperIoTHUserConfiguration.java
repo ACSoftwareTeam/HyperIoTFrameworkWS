@@ -106,7 +106,7 @@ public class HyperIoTHUserConfiguration {
                                 + "/xml/features"),
                 new KarafDistributionConfigurationFileExtendOption(
                         new ConfigurationPointer("etc/org.apache.karaf.features.cfg", "featuresBoot"),
-                        ",hyperiot-algorithm,hyperiot-hadoopmanager,hyperiot-hprojectalgorithm,hyperiot-core," +
+                        ",hyperiot-algorithm,hyperiot-hadoopmanager,hyperiot-hprojectalgorithm,hyperiot-core-clustered," +
                                 "hyperiot-dashboard,hyperiot-dashboardwidget,hyperiot-hproject,hyperiot-hdevice," +
                                 "hyperiot-hpacket,hyperiot-ruleengine,hyperiot-area,hyperiot-stormmanager," +
                                 "hyperiot-hbaseconnector,hyperiot-widget"
