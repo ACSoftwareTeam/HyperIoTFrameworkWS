@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.shared.entity.model.SharedEntity;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for SharedEntity
  *
  */
-public class SharedEntityActionsBundleActivator extends HyperIoTPermissionActivator<SharedEntity> {
+public class SharedEntityActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for SharedEntity class
@@ -20,7 +20,7 @@ public class SharedEntityActionsBundleActivator extends HyperIoTPermissionActiva
 	public SharedEntityActionsBundleActivator() {
 		super(SharedEntity.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

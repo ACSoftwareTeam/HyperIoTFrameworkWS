@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.asset.category.model.AssetCategory;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for AssetCategory
  *
  */
-public class AssetCategoryActionsBundleActivator extends HyperIoTPermissionActivator<AssetCategory> {
+public class AssetCategoryActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for AssetCategory class
@@ -20,7 +20,7 @@ public class AssetCategoryActionsBundleActivator extends HyperIoTPermissionActiv
 	public AssetCategoryActionsBundleActivator() {
 		super(AssetCategory.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

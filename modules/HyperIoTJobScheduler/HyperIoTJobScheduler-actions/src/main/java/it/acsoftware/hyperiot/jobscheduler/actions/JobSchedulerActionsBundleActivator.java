@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.jobscheduler.model.JobScheduler;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for JobScheduler
  *
  */
-public class JobSchedulerActionsBundleActivator extends HyperIoTPermissionActivator<JobScheduler> {
+public class JobSchedulerActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for JobScheduler class
@@ -20,7 +20,7 @@ public class JobSchedulerActionsBundleActivator extends HyperIoTPermissionActiva
 	public JobSchedulerActionsBundleActivator() {
 		super(JobScheduler.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

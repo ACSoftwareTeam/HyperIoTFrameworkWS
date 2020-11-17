@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.company.model.Company;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for Company
  *
  */
-public class CompanyActionsBundleActivator extends HyperIoTPermissionActivator<Company> {
+public class CompanyActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for Company class
@@ -20,7 +20,7 @@ public class CompanyActionsBundleActivator extends HyperIoTPermissionActivator<C
 	public CompanyActionsBundleActivator() {
 		super(Company.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

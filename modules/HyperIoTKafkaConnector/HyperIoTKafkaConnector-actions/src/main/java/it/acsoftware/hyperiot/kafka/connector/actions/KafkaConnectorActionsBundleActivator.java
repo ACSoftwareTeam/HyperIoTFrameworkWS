@@ -18,7 +18,7 @@ import it.acsoftware.hyperiot.kafka.connector.model.KafkaConnector;
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for KafkaConnector
  */
-public class KafkaConnectorActionsBundleActivator extends HyperIoTPermissionActivator<KafkaConnector> {
+public class KafkaConnectorActionsBundleActivator extends HyperIoTPermissionActivator {
 
     /**
      * Bundle activator for KafkaConnector class

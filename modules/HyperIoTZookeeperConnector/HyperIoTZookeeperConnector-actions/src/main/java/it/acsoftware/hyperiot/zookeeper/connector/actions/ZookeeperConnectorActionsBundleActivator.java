@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.zookeeper.connector.model.ZookeeperConnector;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for ZookeeperConnector
  *
  */
-public class ZookeeperConnectorActionsBundleActivator extends HyperIoTPermissionActivator<ZookeeperConnector> {
+public class ZookeeperConnectorActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for ZookeeperConnector class
@@ -20,7 +20,7 @@ public class ZookeeperConnectorActionsBundleActivator extends HyperIoTPermission
 	public ZookeeperConnectorActionsBundleActivator() {
 		super(ZookeeperConnector.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

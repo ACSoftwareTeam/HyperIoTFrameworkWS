@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.asset.tag.model.AssetTag;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for AssetTag
  *
  */
-public class AssetTagActionsBundleActivator extends HyperIoTPermissionActivator<AssetTag> {
+public class AssetTagActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for AssetTag class
@@ -20,7 +20,7 @@ public class AssetTagActionsBundleActivator extends HyperIoTPermissionActivator<
 	public AssetTagActionsBundleActivator() {
 		super(AssetTag.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

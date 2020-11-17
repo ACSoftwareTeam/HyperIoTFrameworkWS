@@ -6,12 +6,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.permission.model.Permission;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  *         register actions for Permission
  *
  */
-public class PermissionActionsBundleActivator extends HyperIoTPermissionActivator<Permission> {
+public class PermissionActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for Permission class

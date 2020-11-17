@@ -6,12 +6,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.role.model.Role;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  *         register actions for Role
  *
  */
-public class RoleActionsBundleActivator extends HyperIoTPermissionActivator<Role> {
+public class RoleActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for Role class

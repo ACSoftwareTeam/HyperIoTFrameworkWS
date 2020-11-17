@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.mail.model.MailTemplate;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for Mail
  *
  */
-public class MailActionsBundleActivator extends HyperIoTPermissionActivator<MailTemplate> {
+public class MailActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for Mail class
@@ -20,7 +20,7 @@ public class MailActionsBundleActivator extends HyperIoTPermissionActivator<Mail
 	public MailActionsBundleActivator() {
 		super(MailTemplate.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

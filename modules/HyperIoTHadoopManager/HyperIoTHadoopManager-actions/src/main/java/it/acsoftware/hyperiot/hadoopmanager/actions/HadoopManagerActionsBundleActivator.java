@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.hadoopmanager.model.HadoopManager;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for HadoopManager
  *
  */
-public class HadoopManagerActionsBundleActivator extends HyperIoTPermissionActivator<HadoopManager> {
+public class HadoopManagerActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for HadoopManager class
@@ -20,7 +20,7 @@ public class HadoopManagerActionsBundleActivator extends HyperIoTPermissionActiv
 	public HadoopManagerActionsBundleActivator() {
 		super(HadoopManager.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

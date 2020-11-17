@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.sparkmanager.model.SparkManager;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for SparkManager
  *
  */
-public class SparkManagerActionsBundleActivator extends HyperIoTPermissionActivator<SparkManager> {
+public class SparkManagerActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for SparkManager class
@@ -20,7 +20,7 @@ public class SparkManagerActionsBundleActivator extends HyperIoTPermissionActiva
 	public SparkManagerActionsBundleActivator() {
 		super(SparkManager.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registered as OSGi components
 	 */

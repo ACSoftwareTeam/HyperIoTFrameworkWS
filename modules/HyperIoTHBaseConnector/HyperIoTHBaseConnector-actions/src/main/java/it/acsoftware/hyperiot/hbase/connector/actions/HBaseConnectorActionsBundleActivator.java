@@ -7,12 +7,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.hbase.connector.model.HBaseConnector;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  * register actions for HBaseConnector
  *
  */
-public class HBaseConnectorActionsBundleActivator extends HyperIoTPermissionActivator<HBaseConnector> {
+public class HBaseConnectorActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for HBaseConnector class
@@ -20,7 +20,7 @@ public class HBaseConnectorActionsBundleActivator extends HyperIoTPermissionActi
 	public HBaseConnectorActionsBundleActivator() {
 		super(HBaseConnector.class);
 	}
-	
+
 	/**
 	 * Return a list actions that have to be registerd as OSGi components
 	 */

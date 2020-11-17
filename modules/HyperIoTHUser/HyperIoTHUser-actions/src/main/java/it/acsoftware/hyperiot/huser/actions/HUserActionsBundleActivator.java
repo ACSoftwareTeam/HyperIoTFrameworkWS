@@ -6,12 +6,12 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTActionFactory;
 import it.acsoftware.hyperiot.huser.model.HUser;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Model class that define a bundle activator and
  *         register action for HUser
  *
  */
-public class HUserActionsBundleActivator extends HyperIoTPermissionActivator<HUser> {
+public class HUserActionsBundleActivator extends HyperIoTPermissionActivator {
 
 	/**
 	 * Bundle activator for HUser class
