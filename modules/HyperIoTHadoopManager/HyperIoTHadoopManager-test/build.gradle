@@ -38,7 +38,9 @@ dependencies {
 	testCompile group: "it.acsoftware.hyperiot.permission", name: "HyperIoTPermission-service-rest", version:project.hyperIoTVersion
 
 	//Project dependencies
+	testCompile project(":modules:HyperIoTHadoopManager:HyperIoTHadoopManager-actions")
 	testCompile project(":modules:HyperIoTHadoopManager:HyperIoTHadoopManager-api")
+	testCompile project(":modules:HyperIoTHadoopManager:HyperIoTHadoopManager-model")
 	testCompile project(":modules:HyperIoTHadoopManager:HyperIoTHadoopManager-service")
 
 	//Test dependencies
