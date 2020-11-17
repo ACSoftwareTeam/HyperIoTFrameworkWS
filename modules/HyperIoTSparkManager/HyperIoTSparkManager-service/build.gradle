@@ -26,7 +26,7 @@ dependencies {
 	compileOnly project(":modules:HyperIoTSparkManager:HyperIoTSparkManager-api")
 	compileOnly project(":modules:HyperIoTSparkManager:HyperIoTSparkManager-model")
 
-	compileOnly group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.4'
+	compileOnly group: 'org.apache.httpcomponents', name: 'httpclient', version: project.apacheHttpComponentsClientVersion
 
 	compile group: 'org.json', name: 'json', version: '20200518'
 }

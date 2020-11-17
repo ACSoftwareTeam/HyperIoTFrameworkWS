@@ -31,6 +31,7 @@ project.ext.set("javaxServletVersion","3.1.0")
 project.ext.set("postgresDriverVersion","42.2.9")
 
 project.ext.set("apacheAriesJpaVersion","2.7.1")
+project.ext.set("apacheHttpComponentsClientVersion","4.3.4")
 
 project.ext.set("hibernateAnnotationVersion","3.5.6-Final")
 project.ext.set("hibernateValidatorVersion","6.0.12.Final")
