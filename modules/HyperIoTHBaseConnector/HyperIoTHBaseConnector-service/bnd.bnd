@@ -1,4 +1,5 @@
 Import-Package: \
+    com.google.protobuf;version='${range;[===,=+)}',\
     javax.persistence;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.action;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.action.util;version='${range;[===,+)}',\
@@ -18,7 +19,12 @@ Import-Package: \
     it.acsoftware.hyperiot.hproject.api;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.hproject.model;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.permission.api;version='${range;[===,+)}',\
-    org.apache.avro*,\
+    org.apache.avro*;version='${range;[===,+)}',\
+    org.apache.hadoop.conf;version='${range;[===,+)}',\
+    org.apache.hadoop.hbase;version='${range;[===,+)}',\
+    org.apache.hadoop.hbase.client;version='${range;[===,+)}',\
+    org.apache.hadoop.hbase.filter;version='${range;[===,+)}',\
+    org.apache.hadoop.hbase.util;version='${range;[===,+)}',\
     org.w3c.dom;version=0.0.0,\
     org.xml.sax;version=0.0.0,\
     javax.naming;version=0.0.0,\

@@ -31,6 +31,7 @@ project.ext.set("javaxServletVersion","3.1.0")
 project.ext.set("postgresDriverVersion","42.2.9")
 
 project.ext.set("apacheAriesJpaVersion","2.7.1")
+project.ext.set("apacheAvroVersion","1.8.2")
 project.ext.set("apacheHttpComponentsClientVersion","4.3.4")
 
 project.ext.set("hibernateAnnotationVersion","3.5.6-Final")
@@ -53,4 +54,4 @@ project.ext.set("swaggerUIVersion","3.20.5")
 project.ext.set("quartzVersion", "2.3.2_1")
 
 project.ext.set("hbaseVersion", "1.4.9")
-project.ext.set("googleProtobufVersion", "2.5.0")
+project.ext.set("googleProtobufVersion", "3.6.1")

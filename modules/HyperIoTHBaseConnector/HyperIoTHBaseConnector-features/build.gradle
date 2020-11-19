@@ -16,6 +16,7 @@ dependencies {
     hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-util:'+project.version
     hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-actions:'+project.version
     hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-api:'+project.version
+    hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-hbaseBundles:'+project.version
     hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-model:'+project.version
     hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-service:'+project.version
     hBaseConnector 'it.acsoftware.hyperiot.hbase.connector:HyperIoTHBaseConnector-service-rest:'+project.version

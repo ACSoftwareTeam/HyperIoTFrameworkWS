@@ -10,12 +10,10 @@ import it.acsoftware.hyperiot.hbase.connector.actions.HBaseConnectorAction;
 import it.acsoftware.hyperiot.hbase.connector.api.HBaseConnectorApi;
 import it.acsoftware.hyperiot.hbase.connector.api.HBaseConnectorSystemApi;
 import it.acsoftware.hyperiot.hbase.connector.model.*;
-import it.acsoftware.hyperiot.hpacket.model.HPacket;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -121,57 +119,6 @@ public final class HBaseConnectorServiceImpl extends  HyperIoTBaseServiceImpl im
 		if (HyperIoTSecurityUtil.checkPermission(context, HBaseConnector.class.getName(), HyperIoTActionsUtil
 				.getHyperIoTAction(HBaseConnector.class.getName(), HBaseConnectorAction.INSERT_DATA))) {
 			systemService.insertData(tableName, rowKey, columnFamily, column, cellValue);
-		}
-		else {
-			throw new HyperIoTUnauthorizedException();
-		}
-	}
-
-	@Override
-	public List<HPacket> scanAvroHPackets(HyperIoTContext context, String tableName, String columnFamily, long column, long rowKeyLowerBound, long rowKeyUpperBound)
-			throws IOException, HyperIoTUnauthorizedException {
-		if (HyperIoTSecurityUtil.checkPermission(context, HBaseConnector.class.getName(), HyperIoTActionsUtil
-				.getHyperIoTAction(HBaseConnector.class.getName(), HBaseConnectorAction.READ_DATA))) {
-			return systemService.scanAvroHPackets(tableName, columnFamily, column, rowKeyLowerBound, rowKeyUpperBound);
-		}
-		else {
-			throw new HyperIoTUnauthorizedException();
-		}
-	}
-
-	@Override
-	public List<HBaseConnectorHProjectScan> scanHProject(HyperIoTContext context, long hProjectId, List<String> hPacketIds, long rowKeyLowerBound, long rowKeyUpperBound)
-			throws IOException{
-		if (HyperIoTSecurityUtil.checkPermission(context, HBaseConnector.class.getName(), HyperIoTActionsUtil
-				.getHyperIoTAction(HBaseConnector.class.getName(), HBaseConnectorAction.READ_DATA))) {
-			return systemService.scanHProject(hProjectId, hPacketIds, rowKeyLowerBound, rowKeyUpperBound);
-		}
-		else {
-			throw new HyperIoTUnauthorizedException();
-		}
-	}
-
-	@Override
-	public List<HBaseConnectorHPacketCount> timelineEventCount(HyperIoTContext context, String tableName,
-		    List<String> packetIds, long startTime, long endTime) throws IOException, ParseException, HyperIoTUnauthorizedException {
-		if (HyperIoTSecurityUtil.checkPermission(context, HBaseConnector.class.getName(), HyperIoTActionsUtil
-				.getHyperIoTAction(HBaseConnector.class.getName(), HBaseConnectorAction.READ_DATA))) {
-			return systemService.timelineEventCount(tableName, packetIds, startTime, endTime);
-		}
-		else {
-			throw new HyperIoTUnauthorizedException();
-		}
-	}
-
-	@Override
-	public List<HBaseConnectorTimelineScan> timelineScan(HyperIoTContext context, String tableName,
-														 List<String> packetIds, HBaseTimelineColumnFamily step,
-														 HBaseTimelineColumnFamily granularity, long startTime,
-														 long endTime, String timezone)
-			throws IOException, ParseException, HyperIoTUnauthorizedException {
-		if (HyperIoTSecurityUtil.checkPermission(context, HBaseConnector.class.getName(), HyperIoTActionsUtil
-				.getHyperIoTAction(HBaseConnector.class.getName(), HBaseConnectorAction.READ_DATA))) {
-			return systemService.timelineScan(tableName, packetIds, step, granularity, startTime, endTime, timezone);
 		}
 		else {
 			throw new HyperIoTUnauthorizedException();

@@ -2,14 +2,9 @@ package it.acsoftware.hyperiot.hbase.connector.api;
 
 import com.google.protobuf.ServiceException;
 import it.acsoftware.hyperiot.base.api.HyperIoTBaseSystemApi;
-import it.acsoftware.hyperiot.hbase.connector.model.HBaseConnectorHPacketCount;
-import it.acsoftware.hyperiot.hbase.connector.model.HBaseConnectorHProjectScan;
-import it.acsoftware.hyperiot.hbase.connector.model.HBaseTimelineColumnFamily;
-import it.acsoftware.hyperiot.hbase.connector.model.HBaseConnectorTimelineScan;
-import it.acsoftware.hyperiot.hpacket.model.HPacket;
+import org.apache.hadoop.hbase.client.ResultScanner;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -64,6 +59,24 @@ public interface HBaseConnectorSystemApi extends HyperIoTBaseSystemApi {
     void enableTable(String tableName) throws IOException;
 
     /**
+     * It returns an HBase scanner, setting on it three filters:
+     *  - row keys greater or equal than a lower bound
+     *  - row keys less or equal than an upper bound
+     *  - client max scanning
+     * @param tableName HBase table name which derive a scanner from
+     * @param columnFamily  HBase table column family which extract columns from
+     * @param column  HBase table column which extract cells from
+     * @param rowKeyLowerBound Row key lower bound
+     * @param rowKeyUpperBound Row key upper bound
+     * @param limitScan boolean value, which indicates if scan is limited or not
+     * @return A ResultScanner on table
+     * @throws IOException IOException
+     */
+    ResultScanner getScanner(String tableName, byte[] columnFamily, byte[] column,
+                             byte[] rowKeyLowerBound, byte[] rowKeyUpperBound, boolean limitScan)
+            throws IOException;
+
+    /**
      * It inserts data
      * @param tableName Table name
      * @param rowKey Row key
@@ -76,61 +89,18 @@ public interface HBaseConnectorSystemApi extends HyperIoTBaseSystemApi {
             throws IOException;
 
     /**
-     * It scans and returns rows
-     * @param tableName Table from which retrieve data
-     * @param columnFamily Column family
-     * @param column Column, i.e. HPacket ID
-     * @param rowKeyLowerBound Row key lower bound
-     * @param rowKeyUpperBound Rok key upper bound
-     * @return HPacket list
+     * It scans HBase table
+     * @param tableName table name
+     * @param columnFamily column family
+     * @param column column
+     * @param rowKeyLowerBound rowKeyLowerBound
+     * @param rowKeyUpperBound rowKeyUpperBound
+     * @return List<byte[]>
      * @throws IOException IOException
      */
-    List<HPacket> scanAvroHPackets(String tableName, String columnFamily, long column, long rowKeyLowerBound, long rowKeyUpperBound)
-            throws IOException;
-
-    /**
-     * Given an HProject ID and a list of HPacket IDs inside it, this method scan Avro HPackets between a start time
-     * and an end time, stored in an HBase table.
-     * @param hProjectId HProject ID
-     * @param hPacketIds HPacket list
-     * @param rowKeyLowerBound Scanning start time (i.e. an HBase row key)
-     * @param rowKeyUpperBound Scanning end time (i.e. an HBase row key)
-     * @return HBaseConnectorHProjectScan list
-     * @throws IOException IOException
-     */
-    List<HBaseConnectorHProjectScan> scanHProject(long hProjectId, List<String> hPacketIds, long rowKeyLowerBound, long rowKeyUpperBound)
-            throws IOException;
-
-    /**
-     * Service counts HPacket event number between start time and end time,
-     * dividing into slots (depending on HBase max scan page size)
-     * @param tableName HBase table, related to a particular HProject
-     * @param packetIds List of HPacket IDs, which count event numer for
-     * @param startTime Scanning start time
-     * @param endTime Scanning end time
-     * @return A list of HBaseConnectorHPacketCount
-     * @throws IOException IOException
-     * @throws ParseException ParseException
-     */
-    List<HBaseConnectorHPacketCount> timelineEventCount(String tableName, List<String> packetIds,
-            long startTime, long endTime) throws IOException, ParseException;
-
-    /**
-     * Service scans and returns data from timeline table
-     * @param tableName Table name
-     * @param packetIds Packet IDs
-     * @param step Step
-     * @param granularity Scanning granularity
-     * @param startTime Timeline start time
-     * @param endTime Timeline end time
-     * @param timezone Timezone of client which has invoked the method, i.e. Europe/Rome
-     * @return HBaseConnectorTimelineScan list
-     * @throws IOException IOException
-     * @throws ParseException ParseException
-     */
-    List<HBaseConnectorTimelineScan> timelineScan(String tableName, List<String> packetIds, HBaseTimelineColumnFamily step,
-            HBaseTimelineColumnFamily granularity, long startTime, long endTime, String timezone)
-            throws IOException, ParseException;
+    @SuppressWarnings("unused")
+    List<byte[]> scan(String tableName, byte[] columnFamily, byte[] column,
+                      byte[] rowKeyLowerBound, byte[] rowKeyUpperBound) throws IOException;
 
     /**
      * It checks if table exists
@@ -139,6 +109,6 @@ public interface HBaseConnectorSystemApi extends HyperIoTBaseSystemApi {
      * @throws IOException IOException
      */
     @SuppressWarnings("unused")
-    boolean tableExist(String tableName) throws IOException;
+    boolean tableExists(String tableName) throws IOException;
 
 }
