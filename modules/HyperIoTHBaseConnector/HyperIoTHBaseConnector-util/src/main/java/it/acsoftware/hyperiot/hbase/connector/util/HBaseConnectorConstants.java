@@ -11,7 +11,7 @@ public class HBaseConnectorConstants {
     public static final String HBASE_CONNECTOR_PROPERTY_MASTER_HOSTNAME = "it.acsoftware.hyperiot.hbase.connector.master.hostname";
     public static final String HBASE_CONNECTOR_PROPERTY_MASTER_INFO_PORT = "it.acsoftware.hyperiot.hbase.connector.master.info.port";
     public static final String HBASE_CONNECTOR_PROPERTY_MASTER_PORT = "it.acsoftware.hyperiot.hbase.connector.master.port";
-    public static final String HBASE_CONNECTOR_PROPERTY_MAX_SCAN_PAGE_SIZE = "it.acsoftware.hyperiot.hbase.connector.max.scan.page.size";
+    public static final String HBASE_CONNECTOR_PROPERTY_MAX_SCAN_PAGE_SIZE = "it.acsoftware.hyperiot.hbase.connector.client.scanner.max.result.size";
     public static final String HBASE_CONNECTOR_PROPERTY_MAXIMUM_POOL_SIZE = "it.acsoftware.hyperiot.hbase.connector.maximum.pool.size";
     public static final String HBASE_CONNECTOR_PROPERTY_REGIONSERVER_INFO_PORT = "it.acsoftware.hyperiot.hbase.connector.regionserver.info.port";
     public static final String HBASE_CONNECTOR_PROPERTY_REGIONSERVER_PORT = "it.acsoftware.hyperiot.hbase.connector.regionserver.port";
