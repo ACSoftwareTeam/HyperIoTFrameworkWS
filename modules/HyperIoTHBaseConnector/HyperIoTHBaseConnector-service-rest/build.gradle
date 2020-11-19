@@ -21,6 +21,8 @@ dependencies {
 	//Project dependencies
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-api")
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-model")
+	// HBase dependencies
+	compileOnly group: "com.google.protobuf", name: "protobuf-java", version: project.googleProtobufVersion
 }
 
 task buildHIT(type: GradleBuild) {

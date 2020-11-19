@@ -1,5 +1,6 @@
 Export-Package: it.acsoftware.hyperiot.hbase.connector.service.rest
 Import-Package: \
+    com.google.protobuf;version='${range;[===,=+)}',\
     it.acsoftware.hyperiot.hbase.connector.api;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.hbase.connector.model;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\

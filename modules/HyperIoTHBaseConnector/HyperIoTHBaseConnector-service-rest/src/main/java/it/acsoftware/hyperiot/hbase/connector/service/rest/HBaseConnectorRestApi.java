@@ -8,22 +8,15 @@ import it.acsoftware.hyperiot.base.model.HyperIoTJSONView;
 import it.acsoftware.hyperiot.base.security.rest.LoggedIn;
 import it.acsoftware.hyperiot.base.service.rest.HyperIoTBaseRestApi;
 import it.acsoftware.hyperiot.hbase.connector.api.HBaseConnectorApi;
-import it.acsoftware.hyperiot.hbase.connector.model.HBaseTimelineColumnFamily;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.regex.Pattern;
-
 
 /**
  * 
@@ -43,8 +36,6 @@ import java.util.regex.Pattern;
 @Path("")
 public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 	private HBaseConnectorApi  service;
-
-	private final String PACKET_IDS_REGEX = "\\d+(,\\d+)*";
 
 	/**
 	 * Check if there's an active connection to the database.
@@ -90,11 +81,13 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 	 * @return Response object
 	 */
 	@POST
-	@Path("/createTable")
+	@Path("/tables")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	@LoggedIn
-	@ApiOperation(value = "/hyperiot/hbaseconnector/createTable", notes = "Service for creating new table", httpMethod = "POST", consumes = "application/x-www-form-urlencoded", produces = "application/json", authorizations = @Authorization("jwt-auth"))
+	@ApiOperation(value = "/hyperiot/hbaseconnector/tables", notes = "Service for creating new table",
+			httpMethod = "POST", consumes = "application/x-www-form-urlencoded", produces = "application/json",
+			authorizations = @Authorization("jwt-auth"))
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
 			@ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
 			@ApiResponse(code = 500, message = "Internal error")})
@@ -102,7 +95,7 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 	public Response createTable(
 			@FormParam("tableName") String tableName,
 			@FormParam("columnFamilies") String columnFamilies) {
-		log.log(Level.FINE, "In Rest Service POST /hyperiot/hbaseconnector/createTable");
+		log.log(Level.FINE, "In Rest Service POST /hyperiot/hbaseconnector/tables");
 		log.log(Level.FINE, "\t tableName: {0}", tableName);
 		log.log(Level.FINE, "\t columnFamilies: {0}", columnFamilies);
 		try {
@@ -121,11 +114,13 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 	 * @return Response object
 	 */
 	@DELETE
-	@Path("/deleteData")
+	@Path("/tables/rows")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	@LoggedIn
-	@ApiOperation(value = "/hyperiot/hbaseconnector/deleteData", notes = "Service for delete data", httpMethod = "DELETE", consumes = "application/x-www-form-urlencoded", produces = "application/json", authorizations = @Authorization("jwt-auth"))
+	@ApiOperation(value = "/hyperiot/hbaseconnector/tables/rows", notes = "Service for delete data",
+			httpMethod = "DELETE", consumes = "application/x-www-form-urlencoded", produces = "application/json",
+			authorizations = @Authorization("jwt-auth"))
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
 			@ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
 			@ApiResponse(code = 500, message = "Internal error")})
@@ -133,7 +128,7 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 	public Response deleteData(
 			@FormParam(value = "tableName") String tableName,
 			@FormParam(value = "rowKey") String rowKey) {
-		log.log(Level.FINE, "In Rest Service DELETE hyperiot/hbaseconnector/deleteData");
+		log.log(Level.FINE, "In Rest Service DELETE hyperiot/hbaseconnector/tables/rows");
 		log.log(Level.FINE, "\t tableName: {0}", tableName);
 		log.log(Level.FINE, "\t rowKey: {0}", rowKey);
 		try {
@@ -145,42 +140,16 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 	}
 
     /**
-     * Service disables table
-     * @param tableName Table name to disable
-     * @return Response object
-     */
-    @PUT
-	@Path("/disableTable/{tableName}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @LoggedIn
-    @ApiOperation(value = "/hyperiot/hbaseconnector/disableTable/{tableName}", notes = "Service for disabling table", httpMethod = "PUT", consumes = "application/json", authorizations = @Authorization("jwt-auth"))
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
-            @ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
-			@ApiResponse(code = 500, message = "Internal error")})
-    @JsonView(HyperIoTJSONView.Public.class)
-    public Response disableTable(
-    		@ApiParam(value = "Table name which must be disabled", required = true)
-			@PathParam("tableName") String tableName) {
-		log.log(Level.FINE, "In REST Service PUT /hyperiot/hbaseconnector/disableTable/{0}", tableName);
-        try {
-            service.disableTable(this.getHyperIoTContext(), tableName);
-            return Response.ok().entity("Table disabled").build();
-        } catch (Throwable e) {
-            return handleException(e);
-        }
-    }
-
-    /**
      * Service drops table
      *
      * @param tableName Table to drop
      * @return Response object
      */
     @DELETE
-    @Path("/dropTable/{tableName}")
+    @Path("/tables/{tableName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @LoggedIn
-    @ApiOperation(value = "/hyperiot/hbaseconnector/dropTable/{tableName}", notes = "Service for deleting a table", httpMethod = "DELETE", consumes = "application/json", authorizations = @Authorization("jwt-auth"))
+    @ApiOperation(value = "/hyperiot/hbaseconnector/tables/{tableName}", notes = "Service for deleting a table", httpMethod = "DELETE", consumes = "application/json", authorizations = @Authorization("jwt-auth"))
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 404, message = "Entity not found"),
@@ -189,7 +158,7 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
     public Response dropTable(
             @ApiParam(value = "The table name which must be dropped", required = true)
 			@PathParam("tableName") String tableName) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/hbaseconnector/dropTable/{0}", tableName);
+        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/hbaseconnector/tables/{0}", tableName);
         try {
             service.dropTable(this.getHyperIoTContext(), tableName);
             return Response.ok().entity("Table dropped").build();
@@ -200,27 +169,33 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
     }
 
     /**
-     * Service enables table
+     * Service changes table status, i.e. enabled or disabled
      *
      * @param tableName Table name to enable
      * @return Response object
      */
     @PUT
-	@Path("/enableTable/{tableName}")
+	@Path("/tables/{tableName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @LoggedIn
-    @ApiOperation(value = "/hyperiot/hbaseconnector/enableTable/{tableName}", notes = "Service for enabling table", httpMethod = "PUT", consumes = "application/json", authorizations = @Authorization("jwt-auth"))
+    @ApiOperation(value = "/hyperiot/hbaseconnector/tables/{tableName}",
+			notes = "Service for changing table status, i.e. enabled or disabled", httpMethod = "PUT",
+			consumes = "application/json", authorizations = @Authorization("jwt-auth"))
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
             @ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
             @ApiResponse(code = 500, message = "Internal Error")})
     @JsonView(HyperIoTJSONView.Public.class)
     public Response enableTable(
-            @ApiParam(value = "Table name which must be enabled ", required = true)
-			@PathParam("tableName") String tableName) {
-        log.log(Level.FINE, "In Rest Service PUT hyperiot/hbaseconnector/enableTable/{0}", tableName);
+            @ApiParam(value = "Table name whose status must be updated", required = true) @PathParam("tableName") String tableName,
+            @ApiParam(value = "True if table must be enabled, false otherwise", required = true) @PathParam("tableName") boolean enabled) {
+    	String newStatus = enabled ? "enabled" : "disabled";
+        log.log(Level.FINE, "In Rest Service PUT hyperiot/hbaseconnector/tables/{0}/{1}", new Object[] {tableName, enabled});
         try {
-            service.enableTable(this.getHyperIoTContext(), tableName);
-            return Response.ok().entity("Table enabled").build();
+        	if (enabled)
+            	service.enableTable(this.getHyperIoTContext(), tableName);
+        	else
+        		service.disableTable(this.getHyperIoTContext(), tableName);
+            return Response.ok().entity("Table " + newStatus).build();
         } catch (Throwable e) {
             return handleException(e);
         }
@@ -246,11 +221,11 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 	 * @return Response object
 	 */
 	@PUT
-	@Path("/insertData")
+	@Path("/tables")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_JSON)
 	@LoggedIn
-	@ApiOperation(value = "/hyperiot/hbaseconnector/insertData", notes = "Service for insert data", httpMethod = "PUT", consumes = "application/x-www-form-urlencoded", produces = "application/json", authorizations = @Authorization("jwt-auth"))
+	@ApiOperation(value = "/hyperiot/hbaseconnector/tables", notes = "Service for insert data", httpMethod = "PUT", consumes = "application/x-www-form-urlencoded", produces = "application/json", authorizations = @Authorization("jwt-auth"))
 	@ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
 			@ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
 			@ApiResponse(code = 500, message = "Internal error")})
@@ -261,7 +236,7 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 			@FormParam(value = "columnFamily") String columnFamily,
 			@FormParam(value = "column") String column,
 			@FormParam(value = "cellValue") String cellValue) {
-		log.log(Level.FINE, "In Rest Service PUT hyperiot/hbaseconnector/insertData");
+		log.log(Level.FINE, "In Rest Service PUT hyperiot/hbaseconnector/tables");
 		log.log(Level.FINE, "\t tableName: {0}", tableName);
 		log.log(Level.FINE, "\t rowKey: {0}", rowKey);
 		log.log(Level.FINE, "\t columnFamily: {0}", columnFamily);
@@ -271,155 +246,6 @@ public class HBaseConnectorRestApi extends  HyperIoTBaseRestApi  {
 			service.insertData(this.getHyperIoTContext(), tableName, rowKey, columnFamily, column, cellValue);
 			return Response.ok().entity("Value inserted").build();
 		} catch (Throwable e) {
-			return handleException(e);
-		}
-	}
-
-	/**
-	 * Service scans and returns data from table
-	 * @param tableName Table name
-	 * @param columnFamily Column Family
-	 * @param column Column
-	 * @param rowKeyLowerBound Row key lower bound
-	 * @param rowKeyUpperBound Row key upper bound
-	 * @return Response object
-	 */
-	@GET
-	@Path("/scanAvroHPackets/{tableName}/{columnFamily}/{column}/{rowKeyLowerBound}/{rowKeyUpperBound}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@LoggedIn
-	@ApiOperation(value = "/hyperiot/hbaseconnector/scanAvroHPackets/{tableName}/{columnFamily}/{column}/{rowKeyLowerBound}/{rowKeyUpperBound}", notes = "Service for scan data", httpMethod = "GET", produces = "application/json", authorizations = @Authorization("jwt-auth"))
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
-			@ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
-			@ApiResponse(code = 500, message = "Internal error")})
-	@JsonView(HyperIoTJSONView.Public.class)
-	public Response scanAvroHPackets(
-			@ApiParam(value = "Table name which retrieve hpackets from", required = true) @PathParam("tableName") String tableName,
-			@ApiParam(value = "HBase table column family", required = true) @PathParam("columnFamily") String columnFamily,
-			@ApiParam(value = "Column inside a column family", required = true) @PathParam("column") long column,
-			@ApiParam(value = "HBase row key lower bound", required = true) @PathParam("rowKeyLowerBound") long rowKeyLowerBound,
-			@ApiParam(value = "HBase row key upper bound", required = true) @PathParam("rowKeyUpperBound") long rowKeyUpperBound) {
-		log.log(Level.FINE, "In Rest Service GET hyperiot/hbaseconnector/scanAvroHPackets/{0}/{1}/{2}/{3}/{4}",
-				new Object[] {tableName, columnFamily, column, rowKeyLowerBound, rowKeyUpperBound});
-		try {
-			if(rowKeyLowerBound > rowKeyUpperBound)
-				throw new IllegalArgumentException("startTime must be prior or equal to endTime");
-			return Response.ok(service.scanAvroHPackets(this.getHyperIoTContext(), tableName, columnFamily, column, rowKeyLowerBound, rowKeyUpperBound)).build();
-		} catch (IOException | IllegalArgumentException e) {
-			return handleException(e);
-		}
-	}
-
-	@GET
-	@Path("/scanHProject/{hProjectId}/{hPacketIds}/{rowKeyLowerBound}/{rowKeyUpperBound}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@LoggedIn
-	@ApiOperation(value = "/hyperiot/hbaseconnector/scanHProject/{hProjectId}/{hPacketIds}/{rowKeyLowerBound}/{rowKeyUpperBound}", notes = "Service for scan HProject data", httpMethod = "GET", produces = "application/json", authorizations = @Authorization("jwt-auth"))
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
-			@ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
-			@ApiResponse(code = 500, message = "Internal error")})
-	@JsonView(HyperIoTJSONView.Public.class)
-	public Response scanHProject(
-			@ApiParam(value = "HProject ID from retrieve HPackets in Avro format", required = true) @PathParam("hProjectId") long hProjectId,
-			@ApiParam(value = "HPacket list, containing comma separated ID", required = true) @PathParam("hPacketIds") String hPacketIds,
-			@ApiParam(value = "HBase row key lower bound", required = true) @PathParam("rowKeyLowerBound") long rowKeyLowerBound,
-			@ApiParam(value = "HBase row key upper bound", required = true) @PathParam("rowKeyUpperBound") long rowKeyUpperBound) {
-		log.log(Level.FINE, "In Rest Service GET hyperiot/hbaseconnector/scanHProject/{0}/{1}/{2}/{3}",
-				new Object[] {hProjectId, hPacketIds, rowKeyLowerBound, rowKeyUpperBound});
-		try {
-			if(rowKeyLowerBound > rowKeyUpperBound)
-				throw new IllegalArgumentException("startTime must be prior or equal to endTime");
-			if(!Pattern.matches(PACKET_IDS_REGEX, hPacketIds))
-				throw new IllegalArgumentException("wrong packetIds parameter");
-			List<String> packetIdsList = new ArrayList<>(new HashSet<>(Arrays.asList(hPacketIds.trim().split(",")))); // remove duplicates
-			return Response.ok(service.scanHProject(this.getHyperIoTContext(), hProjectId, packetIdsList, rowKeyLowerBound, rowKeyUpperBound)).build();
-		} catch (IOException | IllegalArgumentException e) {
-			return handleException(e);
-		}
-	}
-
-	/**
-	 * Service count HPacket event number from timeline table
-	 * @param tableName Table name
-	 * @param packetIds Packet IDs
-	 * @param startTime Timeline start time
-	 * @param endTime Timeline end time
-	 * @return Response object
-	 */
-	@GET
-	@Path("/timeline/event/count/{tableName}/{packetIds}/{startTime}/{endTime}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@LoggedIn
-	@ApiOperation(value = "/hyperiot/hbaseconnector/timeline/event/count/{tableName}/{packetIds}/{startTime}/{endTime}",
-			notes = "Service for count data and get it back", httpMethod = "GET", produces = "application/json",
-			authorizations = @Authorization("jwt-auth"))
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
-			@ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
-			@ApiResponse(code = 500, message = "Internal error")})
-	@JsonView(HyperIoTJSONView.Public.class)
-	public Response timelineEventCount(
-			@ApiParam(value = "Table name which count hpacket event number from", required = true) @PathParam("tableName") String tableName,
-			@ApiParam(value = "HPacket list, containing comma separated ID", required = true) @PathParam("packetIds") String packetIds,
-			@ApiParam(value = "Scanning start time", required = true) @PathParam("startTime") long startTime,
-			@ApiParam(value = "Scanning end time", required = true) @PathParam("endTime") long endTime) {
-		log.log(Level.FINE, "In Rest Service GET hyperiot/hbaseconnector/timeline/event/count/{0}/{1}/{2}/{3}",
-				new Object[] {tableName, packetIds, startTime, endTime});
-		try {
-			if(startTime > endTime)
-				throw new IllegalArgumentException("startTime must be prior or equal to endTime");
-			if(!Pattern.matches(PACKET_IDS_REGEX, packetIds))
-				throw new IllegalArgumentException("wrong packetIds parameter");
-			List<String> packetIdsList = new ArrayList<>(new HashSet<>(Arrays.asList(packetIds.trim().split(",")))); // remove duplicates
-			return Response.ok(service.timelineEventCount(this.getHyperIoTContext(), tableName, packetIdsList, startTime, endTime)).build();
-		} catch (IOException | IllegalArgumentException | ParseException e) {
-			return handleException(e);
-		}
-	}
-
-	/**
-	 * Service scans and returns data from timeline table
-	 * @param tableName Table name
-	 * @param packetIds Packet IDs
-	 * @param step Step, which determines output
-	 * @param granularity Search granularity
-	 * @param startTime Timeline start time
-	 * @param endTime Timeline end time
-	 * @return Response object
-	 */
-	@GET
-	@Path("/timeline/scan/{tableName}/{packetIds}/{step}/{granularity}/{startTime}/{endTime}/{timezone}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@LoggedIn
-	@ApiOperation(value = "/hyperiot/hbaseconnector/timeline/scan/{tableName}/{packetIds}/{step}/{granularity}/{startTime}/{endTime}/{timezone}",
-			notes = "Service for scan data and get it back for timeline queries", httpMethod = "GET", produces = "application/json",
-			authorizations = @Authorization("jwt-auth"))
-	@ApiResponses(value = {@ApiResponse(code = 200, message = "Successful operation"),
-			@ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
-			@ApiResponse(code = 500, message = "Internal error")})
-	@JsonView(HyperIoTJSONView.Public.class)
-	public Response timelineScan(
-			@ApiParam(value = "Table name which count hpacket event number from", required = true) @PathParam("tableName") String tableName,
-			@ApiParam(value = "HPacket list, containing comma separated ID", required = true) @PathParam("packetIds") String packetIds,
-			@ApiParam(value = "Scanning step", required = true) @PathParam("step") String step,
-			@ApiParam(value = "Scanning granularity", required = true) @PathParam("granularity") String granularity,
-			@ApiParam(value = "Scanning start time", required = true) @PathParam("startTime") long startTime,
-			@ApiParam(value = "Scanning end time", required = true) @PathParam("endTime") long endTime,
-			@ApiParam(value = "Timezone Timezone of client which has invoked the method, i.e. Europe/Rome", required = true) @PathParam("timezone") String timezone) {
-		log.log(Level.FINE, "In Rest Service GET hyperiot/hbaseconnector/timeline/scan/{0}/{1}/{2}/{3}/{4}/{5}",
-				new Object[] {tableName, packetIds, step, granularity, startTime, endTime});
-		try {
-			HBaseTimelineColumnFamily convertedStep = HBaseTimelineColumnFamily.valueOf(step.toUpperCase());
-			HBaseTimelineColumnFamily convertedGranularity = HBaseTimelineColumnFamily.valueOf(granularity.toUpperCase());
-			if (convertedStep.getOrder() > convertedGranularity.getOrder())
-				throw new IllegalArgumentException("step must be prior or equal to granularity");
-			if(startTime > endTime)
-				throw new IllegalArgumentException("startTime must be prior or equal to endTime");
-			if(!Pattern.matches(PACKET_IDS_REGEX, packetIds))
-				throw new IllegalArgumentException("wrong packetIds parameter");
-			List<String> packetIdsList = new ArrayList<>(new HashSet<>(Arrays.asList(packetIds.trim().split(",")))); // remove duplicates
-			return Response.ok(service.timelineScan(this.getHyperIoTContext(), tableName, packetIdsList,
-					convertedStep, convertedGranularity, startTime, endTime, timezone)).build();
-		} catch (IOException | IllegalArgumentException | ParseException e) {
 			return handleException(e);
 		}
 	}

@@ -14,12 +14,10 @@ dependencies {
 	//Validation
 	compileOnly group: "javax.validation", name: "validation-api",version:project.javaxValidationVersion
 	compileOnly group: "org.hibernate",name: "hibernate-validator",version:project.hibernateValidatorVersion
-	//HBase Dependencies
-	compile (group: 'org.apache.hbase', name: 'hbase-client', version: project.hbaseVersion) {
-		exclude group: 'org.apache.avro', module: 'avro'
-	}
-	compile group: 'org.apache.hbase', name: 'hbase-protocol', version: project.hbaseVersion
-	compileOnly group: 'org.apache.avro', name: 'avro', version: '1.8.2'
+	// HBase dependency
+	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-hbaseBundles")
+	compileOnly group: "org.apache.avro", name: "avro", version: project.apacheAvroVersion
+	compileOnly group: "com.google.protobuf", name: "protobuf-java", version: project.googleProtobufVersion
 
 	//HyperIoTBase Dependencies
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
@@ -34,6 +32,9 @@ dependencies {
 	compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-actions")
     compileOnly project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-util")
 
+	compileOnly group: "it.acsoftware.hyperiot.hpacket", name: "HyperIoTHPacket-model", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.hproject", name: "HyperIoTHProject-api", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.hproject", name: "HyperIoTHProject-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.permission", name: "HyperIoTPermission-api", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.role", name: "HyperIoTRole-util", version:project.hyperIoTVersion
 }
