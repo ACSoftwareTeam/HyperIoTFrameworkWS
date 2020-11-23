@@ -15,6 +15,7 @@ dependencies {
 	sparkManager 'it.acsoftware.hyperiot.sparkmanager:HyperIoTSparkManager-actions:'+project.version
  	sparkManager 'it.acsoftware.hyperiot.sparkmanager:HyperIoTSparkManager-api:'+project.version
  	sparkManager 'it.acsoftware.hyperiot.sparkmanager:HyperIoTSparkManager-model:'+project.version
+ 	sparkManager 'it.acsoftware.hyperiot.sparkmanager:HyperIoTSparkManager-job:'+project.version
 	sparkManager 'it.acsoftware.hyperiot.sparkmanager:HyperIoTSparkManager-service:'+project.version
 	sparkManager 'it.acsoftware.hyperiot.sparkmanager:HyperIoTSparkManager-util:'+project.version
 	sparkManagerRest 'it.acsoftware.hyperiot.sparkmanager:HyperIoTSparkManager-service-rest:'+project.version

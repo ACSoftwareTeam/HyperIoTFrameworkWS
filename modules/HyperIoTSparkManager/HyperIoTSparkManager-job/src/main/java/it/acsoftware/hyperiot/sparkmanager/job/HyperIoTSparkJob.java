@@ -1,4 +1,4 @@
-package it.acsoftware.hyperiot.jobscheduler.job;
+package it.acsoftware.hyperiot.sparkmanager.job;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -6,16 +6,15 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@SuppressWarnings("unused")
-public class HyperIoTQuartzSparkJob implements Job {
+public class HyperIoTSparkJob implements Job {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HyperIoTQuartzSparkJob.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HyperIoTSparkJob.class);
     private long algorithmId;
     private String config;
     private long projectId;
     private String cronExpression;
 
-    public HyperIoTQuartzSparkJob() { }
+    public HyperIoTSparkJob() { }
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
