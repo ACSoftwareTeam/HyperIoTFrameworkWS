@@ -50,8 +50,13 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
     }
 
     @Deactivate
-    public void onDeactivate() throws SchedulerException {
-        scheduler.shutdown();
+    public void onDeactivate() {
+        try {
+            if (scheduler != null)
+                scheduler.shutdown();
+        } catch (SchedulerException e) {
+            log.severe(e.getMessage());
+        }
     }
 
     @Override
