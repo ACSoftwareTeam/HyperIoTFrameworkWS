@@ -63,7 +63,7 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
             throw new HyperIoTRuntimeException(errorMsg);
         }
         JobKey jobKey = jobDetail.getKey();
-        log.log(Level.INFO, "Adding job {} to scheduler", jobKey);
+        log.log(Level.INFO, "Adding job {0} to scheduler", jobKey);
         try {
             if (!scheduler.checkExists(jobKey)) {
                 // Add the the job to the store of scheduler
