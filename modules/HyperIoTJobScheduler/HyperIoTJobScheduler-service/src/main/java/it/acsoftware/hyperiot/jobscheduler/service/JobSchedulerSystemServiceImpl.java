@@ -2,11 +2,9 @@ package it.acsoftware.hyperiot.jobscheduler.service;
 
 import it.acsoftware.hyperiot.base.api.HyperIoTLeadershipRegistrar;
 import it.acsoftware.hyperiot.base.api.entity.HyperIoTJob;
+import it.acsoftware.hyperiot.base.exception.HyperIoTRuntimeException;
 import it.acsoftware.hyperiot.base.service.HyperIoTBaseSystemServiceImpl;
-import it.acsoftware.hyperiot.hproject.algorithm.api.HProjectAlgorithmSystemApi;
-import it.acsoftware.hyperiot.hproject.algorithm.model.HProjectAlgorithm;
 import it.acsoftware.hyperiot.jobscheduler.api.JobSchedulerSystemApi;
-import it.acsoftware.hyperiot.jobscheduler.job.HyperIoTQuartzSparkJob;
 import it.acsoftware.hyperiot.zookeeper.connector.api.ZookeeperConnectorSystemApi;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.osgi.framework.BundleContext;
@@ -18,11 +16,9 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.logging.Level;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
-import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
@@ -35,13 +31,10 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
 
     private Scheduler scheduler;
     private ZookeeperConnectorSystemApi zookeeperConnectorSystemApi;
-    private HProjectAlgorithmSystemApi hProjectAlgorithmSystemApi;
     private HyperIoTLeadershipRegistrar jobSchedulerLeadershipRegistrar;
 
     @Activate
     public void onActivate(BundleContext context) {
-        Collection<HProjectAlgorithm> hProjectAlgorithms =
-                hProjectAlgorithmSystemApi.findAll(null, null);
         try {
             // create the scheduler
             log.info("Create scheduler");
@@ -50,8 +43,6 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
                 log.info("Scheduler is on zk leader, start");
                 scheduler.start();
             }
-            for (HProjectAlgorithm hProjectAlgorithm : hProjectAlgorithms)
-                addJob(hProjectAlgorithm);
             addLeaderLatchListener();
         } catch (SchedulerException e) {
             log.severe(e.getMessage());
@@ -64,24 +55,26 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
     }
 
     @Override
-    public void addJob(HyperIoTJob job) {
-        HProjectAlgorithm hProjectAlgorithm = (HProjectAlgorithm) job;
-        JobKey jobKey = getJobKey(hProjectAlgorithm);
-        log.fine("Adding job " + jobKey + " to scheduler");
+    public void addJob(HyperIoTJob job) throws HyperIoTRuntimeException {
+        JobDetail jobDetail = job.getJobDetail();
+        if (jobDetail == null) {
+            String errorMsg = "Could not add job: jobDetail was null";
+            log.severe(errorMsg);
+            throw new HyperIoTRuntimeException(errorMsg);
+        }
+        JobKey jobKey = jobDetail.getKey();
+        log.log(Level.INFO, "Adding job {} to scheduler", jobKey);
         try {
             if (!scheduler.checkExists(jobKey)) {
-                JobDetail jobDetail = getJobDetail(hProjectAlgorithm, jobKey);
                 // Add the the job to the store of scheduler
                 scheduler.addJob(jobDetail, false);
-                schedule(hProjectAlgorithm, jobKey);
+                schedule(job);
             }
             else
-                log.warning("Job " + jobKey + " already exists, it has not been added");
+                log.log(Level.WARNING, "Job {0} already exists, it has not been added", jobKey);
         } catch(ParseException | SchedulerException e){
-            String SCHEDULING_ERROR = "Could not schedule job of algorithm {0} on project {1} with cron expression {2}";
-            log.log(Level.SEVERE, SCHEDULING_ERROR, new String[]{hProjectAlgorithm.getAlgorithm().getName(),
-                    hProjectAlgorithm.getProject().getName(), hProjectAlgorithm.getCronExpression()});
-            log.warning(e.getMessage());
+            log.log(Level.SEVERE, "Could not schedule job {0}: {1}", new Object[] {jobKey, e.getMessage()});
+            throw new HyperIoTRuntimeException(e);
         }
     }
 
@@ -98,8 +91,7 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
                 try {
                     scheduler.start();
                 } catch (SchedulerException e) {
-                    log.severe("Scheduler has not been started!");
-                    log.severe(e.getMessage());
+                    log.log(Level.SEVERE, "Scheduler has not been started: {0}", e.getMessage());
                 }
             }
 
@@ -109,8 +101,7 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
                 try {
                     scheduler.standby();
                 } catch (SchedulerException e) {
-                    log.severe("Scheduler has not been paused!");
-                    log.severe(e.getMessage());
+                    log.log(Level.SEVERE, "Scheduler has not been paused: {0}", e.getMessage());
                 }
             }
 
@@ -118,66 +109,39 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
     }
 
     @Override
-    public void deleteJob(HyperIoTJob job) {
-        HProjectAlgorithm hProjectAlgorithm = (HProjectAlgorithm) job;
-        JobKey jobKey = getJobKey(hProjectAlgorithm);
-        log.fine("Removing job " + jobKey + " from scheduler");
+    public void deleteJob(HyperIoTJob job) throws HyperIoTRuntimeException {
+        JobKey jobKey = job.getJobKey();
+        if (jobKey == null) {
+            String errorMsg = "Could not delete job: jobKey was null";
+            log.severe(errorMsg);
+            throw new HyperIoTRuntimeException(errorMsg);
+        }
+        log.log(Level.INFO, "Removing job {0} from scheduler", jobKey);
         try {
             if(!scheduler.checkExists(jobKey))
-                log.warning("Job " + jobKey + " does not exist");
+                log.log(Level.WARNING, "Job {0} does not exist", jobKey);
             else
-                unschedule(hProjectAlgorithm, jobKey);
+                unschedule(job);
         } catch (SchedulerException e) {
-            log.severe("Job" + jobKey + " has not been removed!");
-            log.severe(e.getMessage());
+            log.log(Level.SEVERE, "Job" + jobKey + " has not been removed: {1}",
+                    new Object[] {jobKey, e.getMessage()});
+            throw new HyperIoTRuntimeException(e);
         }
     }
 
     /**
-     * It returns detail of job
-     * @param hProjectAlgorithm Job which obtain details from
-     * @param jobKey Id of job
-     * @return JobDetail
-     */
-    private JobDetail getJobDetail(HProjectAlgorithm hProjectAlgorithm, JobKey jobKey) {
-        return newJob(HyperIoTQuartzSparkJob.class)
-                .withIdentity(jobKey)
-                .usingJobData("algorithmId", hProjectAlgorithm.getAlgorithm().getId())
-                .usingJobData("projectId", hProjectAlgorithm.getProject().getId())
-                .usingJobData("cronExpression", hProjectAlgorithm.getCronExpression())
-                .usingJobData("config", hProjectAlgorithm.getConfig())
-                .storeDurably() // Define a durable job instance (durable jobs can exist without triggers)
-                .build();
-    }
-
-    /**
-     * Get key of job, i.e. an HProjectAlgorithm entity. Each key is a pair, i.e. name and group.
-     * Name is id of HProjectAlgorithm
-     * Group is a string with the following format: "<algorithmId,projectId>"
-     * @param hProjectAlgorithm Job which derive key from
-     * @return Key of job
-     */
-    private JobKey getJobKey(HProjectAlgorithm hProjectAlgorithm) {
-        String group = "<" +
-                hProjectAlgorithm.getAlgorithm().getId() +
-                "," +
-                hProjectAlgorithm.getProject().getId() +
-                ">";
-        return new JobKey(String.valueOf(hProjectAlgorithm.getId()), group);
-    }
-
-    /**
      * This method tells to quartz scheduler to schedule job
-     * @param hProjectAlgorithm Job to be scheduled
-     * @param jobKey Id of job
+     * @param job Job to be scheduled
      * @throws ParseException ParseException
      * @throws SchedulerException SchedulerException
      */
-    private void schedule(HProjectAlgorithm hProjectAlgorithm, JobKey jobKey)
+    private void schedule(HyperIoTJob job)
             throws ParseException, SchedulerException {
-        log.fine("Scheduling job " + jobKey);
+        JobKey jobKey = job.getJobKey();
+        log.log(Level.INFO, "Scheduling job {0}", jobKey);
+        String cronExpression = job.getCronExpression();
         // Validate cron expression
-        CronExpression.validateExpression(hProjectAlgorithm.getCronExpression());
+        CronExpression.validateExpression(cronExpression);
         // Create trigger of job
         // If job has to be updated, its trigger exists: update it too
         TriggerKey triggerKey = new TriggerKey(jobKey.getName(), jobKey.getGroup());
@@ -191,7 +155,7 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
             triggerBuilder = newTrigger().withIdentity(triggerKey);
         }
         Trigger trigger = triggerBuilder
-                .withSchedule(cronSchedule(hProjectAlgorithm.getCronExpression()))
+                .withSchedule(cronSchedule(cronExpression))
                 .forJob(jobKey)
                 .build();
         // Tell quartz to schedule the job using trigger set above
@@ -203,41 +167,40 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
 
     /**
      * This method tells to quartz scheduler to remove job
-     * @param hProjectAlgorithm Job to be removed
-     * @param jobKey Id of job
+     * @param job Job to be removed
      */
-    private void unschedule(HProjectAlgorithm hProjectAlgorithm, JobKey jobKey) throws SchedulerException {
-        log.fine("Unscheduling job " + hProjectAlgorithm.getId());
+    private void unschedule(HyperIoTJob job) throws SchedulerException {
+        JobKey jobKey = job.getJobKey();
+        log.log(Level.INFO, "Unscheduling job {0}", jobKey);
         if (scheduler.checkExists(jobKey)) {
             scheduler.deleteJob(jobKey);
-            log.fine("Job " + hProjectAlgorithm.getId() + " has been unscheduled successfully");
+            log.log(Level.INFO, "Job {0} has been unscheduled successfully", jobKey);
         }
         else
-            log.fine("Job " + hProjectAlgorithm.getId() + " has not been scheduled yet");
+            log.log(Level.INFO, "Job {0} has not been scheduled yet", jobKey);
     }
 
     @Override
-    public void updateJob(HyperIoTJob job) {
-        HProjectAlgorithm hProjectAlgorithm = (HProjectAlgorithm) job;
-        log.fine("Updating job " + hProjectAlgorithm.getId() + " to scheduler");
-        JobKey jobKey = getJobKey(hProjectAlgorithm);
+    public void updateJob(HyperIoTJob job) throws HyperIoTRuntimeException {
+        JobDetail jobDetail = job.getJobDetail();
+        if (jobDetail == null) {
+            String errorMsg = "Could not update job: jobDetail was null";
+            log.severe(errorMsg);
+            throw new HyperIoTRuntimeException(errorMsg);
+        }
+        JobKey jobKey = job.getJobKey();
+        log.log(Level.INFO, "Updating job {0} to scheduler", jobKey);
         try {
             if (scheduler.checkExists(jobKey)) {
-                JobDetail jobDetail = getJobDetail(hProjectAlgorithm, jobKey);
                 scheduler.addJob(jobDetail, true);
-                schedule(hProjectAlgorithm, jobKey);
+                schedule(job);
             }
             else
                 log.warning("Job does not exists, it has been neither updated nor scheduled");
         } catch (ParseException | SchedulerException e) {
-            log.severe("Job" + jobKey + " has not been updated!");
-            log.severe(e.getMessage());
+            log.log(Level.SEVERE, "Job {} has not been updated: ", new Object[] {jobKey, e.getMessage()});
+            throw new HyperIoTRuntimeException(e);
         }
-    }
-
-    @Reference
-    public void setHProjectAlgorithmSystemApi(HProjectAlgorithmSystemApi hProjectAlgorithmSystemApi) {
-        this.hProjectAlgorithmSystemApi = hProjectAlgorithmSystemApi;
     }
 
     @Reference

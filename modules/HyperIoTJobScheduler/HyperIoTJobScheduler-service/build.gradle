@@ -23,10 +23,6 @@ dependencies {
 	//Project Dependencies
 	compileOnly project(":modules:HyperIoTJobScheduler:HyperIoTJobScheduler-api")
 	compileOnly group: 'org.apache.servicemix.bundles', name: 'org.apache.servicemix.bundles.quartz', version:project.quartzVersion
-	compileOnly group: "it.acsoftware.hyperiot.algorithm", name: "HyperIoTAlgorithm-model", version:project.hyperIoTVersion
-	compileOnly group: "it.acsoftware.hyperiot.hproject", name: "HyperIoTHProject-model", version:project.hyperIoTVersion
-	compileOnly group: "it.acsoftware.hyperiot.hproject.algorithm", name: "HyperIoTHProjectAlgorithm-api", version:project.hyperIoTVersion
-	compileOnly group: "it.acsoftware.hyperiot.hproject.algorithm", name: "HyperIoTHProjectAlgorithm-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.zookeeper.connector", name: "HyperIoTZookeeperConnector-api", version:project.hyperIoTVersion
 	compileOnly group: 'org.apache.curator', name: 'curator-recipes', version: '4.2.0'
 

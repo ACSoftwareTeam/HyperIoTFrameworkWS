@@ -4,10 +4,6 @@ Import-Package: \
     it.acsoftware.hyperiot.base.model;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.service;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.base.util;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.algorithm.model;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.hproject.model;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.hproject.algorithm.api;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.hproject.algorithm.model;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.jobscheduler.api;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.zookeeper.connector.api;version='${range;[===,+)}',\
     javax.persistence;version='${range;[===,+)}',\
@@ -22,4 +18,5 @@ Import-Package: \
     org.apache.curator,\
     org.slf4j
 Export-Package: it.acsoftware.hyperiot.jobscheduler.service
+DynamicImport-Package: *
 
