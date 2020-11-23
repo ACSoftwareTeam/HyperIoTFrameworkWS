@@ -14,7 +14,6 @@ dependencies {
  	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-api:'+project.version
  	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-model:'+project.version
 	jobScheduler 'it.acsoftware.hyperiot.jobscheduler:HyperIoTJobScheduler-service:'+project.version
-    jobScheduler 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.quartz:'+project.quartzVersion
 }
 
 
