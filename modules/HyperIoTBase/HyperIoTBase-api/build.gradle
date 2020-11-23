@@ -13,6 +13,9 @@ dependencies {
 	compileOnly group: "org.apache.aries.jpa", name: "org.apache.aries.jpa.api", version: project.apacheAriesJpaVersion
 	// WebSocket service
 	compileOnly group: 'org.eclipse.jetty.websocket', name: 'websocket-servlet', version: '9.4.18.v20190429'
+	// Quartz dependency
+	compileOnly group: 'org.apache.servicemix.bundles', name: 'org.apache.servicemix.bundles.quartz', version:project.quartzVersion
+
 }
 
 task buildHIT(type: GradleBuild) {
