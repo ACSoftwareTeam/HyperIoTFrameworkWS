@@ -37,8 +37,9 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
     public void onActivate(BundleContext context) {
         try {
             // create the scheduler
-            log.info("Create scheduler");
-            scheduler = StdSchedulerFactory.getDefaultScheduler();
+            log.info("Get scheduler");
+            StdSchedulerFactory stdSchedulerFactory = new StdSchedulerFactory("etc/quartz.properties");
+            scheduler = stdSchedulerFactory.getScheduler();
             if (zookeeperConnectorSystemApi.isLeader(jobSchedulerLeadershipRegistrar.getLeadershipPath())) {
                 log.info("Scheduler is on zk leader, start");
                 scheduler.start();
