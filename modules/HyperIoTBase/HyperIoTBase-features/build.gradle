@@ -14,7 +14,6 @@ configurations {
 }
 
 dependencies {
-    base 'org.apache.servicemix.bundles:org.apache.servicemix.bundles.quartz:'+project.quartzVersion
     base 'org.passay:passay:'+project.passayVersion
     base 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:' + project.jacksonVersion
     base 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:' + project.jacksonVersion

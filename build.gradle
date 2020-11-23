@@ -51,7 +51,7 @@ project.ext.set("cxfVersion","3.2.5");
 
 project.ext.set("swaggerUIVersion","3.20.5")
 
-project.ext.set("quartzVersion", "2.3.2_1")
+project.ext.set("quartzVersion", "2.3.2")
 
 project.ext.set("hbaseVersion", "1.4.9")
 project.ext.set("googleProtobufVersion", "3.6.1")

@@ -22,7 +22,7 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:project.hyperIoTVersion
 	//Project Dependencies
 	compileOnly project(":modules:HyperIoTJobScheduler:HyperIoTJobScheduler-api")
-	compileOnly group: 'org.apache.servicemix.bundles', name: 'org.apache.servicemix.bundles.quartz', version:project.quartzVersion
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: project.quartzVersion
 	compileOnly group: "it.acsoftware.hyperiot.zookeeper.connector", name: "HyperIoTZookeeperConnector-api", version:project.hyperIoTVersion
 	compileOnly group: 'org.apache.curator', name: 'curator-recipes', version: '4.2.0'
 
@@ -32,6 +32,8 @@ jar {
 	manifest {
 		attributes('dsannotations': '*')
 	}
+    zip64 true
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 task buildHIT(type: GradleBuild) {

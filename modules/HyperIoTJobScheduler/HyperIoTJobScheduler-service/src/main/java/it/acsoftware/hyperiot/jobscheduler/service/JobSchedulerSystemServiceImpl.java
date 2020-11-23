@@ -155,7 +155,7 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
                         .getService(configurationAdminReference);
                 try {
                     Configuration configuration = confAdmin
-                            .getConfiguration("org.apache.karaf.scheduler.quartz");
+                            .getConfiguration("it.acsoftware.hyperiot.scheduler");
                     if (configuration != null && configuration.getProperties() != null) {
                         Dictionary<String, Object> dict = configuration.getProperties();
                         List<String> keys = Collections.list(dict.keys());
@@ -168,12 +168,12 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
                     }
                 } catch (IOException e) {
                     log.log(Level.SEVERE,
-                            "Impossible to find org.apache.karaf.scheduler.quartz.cfg, please create it!", e);
+                            "Impossible to find it.acsoftware.hyperiot.scheduler.cfg, please create it!", e);
                     return null;
                 }
             }
             log.log(Level.SEVERE,
-                    "Impossible to find org.apache.karaf.scheduler.quartz.cfg, please create it!");
+                    "Impossible to find it.acsoftware.hyperiot.scheduler.cfg, please create it!");
             return null;
         }
         return quartzProps;

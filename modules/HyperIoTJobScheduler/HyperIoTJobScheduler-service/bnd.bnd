@@ -12,11 +12,10 @@ Import-Package: \
     org.apache.curator.framework.recipes.leader,\
     org.hibernate.validator;version='${range;[=,+)}',\
     org.osgi.framework,\
-    org.quartz,\
-    org.quartz.impl,\
     org.apache.zookeeper*,\
     org.apache.curator,\
     org.slf4j
-Export-Package: it.acsoftware.hyperiot.jobscheduler.service
+Export-Package: it.acsoftware.hyperiot.jobscheduler.service,\
+                org.quartz*;version=2.3.2
 DynamicImport-Package: *
 
