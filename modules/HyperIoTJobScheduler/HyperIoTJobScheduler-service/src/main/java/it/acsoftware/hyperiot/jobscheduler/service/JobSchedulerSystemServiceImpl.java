@@ -8,6 +8,9 @@ import it.acsoftware.hyperiot.jobscheduler.api.JobSchedulerSystemApi;
 import it.acsoftware.hyperiot.zookeeper.connector.api.ZookeeperConnectorSystemApi;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.cm.Configuration;
+import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -15,8 +18,13 @@ import org.osgi.service.component.annotations.Reference;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.*;
+import java.util.function.Function;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
@@ -29,16 +37,18 @@ import static org.quartz.TriggerBuilder.newTrigger;
 @Component(service = JobSchedulerSystemApi.class, immediate = true)
 public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServiceImpl implements JobSchedulerSystemApi {
 
+    private static final Logger log = Logger.getLogger("it.acsoftware.hyperiot");
     private Scheduler scheduler;
     private ZookeeperConnectorSystemApi zookeeperConnectorSystemApi;
     private HyperIoTLeadershipRegistrar jobSchedulerLeadershipRegistrar;
+    private static Properties quartzProps;
 
     @Activate
     public void onActivate(BundleContext context) {
         try {
             // create the scheduler
             log.info("Get scheduler");
-            StdSchedulerFactory stdSchedulerFactory = new StdSchedulerFactory("etc/quartz.properties");
+            StdSchedulerFactory stdSchedulerFactory = new StdSchedulerFactory(getQuartzProperties(context));
             scheduler = stdSchedulerFactory.getScheduler();
             if (zookeeperConnectorSystemApi.isLeader(jobSchedulerLeadershipRegistrar.getLeadershipPath())) {
                 log.info("Scheduler is on zk leader, start");
@@ -133,6 +143,40 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
                     new Object[] {jobKey, e.getMessage()});
             throw new HyperIoTRuntimeException(e);
         }
+    }
+
+    private static Properties getQuartzProperties(BundleContext context) {
+        if (quartzProps == null) {
+            ServiceReference<?> configurationAdminReference = context
+                    .getServiceReference(ConfigurationAdmin.class.getName());
+
+            if (configurationAdminReference != null) {
+                ConfigurationAdmin confAdmin = (ConfigurationAdmin) context
+                        .getService(configurationAdminReference);
+                try {
+                    Configuration configuration = confAdmin
+                            .getConfiguration("org.apache.karaf.scheduler.quartz");
+                    if (configuration != null && configuration.getProperties() != null) {
+                        Dictionary<String, Object> dict = configuration.getProperties();
+                        List<String> keys = Collections.list(dict.keys());
+                        Map<String, Object> dictCopy = keys.stream()
+                                .collect(Collectors.toMap(Function.identity(), dict::get));
+                        quartzProps = new Properties();
+                        quartzProps.putAll(dictCopy);
+                        log.log(Level.FINER, "Loaded properties For HyperIoT: {0}", quartzProps);
+                        return quartzProps;
+                    }
+                } catch (IOException e) {
+                    log.log(Level.SEVERE,
+                            "Impossible to find org.apache.karaf.scheduler.quartz.cfg, please create it!", e);
+                    return null;
+                }
+            }
+            log.log(Level.SEVERE,
+                    "Impossible to find org.apache.karaf.scheduler.quartz.cfg, please create it!");
+            return null;
+        }
+        return quartzProps;
     }
 
     /**
