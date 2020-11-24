@@ -1,11 +1,11 @@
 package it.acsoftware.hyperiot.jobscheduler.api;
 
 import it.acsoftware.hyperiot.base.api.HyperIoTBaseSystemApi;
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTJob;
+
 import it.acsoftware.hyperiot.base.exception.HyperIoTRuntimeException;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Interface component for %- projectSuffixUC SystemApi. This
  *         interface defines methods for additional operations.
  *

@@ -2,8 +2,6 @@ Export-Package: \
     it.acsoftware.hyperiot.base.api,\
     it.acsoftware.hyperiot.base.api.entity,\
     com.fasterxml*
-Import-Package: \
-    org.quartz;version='${range;[===,+)}'
 DynamicImport-Package: *
 
 

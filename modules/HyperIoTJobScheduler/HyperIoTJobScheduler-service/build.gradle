@@ -20,12 +20,13 @@ dependencies {
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-model", version:project.hyperIoTVersion
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-actions", version:project.hyperIoTVersion
-	//Project Dependencies
-	compileOnly project(":modules:HyperIoTJobScheduler:HyperIoTJobScheduler-api")
-    compile group: 'org.quartz-scheduler', name: 'quartz', version: project.quartzVersion
-	compileOnly group: "it.acsoftware.hyperiot.zookeeper.connector", name: "HyperIoTZookeeperConnector-api", version:project.hyperIoTVersion
-	compileOnly group: 'org.apache.curator', name: 'curator-recipes', version: '4.2.0'
+    compileOnly group: "it.acsoftware.hyperiot.zookeeper.connector", name: "HyperIoTZookeeperConnector-api", version:project.hyperIoTVersion
 
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: project.quartzVersion
+
+	compileOnly group: 'org.apache.curator', name: 'curator-recipes', version: '4.2.0'
+    //Project Dependencies
+    compileOnly project(":modules:HyperIoTJobScheduler:HyperIoTJobScheduler-api")
 }
 
 jar {

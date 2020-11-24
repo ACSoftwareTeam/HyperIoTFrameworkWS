@@ -57,7 +57,6 @@ karaf {
             feature 'hyperiot-assetcategory-basic'
             feature 'hyperiot-assettag-basic'
             feature 'hyperiot-sharedentity-basic'
-            feature 'hyperiot-jobscheduler'
             configurations 'core'
         }
 
@@ -84,7 +83,6 @@ karaf {
             feature 'hyperiot-assetcategory'
             feature 'hyperiot-assettag'
             feature 'hyperiot-sharedentity'
-            feature 'hyperiot-jobscheduler'
             configurations 'core'
         }
 

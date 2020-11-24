@@ -1,5 +1,6 @@
 Export-Package: it.acsoftware.hyperiot.jobscheduler.api
 Import-Package: \
     it.acsoftware.hyperiot.base.api;version='${range;[===,+)}',\
-    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}'
+    it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
+    org.quartz;version='${range;[===,+)}'
 

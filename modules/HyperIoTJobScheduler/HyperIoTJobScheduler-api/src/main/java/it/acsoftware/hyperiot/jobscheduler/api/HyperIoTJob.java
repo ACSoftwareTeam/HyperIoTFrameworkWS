@@ -1,4 +1,4 @@
-package it.acsoftware.hyperiot.base.api.entity;
+package it.acsoftware.hyperiot.jobscheduler.api;
 
 import org.quartz.JobDetail;
 import org.quartz.JobKey;

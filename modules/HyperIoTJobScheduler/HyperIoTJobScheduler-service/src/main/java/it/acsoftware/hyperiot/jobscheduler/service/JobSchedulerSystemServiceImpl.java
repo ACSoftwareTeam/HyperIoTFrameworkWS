@@ -1,9 +1,9 @@
 package it.acsoftware.hyperiot.jobscheduler.service;
 
 import it.acsoftware.hyperiot.base.api.HyperIoTLeadershipRegistrar;
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTJob;
 import it.acsoftware.hyperiot.base.exception.HyperIoTRuntimeException;
 import it.acsoftware.hyperiot.base.service.HyperIoTBaseSystemServiceImpl;
+import it.acsoftware.hyperiot.jobscheduler.api.HyperIoTJob;
 import it.acsoftware.hyperiot.jobscheduler.api.JobSchedulerSystemApi;
 import it.acsoftware.hyperiot.zookeeper.connector.api.ZookeeperConnectorSystemApi;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
