@@ -4,7 +4,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: project.osgiVersion
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 	// Project dependencies
-	compileOnly group: 'org.apache.servicemix.bundles', name: 'org.apache.servicemix.bundles.quartz', version:project.quartzVersion
+	compileOnly group: 'org.quartz-scheduler', name: 'quartz', version: project.quartzVersion
 }
 
 jar {
