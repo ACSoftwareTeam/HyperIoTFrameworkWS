@@ -56,7 +56,7 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
             }
             addLeaderLatchListener();
         } catch (SchedulerException e) {
-            log.severe(e.getMessage());
+            log.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -66,7 +66,7 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
             if (scheduler != null)
                 scheduler.shutdown();
         } catch (SchedulerException e) {
-            log.severe(e.getMessage());
+            log.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
