@@ -18,6 +18,7 @@ import org.osgi.service.component.annotations.Reference;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
@@ -38,15 +39,25 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServiceImpl implements JobSchedulerSystemApi {
 
     private static final Logger log = Logger.getLogger("it.acsoftware.hyperiot");
-    private Scheduler scheduler;
-    private ZookeeperConnectorSystemApi zookeeperConnectorSystemApi;
+
+    /**
+     * Reference to this OSGi component, although it is not used.
+     * We need it to tell Osgi to wait until datasource has been activated.
+     * In fact, we save scheduler information (i.e. job details and triggers) to database.
+     * Using Quartz scheduler, we specify datasource name in quartz.properties file.
+     * At activation time of this component, datasource service could not be activated.
+     * Referencing to it force this component to wait its fully activation.
+     */
+    private DataSource datasource;
     private HyperIoTLeadershipRegistrar jobSchedulerLeadershipRegistrar;
     private static Properties quartzProps;
+    private Scheduler scheduler;
+    private ZookeeperConnectorSystemApi zookeeperConnectorSystemApi;
 
     @Activate
     public void onActivate(BundleContext context) {
         try {
-            // create the scheduler
+            // Get the scheduler
             log.info("Get scheduler");
             StdSchedulerFactory stdSchedulerFactory = new StdSchedulerFactory(getQuartzProperties(context));
             scheduler = stdSchedulerFactory.getScheduler();
@@ -251,6 +262,11 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
             log.log(Level.SEVERE, "Job {} has not been updated: ", new Object[] {jobKey, e.getMessage()});
             throw new HyperIoTRuntimeException(e);
         }
+    }
+
+    @Reference(target = "(osgi.jndi.service.name=hyperiot)")
+    public void setDatasource(DataSource datasource) {
+        this.datasource = datasource;
     }
 
     @Reference

@@ -7,6 +7,7 @@ Import-Package: \
     it.acsoftware.hyperiot.jobscheduler.api;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.zookeeper.connector.api;version='${range;[===,+)}',\
     javax.persistence;version='${range;[===,+)}',\
+    javax.sql,\
     javax.validation;version='${range;[====,+)}',\
     org.apache.aries*,\
     org.apache.curator.framework.recipes.leader,\
