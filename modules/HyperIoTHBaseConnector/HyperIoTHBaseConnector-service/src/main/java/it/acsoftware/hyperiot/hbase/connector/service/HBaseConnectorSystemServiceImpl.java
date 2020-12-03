@@ -102,6 +102,11 @@ public final class HBaseConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
     }
 
     @Override
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    @Override
     public void insertData(String tableName, String rowKey, String columnFamily, String column, String cellValue)
             throws IOException {
         Table table = connection.getTable(TableName.valueOf(tableName));
