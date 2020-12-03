@@ -9,7 +9,6 @@ import org.apache.hadoop.fs.LocalFileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.io.IOUtils;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -26,17 +25,6 @@ public final class HadoopManagerSystemServiceImpl extends HyperIoTBaseSystemServ
 
     private Configuration configuration;
     private HadoopManagerUtil hadoopManagerUtil;
-
-    @Activate
-    public void activate() {
-        // Set bundle class loader in order to find classes defined inside this bundle:
-        // this is required for Configuration to load DistributedFileSystem class
-        this.configuration = new Configuration();
-        this.configuration.set("fs.hdfs.impl", DistributedFileSystem.class.getName());
-        this.configuration.set("fs.file.impl", LocalFileSystem.class.getName());
-        this.configuration.set("fs.defaultFS", hadoopManagerUtil.getDefaultFS());
-    }
-
 
     @Override
     public void copyFile(File file, String path, boolean deleteSource) throws IOException {
@@ -62,10 +50,18 @@ public final class HadoopManagerSystemServiceImpl extends HyperIoTBaseSystemServ
      * @return Hadoop FileSystem client from specified configuration
      */
     private FileSystem getHadoopFileSystem() {
+        // Set bundle class loader in order to find classes defined inside this bundle:
+        // this is required for Configuration to load DistributedFileSystem class
         ClassLoader karafClassLoader = Thread.currentThread().getContextClassLoader();
         ClassLoader thisClassLoader = this.getClass().getClassLoader();
         Thread.currentThread().setContextClassLoader(thisClassLoader);
         try {
+            if (configuration == null) {
+                configuration = new Configuration();
+                configuration.set("fs.hdfs.impl", DistributedFileSystem.class.getName());
+                configuration.set("fs.file.impl", LocalFileSystem.class.getName());
+                configuration.set("fs.defaultFS", hadoopManagerUtil.getDefaultFS());
+            }
             return FileSystem.get(configuration);
         } catch (Throwable t) {
             log.log(Level.SEVERE, t.getMessage(), t);
