@@ -4,6 +4,6 @@ Import-Package: \
     it.acsoftware.hyperiot.base.api.entity;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.hbase.connector.model;version='${range;[===,+)}',\
     it.acsoftware.hyperiot.hpacket.model;version='${range;[===,+)}',\
-    org.apache.hadoop.conf;version='${range;[===,+)}'
+    org.apache.hadoop.conf
 
 
