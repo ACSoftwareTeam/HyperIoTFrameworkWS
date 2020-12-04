@@ -293,7 +293,6 @@ public class HyperIoTSecurityUtil {
      */
     public static X500PrivateCredential createServerClientX509Cert(String issuerStr, String subjectStr, int validDays, KeyPair keyPair, Certificate caCert) {
         try {
-
             PKCS10CertificationRequest request = generateRequest(keyPair, subjectStr);
             BigInteger serialNumber = BigInteger.valueOf(System.currentTimeMillis());
             PrivateKey privateKey = HyperIoTSecurityUtil.getServerKeyPair().getPrivate(); // The CA's private key
@@ -309,7 +308,6 @@ public class HyperIoTSecurityUtil {
                     .getPublicKey()))
                 .addExtension(Extension.basicConstraints, true, new BasicConstraints(0));
             ContentSigner signer = new JcaContentSignerBuilder("SHA1withRSA").setProvider("BC").build(privateKey);
-
             X509Certificate signedCert = new JcaX509CertificateConverter().setProvider("BC").getCertificate
                 (certificateBuilder.build(signer));
             return new X500PrivateCredential(signedCert, keyPair.getPrivate());
@@ -401,7 +399,6 @@ public class HyperIoTSecurityUtil {
     }
 
     /**
-     *
      * @param padding
      * @return
      * @throws NoSuchPaddingException
@@ -418,7 +415,6 @@ public class HyperIoTSecurityUtil {
     }
 
     /**
-     *
      * @param padding
      * @return
      * @throws NoSuchPaddingException
@@ -435,7 +431,6 @@ public class HyperIoTSecurityUtil {
     }
 
     /**
-     *
      * @param ecb
      * @return
      * @throws NoSuchPaddingException
@@ -449,7 +444,6 @@ public class HyperIoTSecurityUtil {
     }
 
     /**
-     *
      * @return
      * @throws NoSuchPaddingException
      * @throws NoSuchAlgorithmException
@@ -460,7 +454,6 @@ public class HyperIoTSecurityUtil {
     }
 
     /**
-     *
      * @return
      * @throws NoSuchPaddingException
      * @throws NoSuchAlgorithmException
@@ -518,6 +511,48 @@ public class HyperIoTSecurityUtil {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
         return null;
+    }
+
+    /**
+     * Create a signature of the input string with the server private certificate.
+     *
+     * @param data         data to be signed
+     * @param encodeBase64 true if you want the result be encoded in base64
+     * @return
+     */
+    public static byte[] signDataWithServerCert(byte[] data, boolean encodeBase64) {
+        try {
+            Signature sig = Signature.getInstance("SHA1WithRSA");
+            sig.initSign(getServerKeyPair().getPrivate());
+            sig.update(data);
+            byte[] signatureBytes = sig.sign();
+            if (encodeBase64)
+                return Base64.getEncoder().encode(signatureBytes);
+            return signatureBytes;
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return null;
+    }
+
+    /**
+     * Verifies signed data with server cert
+     * @param inputData
+     * @param signedData
+     * @param decodeSignedDataFromBase64
+     * @return
+     */
+    public static boolean verifyDataSignedWithServerCert(byte[] inputData, byte[] signedData, boolean decodeSignedDataFromBase64) {
+        try {
+            Signature sig = Signature.getInstance("SHA1WithRSA");
+            sig.initVerify(getServerKeyPair().getPublic());
+            sig.update(inputData);
+            byte[] signatureBytes = (decodeSignedDataFromBase64) ? Base64.getDecoder().decode(signedData) : signedData;
+            return sig.verify(signatureBytes);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return false;
     }
 
     /**
