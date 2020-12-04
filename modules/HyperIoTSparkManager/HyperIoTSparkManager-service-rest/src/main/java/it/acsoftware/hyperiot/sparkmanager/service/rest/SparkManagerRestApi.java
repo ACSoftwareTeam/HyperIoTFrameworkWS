@@ -126,10 +126,10 @@ public class SparkManagerRestApi extends  HyperIoTBaseRestApi  {
 	 * @return Response object
 	 */
 	@POST
-	@Path("/submissions/create")
+	@Path("/submissions")
 	@Produces(MediaType.APPLICATION_JSON)
 	@LoggedIn
-	@ApiOperation(value = "/submissions/create", notes = "Service for submitting Spark job", httpMethod = "POST",
+	@ApiOperation(value = "/submissions", notes = "Service for submitting Spark job", httpMethod = "POST",
 			consumes = "application/json",
 			produces = "application/json",
 			authorizations = @Authorization("jwt-auth"))
@@ -139,7 +139,7 @@ public class SparkManagerRestApi extends  HyperIoTBaseRestApi  {
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response submitJob(
 			@ApiParam(value = "Job config in JSON format", required = true) SparkRestApiSubmissionRequest data) {
-		log.log(Level.FINE, "In Rest Service POST /hyperiot/sparkmanager/submissions/create");
+		log.log(Level.FINE, "In Rest Service POST /hyperiot/sparkmanager/submissions");
 		SparkRestApiResponse response = service.submitJob(this.getHyperIoTContext(), data);
 		return Response.ok(response).build();
 	}
