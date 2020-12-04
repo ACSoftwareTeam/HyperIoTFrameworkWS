@@ -370,7 +370,7 @@ public class PermissionManagerDefault implements HyperIoTPermissionManager {
                 .getServiceReference(entity.getSystemApiClassName());
             HyperIoTBaseEntitySystemApi service = (HyperIoTBaseEntitySystemApi) context
                 .getService(serviceReference);
-            HyperIoTBaseEntity persistedEntity = service.find(entity.getId(), null, null);
+            HyperIoTBaseEntity persistedEntity = service.find(entity.getId(), null);
             // verify the owner
             if (persistedEntity instanceof HyperIoTOwnedResource) {
                 resourceOwner = ((HyperIoTOwnedResource) persistedEntity).getUserOwner();
@@ -428,7 +428,7 @@ public class PermissionManagerDefault implements HyperIoTPermissionManager {
                     .getServiceReference(entity.getSystemApiClassName());
             HyperIoTBaseEntitySystemApi service = (HyperIoTBaseEntitySystemApi) context
                     .getService(serviceReference);
-            HyperIoTBaseEntity persistedEntity = service.find(entity.getId(), null, null);
+            HyperIoTBaseEntity persistedEntity = service.find(entity.getId(), null);
             // verify the owner
             if (persistedEntity instanceof HyperIoTSharedEntity) {
                 sharingUsers = sharedEntitySystemService.getSharingUsers(entity.getResourceName(), entity.getId(), null);

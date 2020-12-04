@@ -81,10 +81,10 @@ public final class RoleServiceImpl extends HyperIoTBaseEntityServiceImpl<Role> i
     public Collection<Role> getUserRoles(long userId, HyperIoTContext ctx) {
         log.log(Level.FINE, "invoking getUserRoles, by: " + userId);
         if (HyperIoTSecurityUtil.checkPermission(ctx, resourceName,
-                HyperIoTActionsUtil.getHyperIoTAction(resourceName, HyperIoTCrudAction.FIND))) {
+            HyperIoTActionsUtil.getHyperIoTAction(resourceName, HyperIoTCrudAction.FIND))) {
             HUser huser;
             try {
-                huser = this.userSystemService.find(userId, null, ctx);
+                huser = this.userSystemService.find(userId, ctx);
             } catch (NoResultException e) {
                 log.log(Level.FINE, "invoking getUserRoles, Entity not found! ");
                 throw new HyperIoTEntityNotFound();
@@ -92,7 +92,7 @@ public final class RoleServiceImpl extends HyperIoTBaseEntityServiceImpl<Role> i
             HashMap<String, Object> params = new HashMap<>();
             params.put("userId", huser.getId());
             return this.getSystemService()
-                    .queryForResultList("select r from Role r inner join r.users ur where ur.id=:userId", params);
+                .queryForResultList("select r from Role r inner join r.users ur where ur.id=:userId", params);
         }
         throw new HyperIoTUnauthorizedException();
     }
@@ -108,17 +108,17 @@ public final class RoleServiceImpl extends HyperIoTBaseEntityServiceImpl<Role> i
     public Role saveUserRole(long userId, long roleId, HyperIoTContext ctx) {
         log.log(Level.FINE, "invoking saveUserRole, save role: {0}  from user: {1}", new Object[]{roleId, userId});
         if (HyperIoTSecurityUtil.checkPermission(ctx, resourceName,
-                HyperIoTActionsUtil.getHyperIoTAction(resourceName, HyperIoTRoleAction.ASSIGN_MEMBERS))) {
+            HyperIoTActionsUtil.getHyperIoTAction(resourceName, HyperIoTRoleAction.ASSIGN_MEMBERS))) {
             HUser u;
             try {
-                u = this.userSystemService.find(userId, null, ctx);
+                u = this.userSystemService.find(userId, ctx);
             } catch (NoResultException e) {
                 log.log(Level.FINE, "invoking saveUserRole, HUser not found! ");
                 throw new HyperIoTEntityNotFound();
             }
             Role r;
             try {
-                r = this.systemService.find(roleId, null, ctx);
+                r = this.systemService.find(roleId, ctx);
             } catch (NoResultException e) {
                 log.log(Level.FINE, "invoking saveUserRole, Role not found! ");
                 throw new HyperIoTEntityNotFound();
@@ -147,17 +147,17 @@ public final class RoleServiceImpl extends HyperIoTBaseEntityServiceImpl<Role> i
     public Role removeUserRole(long userId, long roleId, HyperIoTContext ctx) {
         log.log(Level.FINE, "invoking removeUserRole, remove role: {0} from user: {1}", new Object[]{roleId, userId});
         if (HyperIoTSecurityUtil.checkPermission(ctx, resourceName,
-                HyperIoTActionsUtil.getHyperIoTAction(resourceName, HyperIoTRoleAction.REMOVE_MEMBERS))) {
+            HyperIoTActionsUtil.getHyperIoTAction(resourceName, HyperIoTRoleAction.REMOVE_MEMBERS))) {
             HUser u;
             try {
-                u = this.userSystemService.find(userId, null, ctx);
+                u = this.userSystemService.find(userId, ctx);
             } catch (NoResultException e) {
                 log.log(Level.FINE, "invoking removeUserRole, HUser not found! ");
                 throw new HyperIoTEntityNotFound();
             }
             Role r;
             try {
-                r = this.systemService.find(roleId, null, ctx);
+                r = this.systemService.find(roleId, ctx);
             } catch (NoResultException e) {
                 log.log(Level.FINE, "invoking removeUserRole, Role not found! ");
                 throw new HyperIoTEntityNotFound();

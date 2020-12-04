@@ -12,6 +12,7 @@ import it.acsoftware.hyperiot.base.action.util.HyperIoTShareAction;
 import it.acsoftware.hyperiot.base.api.HyperIoTContext;
 import it.acsoftware.hyperiot.base.api.HyperIoTUser;
 import it.acsoftware.hyperiot.base.api.entity.HyperIoTBaseEntitySystemApi;
+import it.acsoftware.hyperiot.base.api.entity.HyperIoTQueryFilter;
 import it.acsoftware.hyperiot.base.api.entity.HyperIoTSharedEntity;
 import it.acsoftware.hyperiot.base.exception.*;
 import it.acsoftware.hyperiot.base.security.util.HyperIoTSecurityUtil;
@@ -28,7 +29,7 @@ import javax.persistence.NoResultException;
 
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of SharedEntityApi interface.
  *         It is used to implement all additional methods in order to interact with the system layer.
  */
@@ -38,16 +39,16 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 	 * Injecting the SharedEntitySystemApi
 	 */
 	private SharedEntitySystemApi systemService;
-	
+
 	/**
 	 * Constructor for a SharedEntityServiceImpl
 	 */
 	public SharedEntityServiceImpl() {
 		super(SharedEntity.class);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return The current SharedEntitySystemApi
 	 */
 	protected SharedEntitySystemApi getSystemService() {
@@ -56,8 +57,8 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 	}
 
 	/**
-	 * 
-	 * @param sharedEntitySystemService Injecting via OSGi DS current systemService 
+	 *
+	 * @param sharedEntitySystemService Injecting via OSGi DS current systemService
 	 */
 	@Reference
 	protected void setSystemService(SharedEntitySystemApi sharedEntitySystemService) {
@@ -85,7 +86,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 				//find the entity
 				HyperIoTSharedEntity e;
 				try {
-					e = systemService.find(entity.getEntityId(), null, ctx);
+					e = systemService.find(entity.getEntityId(), ctx);
 				}catch (NoResultException ex) {
 					throw new HyperIoTEntityNotFound();
 				}
@@ -113,13 +114,22 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public SharedEntity find(long id, HashMap<String, Object> filter, HyperIoTContext ctx) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public SharedEntity find(long id, HyperIoTContext ctx) {
+        throw new UnsupportedOperationException();
+    }
 
+    @Override
+    public SharedEntity find(HashMap<String, Object> filter, HyperIoTContext ctx) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
+    @Override
+    public SharedEntity find(HyperIoTQueryFilter filter, HyperIoTContext ctx) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
 	public void removeByPK(String entityResourceName, long entityId, long userId, HyperIoTContext ctx) {
 		this.log.log(Level.FINE,
 				"Service Remove entity {0} with primary key (entityResourceName: {1}, entityId: {2}, userId: {3}) with context: {4}",
@@ -138,7 +148,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 			//find the entity
 			HyperIoTSharedEntity e;
 			try {
-				e = systemService.find(entityId, null, ctx);
+				e = systemService.find(entityId, ctx);
 			}catch (NoResultException ex) {
 				throw new HyperIoTEntityNotFound();
 			}

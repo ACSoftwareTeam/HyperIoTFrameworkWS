@@ -16,14 +16,14 @@ import it.acsoftware.hyperiot.shared.entity.model.SharedEntity;
 import it.acsoftware.hyperiot.base.service.entity.HyperIoTBaseEntitySystemServiceImpl;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of the SharedEntitySystemApi
  *         interface. This  class is used to implements all additional
  *         methods to interact with the persistence layer.
  */
 @Component(service = SharedEntitySystemApi.class, immediate = true)
 public final class SharedEntitySystemServiceImpl extends HyperIoTBaseEntitySystemServiceImpl<SharedEntity>  implements SharedEntitySystemApi {
-	
+
 	/**
 	 * Injecting the SharedEntityRepository to interact with persistence layer
 	 */
@@ -43,9 +43,9 @@ public final class SharedEntitySystemServiceImpl extends HyperIoTBaseEntitySyste
 		log.log(Level.FINEST, "invoking getRepository, returning: {}" , this.repository);
 		return repository;
 	}
-	
+
 	/**
-	 * @param SharedEntityRepository The current value of SharedEntityRepository to interact with persistence layer
+	 * @param sharedEntityRepository The current value of SharedEntityRepository to interact with persistence layer
 	 */
 	@Reference
 	protected void setRepository(SharedEntityRepository sharedEntityRepository) {
@@ -64,7 +64,7 @@ public final class SharedEntitySystemServiceImpl extends HyperIoTBaseEntitySyste
 	}
 
 	@Override
-	public SharedEntity find(long id, HashMap<String, Object> filter, HyperIoTContext ctx) {
+	public SharedEntity find(long id, HyperIoTContext ctx) {
 		throw new UnsupportedOperationException();
 	}
 

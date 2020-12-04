@@ -11,5 +11,7 @@ public interface HyperIoTResource {
      *
      * @return resource name of HyperIoT platform
      */
-    public String getResourceName();
+    default String getResourceName() {
+        return this.getClass().getName();
+    }
 }

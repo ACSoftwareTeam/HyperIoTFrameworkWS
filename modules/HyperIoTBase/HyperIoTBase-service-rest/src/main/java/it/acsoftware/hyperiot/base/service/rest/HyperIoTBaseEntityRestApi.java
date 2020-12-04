@@ -4,6 +4,7 @@ import it.acsoftware.hyperiot.base.api.HyperIoTRestAction;
 import it.acsoftware.hyperiot.base.api.entity.HyperIoTBaseEntity;
 import it.acsoftware.hyperiot.base.api.entity.HyperIoTBaseEntityApi;
 import it.acsoftware.hyperiot.base.api.entity.HyperIoTPaginableResult;
+import it.acsoftware.hyperiot.base.api.entity.HyperIoTQueryFilter;
 import it.acsoftware.hyperiot.base.util.HyperIoTConstants;
 
 import javax.ws.rs.core.Response;
@@ -83,7 +84,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
         log.log(Level.FINER, "Invoking Find entity from rest service for {0} with id: {1}"
                 , new Object[]{this.getEntityService().getEntityType().getSimpleName(), id});
         try {
-            HyperIoTBaseEntity entity = this.getEntityService().find(id, null, this.getHyperIoTContext());
+            HyperIoTBaseEntity entity = this.getEntityService().find(id, this.getHyperIoTContext());
             return Response.ok(entity).build();
         } catch (Throwable e) {
             return handleException(e);
@@ -99,7 +100,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
         log.log(Level.FINER, "Invoking Find All entity from rest service for {0}"
                 , this.getEntityService().getEntityType().getSimpleName());
         try {
-            Collection<T> list = this.getEntityService().findAll(null, this.getHyperIoTContext());
+            Collection<T> list = this.getEntityService().findAll((HyperIoTQueryFilter)null, this.getHyperIoTContext());
             return Response.ok(list).build();
         } catch (Throwable e) {
             return handleException(e);
@@ -135,7 +136,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
         if (page == null || page <= 0)
             page = 1;
         try {
-            HyperIoTPaginableResult<T> result = this.getEntityService().findAll(null, this.getHyperIoTContext(), delta, page);
+            HyperIoTPaginableResult<T> result = this.getEntityService().findAll((HyperIoTQueryFilter)null, this.getHyperIoTContext(), delta, page);
             return Response.ok(result).build();
         } catch (Throwable e) {
             return handleException(e);

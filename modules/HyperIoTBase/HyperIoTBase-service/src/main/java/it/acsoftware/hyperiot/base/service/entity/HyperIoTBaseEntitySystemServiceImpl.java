@@ -3,20 +3,20 @@ package it.acsoftware.hyperiot.base.service.entity;
 import it.acsoftware.hyperiot.base.api.HyperIoTAuthenticationProvider;
 import it.acsoftware.hyperiot.base.api.HyperIoTContext;
 import it.acsoftware.hyperiot.base.api.entity.*;
-import it.acsoftware.hyperiot.base.exception.*;
-import it.acsoftware.hyperiot.base.service.entity.validation.HyperIoTValidationProviderResolver;
+import it.acsoftware.hyperiot.base.exception.HyperIoTDuplicateEntityException;
+import it.acsoftware.hyperiot.base.exception.HyperIoTEntityNotFound;
+import it.acsoftware.hyperiot.base.exception.HyperIoTRuntimeException;
+import it.acsoftware.hyperiot.base.exception.HyperIoTScreenNameAlreadyExistsException;
+import it.acsoftware.hyperiot.base.service.HyperIoTBaseAbstractSystemService;
 import it.acsoftware.hyperiot.base.util.HyperIoTUtil;
 import org.apache.aries.jpa.template.EmConsumer;
 import org.apache.aries.jpa.template.EmFunction;
 import org.apache.aries.jpa.template.TransactionType;
 import org.osgi.framework.ServiceReference;
 
-import javax.validation.*;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @param <T> parameter that indicates a generic class
@@ -26,20 +26,7 @@ import java.util.logging.Logger;
  * persistence layer.
  */
 public abstract class HyperIoTBaseEntitySystemServiceImpl<T extends HyperIoTBaseEntity>
-        implements HyperIoTBaseEntitySystemApi<T> {
-    protected Logger log = Logger.getLogger("it.acsoftware.hyperiot");
-    /**
-     * Validates bean instances
-     */
-    private static Validator validator;
-
-    static {
-        Configuration<?> config = Validation.byDefaultProvider()
-                .providerResolver(new HyperIoTValidationProviderResolver()).configure();
-
-        ValidatorFactory factory = config.buildValidatorFactory();
-        validator = factory.getValidator();
-    }
+    extends HyperIoTBaseAbstractSystemService implements HyperIoTBaseEntitySystemApi<T> {
 
     /**
      * Generic class for HyperIoT platform
@@ -61,9 +48,9 @@ public abstract class HyperIoTBaseEntitySystemServiceImpl<T extends HyperIoTBase
      * @param entity parameter that indicates the object to validate
      * @return entity validated
      */
-    private Set<ConstraintViolation<HyperIoTBaseEntity>> validate(T entity) {
+    protected void validate(T entity) {
         log.log(Level.FINE,
-                "System Service Validating entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
+            "System Service Validating entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
         //avoiding to have different entities which can login but username amongst them must be alwats unique
         if (entity instanceof HyperIoTAuthenticable) {
             HyperIoTAuthenticable authenticable = (HyperIoTAuthenticable) entity;
@@ -75,7 +62,7 @@ public abstract class HyperIoTBaseEntitySystemServiceImpl<T extends HyperIoTBase
                 }
             }
         }
-        return validator.validate(entity);
+        super.validate(entity);
     }
 
     /**
@@ -88,22 +75,17 @@ public abstract class HyperIoTBaseEntitySystemServiceImpl<T extends HyperIoTBase
     @Override
     public T save(T entity, HyperIoTContext ctx) {
         log.log(Level.FINE,
-                "System Service Saving entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
-        Set<ConstraintViolation<HyperIoTBaseEntity>> validationResults = this.validate(entity);
-        if (validationResults.size() == 0) {
-            try {
-                return this.getRepository().save(entity);
-            } catch (HyperIoTDuplicateEntityException e) {
-                log.log(Level.WARNING, "Save failed: entity is duplicated!");
-                throw e;
-            } catch (Exception e1) {
-                throw new HyperIoTRuntimeException(e1.getMessage());
-            }
+            "System Service Saving entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
+        //throws runtime exception if validation is not met
+        this.validate(entity);
+        try {
+            return this.getRepository().save(entity);
+        } catch (HyperIoTDuplicateEntityException e) {
+            log.log(Level.WARNING, "Save failed: entity is duplicated!");
+            throw e;
+        } catch (Exception e1) {
+            throw new HyperIoTRuntimeException(e1.getMessage());
         }
-        log.log(Level.FINE, "System Service Validation failed for entity {0}: {1}, errors: {2}"
-                , new Object[]{this.type.getSimpleName(), entity, validationResults});
-        throw new HyperIoTValidationException(validationResults);
-
     }
 
     /**
@@ -115,21 +97,17 @@ public abstract class HyperIoTBaseEntitySystemServiceImpl<T extends HyperIoTBase
     @Override
     public T update(T entity, HyperIoTContext ctx) {
         log.log(Level.FINE,
-                "System Service Updating entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
-        Set<ConstraintViolation<HyperIoTBaseEntity>> validationResults = this.validate(entity);
-        if (validationResults.size() == 0) {
-            try {
-                return this.getRepository().update(entity);
-            } catch (HyperIoTDuplicateEntityException e) {
-                log.log(Level.WARNING, "Update failed: entity is duplicated!");
-                throw e;
-            } catch (Exception e1) {
-                throw new HyperIoTRuntimeException(e1.getMessage());
-            }
+            "System Service Updating entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
+        //throws runtime exception if validation is not met
+        this.validate(entity);
+        try {
+            return this.getRepository().update(entity);
+        } catch (HyperIoTDuplicateEntityException e) {
+            log.log(Level.WARNING, "Update failed: entity is duplicated!");
+            throw e;
+        } catch (Exception e1) {
+            throw new HyperIoTRuntimeException(e1.getMessage());
         }
-        log.log(Level.FINE, "System Service Validation failed for entity {0}: {1}, errors: {2}"
-                , new Object[]{this.type.getSimpleName(), entity, validationResults});
-        throw new HyperIoTValidationException(validationResults);
     }
 
     /**
@@ -141,8 +119,8 @@ public abstract class HyperIoTBaseEntitySystemServiceImpl<T extends HyperIoTBase
     @Override
     public void remove(long id, HyperIoTContext ctx) {
         log.log(Level.FINE,
-                "System Service Removing entity {0} with id {1}", new Object[]{this.type.getSimpleName(), id});
-        HyperIoTBaseEntity entity = find(id, null, ctx);
+            "System Service Removing entity {0} with id {1}", new Object[]{this.type.getSimpleName(), id});
+        HyperIoTBaseEntity entity = find(id, ctx);
         if (entity != null) {
             this.getRepository().remove(id);
             return;
@@ -151,17 +129,24 @@ public abstract class HyperIoTBaseEntitySystemServiceImpl<T extends HyperIoTBase
     }
 
     /**
-     * Find an existing entity in database
-     *
-     * @param id  parameter that indicates a entity id
-     * @param ctx user context of HyperIoT platform
-     * @return Entity if found
+     * @param id
+     * @param ctx
+     * @return
      */
     @Override
-    public T find(long id, HashMap<String, Object> filter, HyperIoTContext ctx) {
-        log.log(Level.FINE,
-                "System Service Finding entity " + this.type.getSimpleName() + " with id: " + id);
-        return this.getRepository().find(id, filter);
+    public T find(long id, HyperIoTContext ctx) {
+        return this.getRepository().find(id, ctx);
+    }
+
+
+    /**
+     * @param filter filter
+     * @param ctx    user context of HyperIoT platform
+     * @return
+     */
+    @Override
+    public T find(HyperIoTQueryFilter filter, HyperIoTContext ctx) {
+        return this.getRepository().find(filter, ctx);
     }
 
     /**
@@ -171,16 +156,16 @@ public abstract class HyperIoTBaseEntitySystemServiceImpl<T extends HyperIoTBase
      * @return Collection of entity
      */
     @Override
-    public Collection<T> findAll(HashMap<String, Object> filter, HyperIoTContext ctx) {
+    public Collection<T> findAll(HyperIoTQueryFilter filter, HyperIoTContext ctx) {
         log.log(Level.FINE, "System Service Finding All entities of " + this.type.getSimpleName());
         return this.getRepository().findAll(filter);
     }
 
     @Override
-    public HyperIoTPaginableResult<T> findAll(HashMap<String, Object> filter, HyperIoTContext ctx, int delta,
+    public HyperIoTPaginableResult<T> findAll(HyperIoTQueryFilter filter, HyperIoTContext ctx, int delta,
                                               int page) {
         log.log(Level.FINE, "System Service Finding All entities of " + this.type.getSimpleName()
-                + " with delta: " + delta + " num page:" + page);
+            + " with delta: " + delta + " num page:" + page);
         return this.getRepository().findAll(delta, page, filter);
     }
 

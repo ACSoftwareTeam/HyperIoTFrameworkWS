@@ -136,7 +136,7 @@ public final class HUserSystemServiceImpl extends HyperIoTBaseEntitySystemServic
      */
     @Override
     public HUser update(HUser u, HyperIoTContext ctx) {
-        HUser dbUser = this.find(u.getId(), null, ctx);
+        HUser dbUser = this.find(u.getId(), ctx);
         if (dbUser == null)
             throw new HyperIoTEntityNotFound();
         u.setPassword(dbUser.getPassword());

@@ -1,5 +1,7 @@
 package it.acsoftware.hyperiot.query.util.filter;
 
+import it.acsoftware.hyperiot.base.api.entity.HyperIoTQueryFilter;
+
 public class HyperIoTQueryEqualsFilter implements HyperIoTQueryFilter {
     private String name;
     private Object value;

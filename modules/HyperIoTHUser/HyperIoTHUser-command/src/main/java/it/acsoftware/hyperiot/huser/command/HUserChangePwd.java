@@ -3,14 +3,11 @@ package it.acsoftware.hyperiot.huser.command;
 import it.acsoftware.hyperiot.base.api.HyperIoTContext;
 import it.acsoftware.hyperiot.base.command.HyperIoTBaseCommand;
 import it.acsoftware.hyperiot.huser.api.HUserApi;
-import it.acsoftware.hyperiot.huser.model.HUser;
+
 import org.apache.karaf.shell.support.table.ShellTable;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import sun.awt.windows.ThemeReader;
 
-import java.util.Collection;
-import java.util.Iterator;
 
 @Component(
     property = {

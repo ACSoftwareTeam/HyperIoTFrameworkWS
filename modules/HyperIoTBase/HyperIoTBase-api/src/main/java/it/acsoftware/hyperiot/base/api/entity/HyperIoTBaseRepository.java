@@ -1,5 +1,6 @@
 package it.acsoftware.hyperiot.base.api.entity;
 
+import it.acsoftware.hyperiot.base.api.HyperIoTContext;
 import org.apache.aries.jpa.template.EmConsumer;
 import org.apache.aries.jpa.template.EmFunction;
 import org.apache.aries.jpa.template.TransactionType;
@@ -38,14 +39,22 @@ public interface HyperIoTBaseRepository<T extends HyperIoTBaseEntity> {
      */
     public void remove(long id);
 
+    /**
+     *
+     * @param id
+     * @param ctx
+     * @return
+     */
+    public T find(long id, HyperIoTContext ctx);
+
 
     /**
      * Find an existing entity in database
-     *
-     * @param id parameter that indicates a entity id
+     * @param filter filter
+     * @param ctx user context of HyperIoT platform
      * @return Entity if found
      */
-    public T find(long id, HashMap<String, Object> filter);
+    public T find(HyperIoTQueryFilter filter, HyperIoTContext ctx);
 
 
     /**
@@ -53,7 +62,7 @@ public interface HyperIoTBaseRepository<T extends HyperIoTBaseEntity> {
      *
      * @return Collection of entity
      */
-    public Collection<T> findAll(HashMap<String, Object> filter);
+    public Collection<T> findAll(HyperIoTQueryFilter filter);
 
 
     /**
@@ -61,7 +70,7 @@ public interface HyperIoTBaseRepository<T extends HyperIoTBaseEntity> {
      *
      * @return Collection of entity
      */
-    public HyperIoTPaginableResult<T> findAll(int delta, int page, HashMap<String, Object> filter);
+    public HyperIoTPaginableResult<T> findAll(int delta, int page, HyperIoTQueryFilter filter);
 
     /**
      * Find all entity with a query. This function return a collection of entity

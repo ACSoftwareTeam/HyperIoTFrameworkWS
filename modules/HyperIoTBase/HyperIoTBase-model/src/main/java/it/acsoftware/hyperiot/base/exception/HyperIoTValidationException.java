@@ -1,10 +1,9 @@
 package it.acsoftware.hyperiot.base.exception;
 
-import java.util.Set;
+import it.acsoftware.hyperiot.base.api.HyperIoTResource;
 
 import javax.validation.ConstraintViolation;
-
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTBaseEntity;
+import java.util.Set;
 
 /**
  * @author Aristide Cittadino Model class for HyperIoTValidationException. It is
@@ -20,14 +19,14 @@ public class HyperIoTValidationException extends HyperIoTRuntimeException {
     /**
      * Collection that contains constraint violations
      */
-    private Set<ConstraintViolation<HyperIoTBaseEntity>> violations;
+    private Set<ConstraintViolation<HyperIoTResource>> violations;
 
     /**
      * Constructor for HyperIoTValidationException
      *
      * @param violations parameter that indicates constraint violations produced
      */
-    public HyperIoTValidationException(Set<ConstraintViolation<HyperIoTBaseEntity>> violations) {
+    public HyperIoTValidationException(Set<ConstraintViolation<HyperIoTResource>> violations) {
         this.violations = violations;
     }
 
@@ -36,7 +35,7 @@ public class HyperIoTValidationException extends HyperIoTRuntimeException {
      *
      * @return Collection of constraint violations
      */
-    public Set<ConstraintViolation<HyperIoTBaseEntity>> getViolations() {
+    public Set<ConstraintViolation<HyperIoTResource>> getViolations() {
         return violations;
     }
 

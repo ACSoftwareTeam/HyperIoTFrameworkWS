@@ -43,13 +43,21 @@ public interface HyperIoTBaseEntitySystemApi<T extends HyperIoTBaseEntity> {
     public void remove(long id, HyperIoTContext ctx);
 
     /**
-     * Find an existing entity in database
      *
-     * @param id  parameter that indicates a entity id
+     * @param id
+     * @param ctx
+     * @return
+     */
+    public T find(long id, HyperIoTContext ctx);
+
+
+    /**
+     * Find an existing entity in database
+     * @param filter filter
      * @param ctx user context of HyperIoT platform
      * @return Entity if found
      */
-    public T find(long id,HashMap<String,Object> filter, HyperIoTContext ctx);
+    public T find(HyperIoTQueryFilter filter, HyperIoTContext ctx);
 
     /**
      * Find all entity in database
@@ -57,7 +65,7 @@ public interface HyperIoTBaseEntitySystemApi<T extends HyperIoTBaseEntity> {
      * @param ctx user context of HyperIoT platform
      * @return Collection of entity
      */
-    public Collection<T> findAll(HashMap<String,Object> filter,HyperIoTContext ctx);
+    public Collection<T> findAll(HyperIoTQueryFilter filter,HyperIoTContext ctx);
 
     /**
      * Find all entity in database
@@ -67,7 +75,7 @@ public interface HyperIoTBaseEntitySystemApi<T extends HyperIoTBaseEntity> {
      * @param page
      * @return Collection of entity
      */
-    public HyperIoTPaginableResult<T> findAll(HashMap<String,Object> filter,HyperIoTContext ctx, int delta, int page);
+    public HyperIoTPaginableResult<T> findAll(HyperIoTQueryFilter filter,HyperIoTContext ctx, int delta, int page);
 
     /**
      * Return current entity type

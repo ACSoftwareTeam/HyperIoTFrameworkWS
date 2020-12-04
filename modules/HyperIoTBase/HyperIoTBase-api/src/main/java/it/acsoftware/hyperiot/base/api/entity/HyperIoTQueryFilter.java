@@ -1,4 +1,4 @@
-package it.acsoftware.hyperiot.query.util.filter;
+package it.acsoftware.hyperiot.base.api.entity;
 
 public interface HyperIoTQueryFilter {
     boolean isNot();

@@ -2,6 +2,7 @@ package it.acsoftware.hyperiot.huser.command;
 
 import it.acsoftware.hyperiot.base.api.HyperIoTContext;
 import it.acsoftware.hyperiot.base.api.entity.HyperIoTPaginableResult;
+import it.acsoftware.hyperiot.base.api.entity.HyperIoTQueryFilter;
 import it.acsoftware.hyperiot.base.command.HyperIoTBaseCommand;
 import it.acsoftware.hyperiot.huser.api.HUserApi;
 import it.acsoftware.hyperiot.huser.model.HUser;
@@ -36,7 +37,7 @@ public class HUserListAll extends HyperIoTBaseCommand {
         ShellTable table = new ShellTable();
         table.column("User id");
         table.column("Username");
-        Collection<HUser> users = this.huserApi.findAll(null, context);
+        Collection<HUser> users = this.huserApi.findAll((HyperIoTQueryFilter) null, context);
         Iterator<HUser> it = users.iterator();
         while (it.hasNext()) {
             HUser u = it.next();

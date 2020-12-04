@@ -5,11 +5,7 @@ import it.acsoftware.hyperiot.base.api.HyperIoTAction;
 import it.acsoftware.hyperiot.base.api.HyperIoTContext;
 import it.acsoftware.hyperiot.base.api.HyperIoTOwnershipResourceService;
 import it.acsoftware.hyperiot.base.api.HyperIoTResource;
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTBaseEntity;
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTBaseEntityApi;
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTBaseEntitySystemApi;
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTPaginableResult;
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTSharingEntityService;
+import it.acsoftware.hyperiot.base.api.entity.*;
 import it.acsoftware.hyperiot.base.exception.HyperIoTEntityNotFound;
 import it.acsoftware.hyperiot.base.exception.HyperIoTRuntimeException;
 import it.acsoftware.hyperiot.base.exception.HyperIoTUnauthorizedException;
@@ -18,7 +14,7 @@ import it.acsoftware.hyperiot.base.util.HyperIoTConstants;
 import it.acsoftware.hyperiot.base.util.HyperIoTUtil;
 import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilterBuilder;
 import it.acsoftware.hyperiot.query.util.filter.HyperIoTQueryEqualsFilter;
-import it.acsoftware.hyperiot.query.util.filter.HyperIoTQueryFilter;
+import it.acsoftware.hyperiot.query.util.filter.HyperIoTQueryFilterBuilder;
 import it.acsoftware.hyperiot.query.util.filter.HyperIoTQueryInFilter;
 import it.acsoftware.hyperiot.shared.entity.api.SharedEntitySystemApi;
 import org.osgi.framework.InvalidSyntaxException;
@@ -87,7 +83,7 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
                 this.getAction(entity.getResourceName(), HyperIoTCrudAction.UPDATE))) {
                 HyperIoTResource r;
                 try {
-                    r = this.getSystemService().find(entity.getId(), null, ctx);
+                    r = this.getSystemService().find(entity.getId(), ctx);
                 } catch (NoResultException e) {
                     throw new HyperIoTEntityNotFound();
                 }
@@ -115,7 +111,7 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
             this.getAction(type.getName(), HyperIoTCrudAction.REMOVE))) {
             HyperIoTResource r;
             try {
-                r = this.getSystemService().find(id, null, ctx);
+                r = this.getSystemService().find(id, ctx);
             } catch (NoResultException e) {
                 throw new HyperIoTEntityNotFound();
             }
@@ -139,34 +135,40 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      * @param ctx user context of HyperIoT platform
      * @return Entity if found
      */
-    public T find(long id, HashMap<String, Object> filter, HyperIoTContext ctx) {
-        log.log(Level.FINE, "Service Find entity {0} with id {1} with context: {2}", new Object[]{this.type.getSimpleName(), id, ctx});
+    public T find(long id, HyperIoTContext ctx) {
+        HyperIoTQueryFilter queryFilter = new HyperIoTQueryEqualsFilter("id", id);
+        return this.find(queryFilter, ctx);
+    }
+
+    /**
+     * @param filter filter field-value pair which will be merged in "and" condition
+     * @param ctx    user context of HyperIoT platform
+     * @return
+     */
+    @Override
+    public T find(HashMap<String, Object> filter, HyperIoTContext ctx) {
+        HyperIoTQueryFilter finalFilter = HyperIoTQueryFilterBuilder.createFromMapWithAndCondition(filter);
+        return this.find(finalFilter, ctx);
+    }
+
+    /**
+     * @param filter filter
+     * @param ctx    user context of HyperIoT platform
+     * @return
+     */
+    @Override
+    public T find(HyperIoTQueryFilter filter, HyperIoTContext ctx) {
+        log.log(Level.FINE, "Service Find entity {0} with id {1} with context: {2}", new Object[]{this.type.getSimpleName(), filter, ctx});
         if (HyperIoTSecurityUtil.checkPermission(ctx, type.getName(),
             this.getAction(type.getName(), HyperIoTCrudAction.FIND))) {
             T entity;
             try {
-                if (HyperIoTOwnershipResourceService.class.isAssignableFrom(this.getClass())) {
-                    if (filter == null)
-                        filter = new HashMap<>();
-                    HyperIoTOwnershipResourceService ownedRes = (HyperIoTOwnershipResourceService) this;
-
-                    if (HyperIoTSharingEntityService.class.isAssignableFrom(this.getClass())) {
-                        //forcing the condition that user must own the entity or is shared to it
-                        List<Long> entityIds = getSharedEntitySystemService().getEntityIdsSharedWithUser(type.getName(), ctx.getLoggedEntityId(), null);
-                        HyperIoTQueryFilter queryFilter = new HyperIoTQueryEqualsFilter(ownedRes.getOwnerFieldPath(), ctx.getLoggedEntityId())
-                                .or(new HyperIoTQueryInFilter<>("id", entityIds));
-
-                        filter.put("queryFilter", queryFilter);
-                    }
-                    else {
-                        //forcing the condition that user must own the entity
-                        filter.put(ownedRes.getOwnerFieldPath(), ctx.getLoggedEntityId());
-                    }
-                }
-                entity = this.getSystemService().find(id, filter, ctx);
+                filter = this.createConditionForOwnedOrSharedResource(filter, ctx);
+                entity = this.getSystemService().find(filter, ctx);
             } catch (NoResultException e) {
                 throw new HyperIoTEntityNotFound();
             }
+
             if (entity != null) {
                 if (HyperIoTSecurityUtil.checkPermission(ctx, entity,
                     this.getAction(entity.getResourceName(), HyperIoTCrudAction.FIND)))
@@ -186,62 +188,90 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      * @param ctx user context of HyperIoT platform
      * @return Collection of entity
      */
-    public Collection<T> findAll(HashMap<String, Object> filter, HyperIoTContext ctx) {
+    public Collection<T> findAll(HyperIoTQueryFilter filter, HyperIoTContext ctx) {
         log.log(Level.FINE,
             "Service Find all entities {0} with context: {1}", new Object[]{this.type.getSimpleName(), ctx});
         if (HyperIoTSecurityUtil.checkPermission(ctx, type.getName(),
             this.getAction(type.getName(), HyperIoTCrudAction.FINDALL))) {
-            if (HyperIoTOwnershipResourceService.class.isAssignableFrom(this.getClass())) {
-                if (filter == null)
-                    filter = new HashMap<>();
-                HyperIoTOwnershipResourceService ownedRes = (HyperIoTOwnershipResourceService) this;
-
-                if (HyperIoTSharingEntityService.class.isAssignableFrom(this.getClass())) {
-                    //forcing the condition that user must own the entity or is shared to it
-                    List<Long> entityIds = getSharedEntitySystemService().getEntityIdsSharedWithUser(type.getName(), ctx.getLoggedEntityId(), null);
-                    HyperIoTQueryFilter queryFilter = new HyperIoTQueryEqualsFilter(ownedRes.getOwnerFieldPath(), ctx.getLoggedEntityId())
-                            .or(new HyperIoTQueryInFilter<>("id", entityIds));
-
-                    filter.put("queryFilter", queryFilter);
-                }
-                else {
-                    //forcing the condition that user must own the entity
-                    filter.put(ownedRes.getOwnerFieldPath(), ctx.getLoggedEntityId());
-                }
-
-            }
+            filter = this.createConditionForOwnedOrSharedResource(filter, ctx);
             return this.getSystemService().findAll(filter, ctx);
         }
         throw new HyperIoTUnauthorizedException();
     }
 
+    /**
+     * @param filter filter
+     * @param ctx    user context of HyperIoT platform
+     * @param delta
+     * @param page
+     * @return
+     */
     @Override
-    public HyperIoTPaginableResult<T> findAll(HashMap<String, Object> filter, HyperIoTContext ctx, int delta, int page) {
+    public HyperIoTPaginableResult<T> findAll(HyperIoTQueryFilter filter, HyperIoTContext ctx, int delta, int page) {
         log.log(Level.FINE,
             "Service Find all entities {0} with context: {1}", new Object[]{this.type.getSimpleName(), ctx});
         if (HyperIoTSecurityUtil.checkPermission(ctx, type.getName(),
             this.getAction(type.getName(), HyperIoTCrudAction.FINDALL))) {
-            if (HyperIoTOwnershipResourceService.class.isAssignableFrom(this.getClass())) {
-                if (filter == null)
-                    filter = new HashMap<>();
-                HyperIoTOwnershipResourceService ownedRes = (HyperIoTOwnershipResourceService) this;
-
-                if (HyperIoTSharingEntityService.class.isAssignableFrom(this.getClass())) {
-                    //forcing the condition that user must own the entity or is shared to it
-                    List<Long> entityIds = getSharedEntitySystemService().getEntityIdsSharedWithUser(type.getName(), ctx.getLoggedEntityId(), null);
-                    HyperIoTQueryFilter queryFilter = new HyperIoTQueryEqualsFilter(ownedRes.getOwnerFieldPath(), ctx.getLoggedEntityId())
-                            .or(new HyperIoTQueryInFilter<>("id", entityIds));
-
-                    filter.put("queryFilter", queryFilter);
-                }
-                else {
-                    //forcing the condition that user must own the entity
-                    filter.put(ownedRes.getOwnerFieldPath(), ctx.getLoggedEntityId());
-                }
-            }
+            filter = this.createConditionForOwnedOrSharedResource(filter, ctx);
             return this.getSystemService().findAll(filter, ctx, delta, page);
         }
         throw new HyperIoTUnauthorizedException();
+    }
+
+    /**
+     * @param filter
+     * @param ctx    user context of HyperIoT platform
+     * @return
+     */
+    @Override
+    public Collection<T> findAll(HashMap<String, Object> filter, HyperIoTContext ctx) {
+        HyperIoTQueryFilter finalFilter = HyperIoTQueryFilterBuilder.createFromMapWithAndCondition(filter);
+        return this.findAll(finalFilter, ctx);
+    }
+
+    /**
+     * @param filter
+     * @param ctx    user context of HyperIoT platform
+     * @param delta
+     * @param page
+     * @return
+     */
+    @Override
+    public HyperIoTPaginableResult<T> findAll(HashMap<String, Object> filter, HyperIoTContext ctx, int delta, int page) {
+        HyperIoTQueryFilter finalFilter = HyperIoTQueryFilterBuilder.createFromMapWithAndCondition(filter);
+        return this.findAll(filter, ctx, delta, page);
+    }
+
+    /**
+     *
+     * @param initialFilter
+     * @param ctx
+     * @return
+     */
+    private HyperIoTQueryFilter createConditionForOwnedOrSharedResource(HyperIoTQueryFilter initialFilter, HyperIoTContext ctx) {
+        try {
+            if (HyperIoTOwnershipResourceService.class.isAssignableFrom(this.getClass())) {
+                HyperIoTOwnershipResourceService ownedRes = (HyperIoTOwnershipResourceService) this;
+                HyperIoTQueryFilter ownedResourceFilter = null;
+                if (HyperIoTSharingEntityService.class.isAssignableFrom(this.getClass())) {
+                    //forcing the condition that user must own the entity or is shared to it
+                    List<Long> entityIds = getSharedEntitySystemService().getEntityIdsSharedWithUser(type.getName(), ctx.getLoggedEntityId(), null);
+                    ownedResourceFilter = new HyperIoTQueryEqualsFilter(ownedRes.getOwnerFieldPath(), ctx.getLoggedEntityId())
+                        .or(new HyperIoTQueryInFilter<>("id", entityIds));
+                } else {
+                    //forcing the condition that user must own the entity
+                    ownedResourceFilter = new HyperIoTQueryEqualsFilter(ownedRes.getOwnerFieldPath(), ctx.getLoggedEntityId());
+                }
+                if (initialFilter == null)
+                    initialFilter = ownedResourceFilter;
+                else {
+                    initialFilter = initialFilter.and(ownedResourceFilter);
+                }
+            }
+            return initialFilter;
+        } catch (NoResultException e) {
+            throw new HyperIoTEntityNotFound();
+        }
     }
 
     protected abstract HyperIoTBaseEntitySystemApi<T> getSystemService();
@@ -291,10 +321,11 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
 
     /**
      * Retrieve from OSGi the SharedEntitySystemApi
+     *
      * @return the SharedEntitySystemApi
      */
     public SharedEntitySystemApi getSharedEntitySystemService() {
-        SharedEntitySystemApi sharedEntitySystemService = (SharedEntitySystemApi)HyperIoTUtil.getService(SharedEntitySystemApi.class);
+        SharedEntitySystemApi sharedEntitySystemService = (SharedEntitySystemApi) HyperIoTUtil.getService(SharedEntitySystemApi.class);
         return sharedEntitySystemService;
     }
 

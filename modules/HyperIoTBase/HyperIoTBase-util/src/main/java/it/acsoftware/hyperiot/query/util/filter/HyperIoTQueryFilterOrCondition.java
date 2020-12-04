@@ -1,6 +1,8 @@
 package it.acsoftware.hyperiot.query.util.filter;
 
-public class HyperIoTQueryFilterOrCondition implements HyperIoTQueryFilter{
+import it.acsoftware.hyperiot.base.api.entity.HyperIoTQueryFilter;
+
+public class HyperIoTQueryFilterOrCondition implements HyperIoTQueryFilter {
     private HyperIoTQueryFilter left;
     private HyperIoTQueryFilter right;
     private boolean not;

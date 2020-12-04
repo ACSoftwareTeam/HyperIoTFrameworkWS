@@ -1,5 +1,7 @@
 package it.acsoftware.hyperiot.query.util.filter;
 
+import it.acsoftware.hyperiot.base.api.entity.HyperIoTQueryFilter;
+
 import java.util.Collection;
 
 public class HyperIoTQueryInFilter<T extends Collection<?>> implements HyperIoTQueryFilter {

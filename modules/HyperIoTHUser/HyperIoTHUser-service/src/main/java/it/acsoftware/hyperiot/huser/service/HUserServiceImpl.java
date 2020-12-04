@@ -36,7 +36,7 @@ import static it.acsoftware.hyperiot.base.util.HyperIoTConstants.OSGI_AUTH_PROVI
  * the system layer.
  */
 @Component(service = {HUserApi.class, HyperIoTAuthenticationProvider.class}, immediate = true, property = {
-        OSGI_AUTH_PROVIDER_RESOURCE + "=it.acsoftware.hyperiot.huser.model.HUser"
+    OSGI_AUTH_PROVIDER_RESOURCE + "=it.acsoftware.hyperiot.huser.model.HUser"
 })
 public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser> implements HUserApi, HyperIoTAuthenticationProvider {
 
@@ -117,7 +117,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
         try {
             String mailBody = mailService.generateTextFromTemplate(MailConstants.MAIL_TEMPLATE_REGISTRATION, params);
             this.mailService.sendMail(MailUtil.getUsername(), recipients, null, null, "HyperIoT Account Activation!",
-                    mailBody, null);
+                mailBody, null);
         } catch (Exception e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -132,7 +132,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
         if (loggedUser == null)
             throw new HyperIoTUnauthorizedException();
         if (loggedUser.getId() == user.getId() || HyperIoTSecurityUtil.checkPermission(context, user,
-                this.getAction(user.getResourceName(), HyperIoTCrudAction.UPDATE))) {
+            this.getAction(user.getResourceName(), HyperIoTCrudAction.UPDATE))) {
             loggedUser.setName(user.getName());
             loggedUser.setLastname(user.getLastname());
             loggedUser.setEmail(user.getEmail());
@@ -187,7 +187,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
             try {
                 String mailBody = mailService.generateTextFromTemplate(MailConstants.MAIL_TEMPLATE_PWD_RESET, params);
                 this.mailService.sendMail(MailUtil.getUsername(), recipients, null, null, "Reset Password", mailBody,
-                        null);
+                    null);
             } catch (Exception e) {
                 log.log(Level.SEVERE, e.getMessage(), e);
             }
@@ -201,7 +201,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
                                 String passwordConfirm) {
         HUser u;
         try {
-            u = this.systemService.find(userId, null, context);
+            u = this.systemService.find(userId, context);
         } catch (NoResultException e) {
             throw new HyperIoTEntityNotFound();
         }
@@ -211,7 +211,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
         if (oldPassword != null && newPassword != null && passwordConfirm != null) {
             if (HyperIoTUtil.getPasswordHash(oldPassword).equals(u.getPassword())) {
                 if (loggedUser.getId() == userId || HyperIoTSecurityUtil.checkPermission(context, u,
-                        this.getAction(u.getResourceName(), HyperIoTCrudAction.UPDATE))) {
+                    this.getAction(u.getResourceName(), HyperIoTCrudAction.UPDATE))) {
                     return this.systemService.changePassword(u, newPassword, passwordConfirm);
                 } else {
                     throw new HyperIoTUnauthorizedException();
@@ -258,7 +258,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
             }
             return huser != null;
         } catch (NoResultException e) {
-            log.log(Level.FINE, "No devices with device name: {0}" , hyperIoTAuthenticable.getScreenName());
+            log.log(Level.FINE, "No devices with device name: {0}", hyperIoTAuthenticable.getScreenName());
         }
         return false;
     }

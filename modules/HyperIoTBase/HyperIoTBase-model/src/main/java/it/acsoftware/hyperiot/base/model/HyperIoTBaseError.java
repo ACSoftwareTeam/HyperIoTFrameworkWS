@@ -1,11 +1,10 @@
 package it.acsoftware.hyperiot.base.model;
 
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTBaseEntity;
+import it.acsoftware.hyperiot.base.api.HyperIoTResource;
 import it.acsoftware.hyperiot.base.exception.HyperIoTDuplicateEntityException;
 import it.acsoftware.hyperiot.base.exception.HyperIoTScreenNameAlreadyExistsException;
 import it.acsoftware.hyperiot.base.exception.HyperIoTValidationException;
 import it.acsoftware.hyperiot.base.messages.HyperIoTValidationMessages;
-import it.acsoftware.hyperiot.base.util.HyperIoTConstants;
 import it.acsoftware.hyperiot.base.util.HyperIoTErrorConstants;
 import it.acsoftware.hyperiot.base.validation.PasswordMustMatch;
 import it.acsoftware.hyperiot.base.validation.ValidPassword;
@@ -196,9 +195,9 @@ public class HyperIoTBaseError {
     public static HyperIoTBaseError generateValidationError(HyperIoTValidationException e) {
         log.log(Level.FINE, "Invoking generateValidationError with HyperIoTValidationException " + e);
         List<HyperIoTValidationError> vErrors = new ArrayList<>();
-        Iterator<ConstraintViolation<HyperIoTBaseEntity>> it = e.getViolations().iterator();
+        Iterator<ConstraintViolation<HyperIoTResource>> it = e.getViolations().iterator();
         while (it.hasNext()) {
-            ConstraintViolation<HyperIoTBaseEntity> violation = it.next();
+            ConstraintViolation<HyperIoTResource> violation = it.next();
             String annotation = violation.getConstraintDescriptor().getAnnotation().annotationType().getSimpleName();
             HyperIoTValidationError vError = null;
             String message = "";

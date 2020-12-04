@@ -2,6 +2,7 @@ package it.acsoftware.hyperiot.base.repository;
 
 import it.acsoftware.hyperiot.base.api.HyperIoTAssetCategoryManager;
 import it.acsoftware.hyperiot.base.api.HyperIoTAssetTagManager;
+import it.acsoftware.hyperiot.base.api.HyperIoTContext;
 import it.acsoftware.hyperiot.base.api.entity.*;
 import it.acsoftware.hyperiot.base.exception.HyperIoTDuplicateEntityException;
 import it.acsoftware.hyperiot.base.exception.HyperIoTEntityNotFound;
@@ -9,7 +10,8 @@ import it.acsoftware.hyperiot.base.model.HyperIoTPaginatedResult;
 import it.acsoftware.hyperiot.base.util.HyperIoTUtil;
 import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilter;
 import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilterBuilder;
-import it.acsoftware.hyperiot.query.util.filter.*;
+import it.acsoftware.hyperiot.query.util.filter.HyperIoTQueryEqualsFilter;
+import it.acsoftware.hyperiot.query.util.filter.HyperIoTQueryFilterBuilder;
 import org.apache.aries.jpa.template.EmConsumer;
 import org.apache.aries.jpa.template.EmFunction;
 import org.apache.aries.jpa.template.JpaTemplate;
@@ -174,45 +176,35 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
         });
     }
 
-
+    /**
+     * @param id  parameter that indicates a entity id
+     * @param ctx user context of HyperIoT platform
+     * @return
+     */
     @Override
-    public T find(long id, HashMap<String, Object> filter) {
+    public T find(long id, HyperIoTContext ctx) {
         log.log(Level.FINE,
             "Repository Find entity {0} with id: {1}", new Object[]{this.type.getSimpleName(), id});
+        HyperIoTQueryFilter idFilter = new HyperIoTQueryEqualsFilter("id", id);
+        return this.find(idFilter, ctx);
+    }
+
+
+    /**
+     * @param filter filter
+     * @param ctx    user context of HyperIoT platform
+     * @return
+     */
+    @Override
+    public T find(HyperIoTQueryFilter filter, HyperIoTContext ctx) {
+        log.log(Level.FINE,
+            "Repository Find entity {0} with filter: {1}", new Object[]{this.type.getSimpleName(), filter});
         return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
             log.log(Level.FINE, "Transaction found, invoke find");
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<T> query = criteriaBuilder.createQuery(this.type);
             Root<T> entityDef = query.from(this.type);
-            Predicate condition = criteriaBuilder.equal(entityDef.get("id"), id);
-            if (filter != null && filter.size() > 0) {
-                Iterator<String> it = filter.keySet().iterator();
-                while (it.hasNext()) {
-                    Predicate filterCondition = null;
-
-                    String field = it.next();
-                    Object value = filter.get(field);
-
-                    if (value instanceof HyperIoTQueryFilter) {
-                        //found a filter of HyperIoTQueryFilter type
-                        HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter) value;
-                        filterCondition = createPredicateByQueryFilter(entityDef, criteriaBuilder, queryFilter);
-                    } else {
-                        //simple (name, value) filter
-                        String[] dottedRelationships = field.split("\\.");
-                        Path p = entityDef.get(dottedRelationships[0]);
-                        for (int i = 1; i < dottedRelationships.length; i++) {
-                            p = p.get(dottedRelationships[i]);
-                        }
-
-                        filterCondition = criteriaBuilder.equal(p, filter.get(field));
-                    }
-
-                    if (filterCondition != null) {
-                        condition = criteriaBuilder.and(condition, filterCondition);
-                    }
-                }
-            }
+            Predicate condition = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDef, criteriaBuilder, filter);
             Query q = entityManager.createQuery(query.select(entityDef).where(condition));
             try {
                 T entity = (T) q.getSingleResult();
@@ -222,55 +214,22 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                 log.log(Level.SEVERE, e.getMessage(), e);
                 throw e;
             }
-
         });
     }
-
 
     /**
      * Find all entity
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Collection<T> findAll(HashMap<String, Object> filter) {
+    public Collection<T> findAll(HyperIoTQueryFilter filter) {
         log.log(Level.FINE, "Repository Find All entities {0}", this.type.getSimpleName());
         return (Collection<T>) this.getJpa().txExpr(TransactionType.RequiresNew, entityManager -> {
             log.log(Level.FINE, "Transaction found, invoke findAll");
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<T> query = criteriaBuilder.createQuery(this.type);
             Root<T> entityDef = query.from(this.type);
-
-            Predicate condition = null;
-            if (filter != null && filter.size() > 0) {
-                Iterator<String> it = filter.keySet().iterator();
-                while (it.hasNext()) {
-                    Predicate filterCondition = null;
-
-                    String field = it.next();
-                    Object value = filter.get(field);
-
-                    if (value instanceof HyperIoTQueryFilter) {
-                        //found a filter of HyperIoTQueryFilter type
-                        HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter) value;
-                        filterCondition = createPredicateByQueryFilter(entityDef, criteriaBuilder, queryFilter);
-                    } else {
-                        //simple (name, value) filter
-                        String[] dottedRelationships = field.split("\\.");
-                        Path p = entityDef.get(dottedRelationships[0]);
-                        for (int i = 1; i < dottedRelationships.length; i++) {
-                            p = p.get(dottedRelationships[i]);
-                        }
-                        filterCondition = criteriaBuilder.equal(p, filter.get(field));
-                    }
-
-                    if (filterCondition != null) {
-                        if (condition != null)
-                            condition = criteriaBuilder.and(condition, filterCondition);
-                        else
-                            condition = filterCondition;
-                    }
-                }
-            }
+            Predicate condition = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDef, criteriaBuilder, filter);
             Query q = (condition != null) ? entityManager.createQuery(query.select(entityDef).where(condition)) : entityManager.createQuery(query.select(entityDef));
             try {
                 Collection<T> results = (Collection<T>) q.getResultList();
@@ -288,65 +247,19 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
      */
     @SuppressWarnings("unchecked")
     @Override
-    public HyperIoTPaginatedResult<T> findAll(int delta, int page, HashMap<String, Object> filter) {
+    public HyperIoTPaginatedResult<T> findAll(int delta, int page, HyperIoTQueryFilter filter) {
         log.log(Level.FINE, "Repository Find All entities {0}", this.type.getSimpleName());
         return (HyperIoTPaginatedResult<T>) this.getJpa().txExpr(TransactionType.RequiresNew,
             entityManager -> {
                 log.log(Level.FINE, "Transaction found, invoke findAll");
                 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-
                 //constructing query and count query
                 CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
                 CriteriaQuery<T> query = criteriaBuilder.createQuery(this.type);
-                Root<T> entityCountDef = countQuery.from(this.type);
                 Root<T> entityDef = query.from(this.type);
-                CriteriaQuery<Long> count = criteriaBuilder.createQuery(Long.class);
-                Predicate conditionCount = null;
-                Predicate condition = null;
-                if (filter != null && filter.size() > 0) {
-                    Iterator<String> it = filter.keySet().iterator();
-                    while (it.hasNext()) {
-                        Predicate filterCountCondition = null;
-                        Predicate filterCondition = null;
-
-                        String field = it.next();
-                        Object value = filter.get(field);
-
-                        if (value instanceof HyperIoTQueryFilter) {
-                            //found a filter of HyperIoTQueryFilter type
-                            HyperIoTQueryFilter queryFilter = (HyperIoTQueryFilter) value;
-                            filterCondition = createPredicateByQueryFilter(entityDef, criteriaBuilder, queryFilter);
-                            filterCountCondition = createPredicateByQueryFilter(entityCountDef, criteriaBuilder, queryFilter);
-                        } else {
-                            //simple (name, value) filter
-                            String[] dottedRelationships = field.split("\\.");
-                            Path p = entityDef.get(dottedRelationships[0]);
-                            Path pCount = entityCountDef.get(dottedRelationships[0]);
-                            for (int i = 1; i < dottedRelationships.length; i++) {
-                                p = p.get(dottedRelationships[i]);
-                                pCount = pCount.get(dottedRelationships[i]);
-                            }
-                            filterCountCondition = criteriaBuilder.equal(pCount, filter.get(field));
-                            filterCondition = criteriaBuilder.equal(p, filter.get(field));
-                        }
-
-                        if (filterCountCondition != null) {
-                            if (conditionCount != null)
-                                conditionCount = criteriaBuilder.and(conditionCount, filterCountCondition);
-                            else
-                                conditionCount = filterCountCondition;
-                        }
-
-                        if (filterCondition != null) {
-                            if (condition != null)
-                                condition = criteriaBuilder.and(condition, filterCondition);
-                            else
-                                condition = filterCondition;
-                        }
-                    }
-                }
-                countQuery = (conditionCount != null) ? countQuery.select(criteriaBuilder.count(entityCountDef)).where(conditionCount) : countQuery.select(criteriaBuilder.count(entityCountDef));
-                query = (condition != null) ? query.select(entityCountDef).where(conditionCount) : query.select(entityCountDef);
+                Predicate condition = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDef, criteriaBuilder, filter);
+                countQuery = (condition != null) ? countQuery.select(criteriaBuilder.count(entityDef)).where(condition) : countQuery.select(criteriaBuilder.count(entityDef));
+                query = (condition != null) ? query.select(entityDef).where(condition) : query.select(entityDef);
                 //Executing count query
                 Query countQueryFinal = entityManager.createQuery(countQuery);
                 Long countResults = (Long) countQueryFinal.getSingleResult();
@@ -601,82 +514,24 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
         }
     }
 
-    private Predicate createPredicateByQueryFilter(Root<T> entityDef, CriteriaBuilder criteriaBuilder, HyperIoTQueryFilter filter) {
-        if (filter instanceof HyperIoTQueryEqualsFilter) {
-            return createEqualPredicate(entityDef, criteriaBuilder, (HyperIoTQueryEqualsFilter) filter);
-        }
-        if (filter instanceof HyperIoTQueryInFilter) {
-            return createInPredicate(entityDef, criteriaBuilder, (HyperIoTQueryInFilter) filter);
-        }
-
-        if (filter instanceof HyperIoTQueryFilterAndCondition) {
-            return createAndPredicate(entityDef, criteriaBuilder, (HyperIoTQueryFilterAndCondition) filter);
-        }
-        if (filter instanceof HyperIoTQueryFilterOrCondition) {
-            return createOrPredicate(entityDef, criteriaBuilder, (HyperIoTQueryFilterOrCondition) filter);
+    private Predicate createPredicate(HashMap<String, Object> filter, Root<T> entityDef, CriteriaBuilder criteriaBuilder) {
+        if (filter != null && filter.size() > 0) {
+            Iterator<String> it = filter.keySet().iterator();
+            while (it.hasNext()) {
+                Predicate filterCondition = null;
+                String field = it.next();
+                Object value = filter.get(field);
+                //simple (name, value) filter
+                String[] dottedRelationships = field.split("\\.");
+                Path p = entityDef.get(dottedRelationships[0]);
+                for (int i = 1; i < dottedRelationships.length; i++) {
+                    p = p.get(dottedRelationships[i]);
+                    filterCondition = criteriaBuilder.equal(p, filter.get(field));
+                }
+                return filterCondition;
+            }
         }
         return null;
-    }
-
-    private Path<?> getPath(Root<T> entityDef, String name) {
-        String[] dottedRelationships = name.split("\\.");
-        Path<?> p = entityDef.get(dottedRelationships[0]);
-        for (int i = 1; i < dottedRelationships.length; i++) {
-            p = p.get(dottedRelationships[i]);
-        }
-        return p;
-    }
-
-    private Predicate createAndPredicate(Root<T> entityDef, CriteriaBuilder criteriaBuilder, HyperIoTQueryFilterAndCondition filter) {
-        HyperIoTQueryFilter left = filter.leftOperand();
-        HyperIoTQueryFilter right = filter.rightOperand();
-
-        Predicate leftPredicate = createPredicateByQueryFilter(entityDef, criteriaBuilder, left);
-        Predicate rightPredicate = createPredicateByQueryFilter(entityDef, criteriaBuilder, right);
-        Predicate andPredicate = criteriaBuilder.and(leftPredicate, rightPredicate);
-
-        if (filter.isNot()) {
-            return andPredicate.not();
-        }
-        return andPredicate;
-    }
-
-    private Predicate createEqualPredicate(Root<T> entityDef, CriteriaBuilder criteriaBuilder, HyperIoTQueryEqualsFilter filter) {
-        String name = filter.getName();
-        Object value = filter.getValue();
-
-        Path<?> p = getPath(entityDef, name);
-
-        if (filter.isNot()) {
-            return criteriaBuilder.notEqual(p, value);
-        }
-        return criteriaBuilder.equal(p, value);
-    }
-
-    private <C extends Collection<?>> Predicate createInPredicate(Root<T> entityDef, CriteriaBuilder criteriaBuilder, HyperIoTQueryInFilter<C> filter) {
-        String name = filter.getName();
-        C value = filter.getValues();
-
-        Path<?> p = getPath(entityDef, name);
-
-        if (filter.isNot()) {
-            return criteriaBuilder.not(p.in(value));
-        }
-        return p.in(value);
-    }
-
-    private Predicate createOrPredicate(Root<T> entityDef, CriteriaBuilder criteriaBuilder, HyperIoTQueryFilterOrCondition filter) {
-        HyperIoTQueryFilter left = filter.leftOperand();
-        HyperIoTQueryFilter right = filter.rightOperand();
-
-        Predicate leftPredicate = createPredicateByQueryFilter(entityDef, criteriaBuilder, left);
-        Predicate rightPredicate = createPredicateByQueryFilter(entityDef, criteriaBuilder, right);
-        Predicate orPredicate = criteriaBuilder.or(leftPredicate, rightPredicate);
-
-        if (filter.isNot()) {
-            return orPredicate.not();
-        }
-        return orPredicate;
     }
 
     /**
