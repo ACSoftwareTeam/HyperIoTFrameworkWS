@@ -2,6 +2,7 @@ package it.acsoftware.hyperiot.hbase.connector.api;
 
 import com.google.protobuf.ServiceException;
 import it.acsoftware.hyperiot.base.api.HyperIoTBaseSystemApi;
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.client.ResultScanner;
 
 import java.io.IOException;
@@ -57,6 +58,12 @@ public interface HBaseConnectorSystemApi extends HyperIoTBaseSystemApi {
      * @throws IOException IOException
      */
     void enableTable(String tableName) throws IOException;
+
+    /**
+     * It returns HBase configuration
+     * @return HBase configuration
+     */
+    Configuration getConfiguration();
 
     /**
      * It returns an HBase scanner, setting on it three filters:

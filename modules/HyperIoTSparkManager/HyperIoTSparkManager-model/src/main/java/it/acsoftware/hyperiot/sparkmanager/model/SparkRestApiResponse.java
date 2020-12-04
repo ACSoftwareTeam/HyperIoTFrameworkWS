@@ -42,4 +42,13 @@ public class SparkRestApiResponse {
         this.success = success;
     }
 
+    @Override
+    public String toString() {
+        return "SparkRestApiResponse{" +
+                "action='" + action + '\'' +
+                ", driverState='" + driverState + '\'' +
+                ", message='" + message + '\'' +
+                ", success=" + success +
+                '}';
+    }
 }

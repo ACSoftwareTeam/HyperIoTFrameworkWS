@@ -5,7 +5,7 @@ import java.util.Map;
 public class SparkRestApiSubmissionRequest {
 
     private String action;
-    private Object appArgs;
+    private String[] appArgs;
     private String appResource;
     private String clientSparkVersion;
     private Map<String, String> environmentVariables;
@@ -20,11 +20,11 @@ public class SparkRestApiSubmissionRequest {
         this.action = action;
     }
 
-    public Object getAppArgs() {
+    public String[] getAppArgs() {
         return appArgs;
     }
 
-    public void setAppArgs(Object appArgs) {
+    public void setAppArgs(String[] appArgs) {
         this.appArgs = appArgs;
     }
 
