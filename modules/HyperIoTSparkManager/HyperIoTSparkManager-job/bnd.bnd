@@ -1,4 +1,7 @@
 Export-Package: it.acsoftware.hyperiot.sparkmanager.job
 Import-Package: \
+    it.acsoftware.hyperiot.sparkmanager.api;version='${range;[===,+)}',\
+    it.acsoftware.hyperiot.sparkmanager.model;version='${range;[===,+)}',\
+    org.osgi.framework,\
     org.slf4j,\
     org.quartz;version='${range;[===,+)}'
