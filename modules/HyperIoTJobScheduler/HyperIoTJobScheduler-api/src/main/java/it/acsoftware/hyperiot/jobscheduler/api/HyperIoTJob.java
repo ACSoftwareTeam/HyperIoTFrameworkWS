@@ -33,6 +33,11 @@ public interface HyperIoTJob {
      * @return Key of job
      */
     JobKey getJobKey();
+
+    /**
+     * It returns job parameters
+     * @return Job parameters
+     */
     Map<String, Object> getJobParams();
 
 }
