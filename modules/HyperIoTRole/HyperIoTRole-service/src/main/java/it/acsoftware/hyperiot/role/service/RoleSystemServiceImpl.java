@@ -36,7 +36,7 @@ public final class RoleSystemServiceImpl extends HyperIoTBaseEntitySystemService
      * Return the current repository
      */
     public RoleRepository getRepository() {
-        log.log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
+        getLog().log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
         return repository;
     }
 
@@ -45,7 +45,7 @@ public final class RoleSystemServiceImpl extends HyperIoTBaseEntitySystemService
      */
     @Reference
     protected void setRepository(RoleRepository roleRepository) {
-        log.log(Level.FINEST, "invoking setRepository, setting: {0}" , roleRepository);
+        getLog().log(Level.FINEST, "invoking setRepository, setting: {0}" , roleRepository);
         this.repository = roleRepository;
     }
 
@@ -53,7 +53,7 @@ public final class RoleSystemServiceImpl extends HyperIoTBaseEntitySystemService
      * Collection of user roles obtained via query
      */
     public Collection<Role> getUserRoles(long userId) {
-        log.log(Level.FINE, "invoking getUserRoles, by: " + userId);
+        getLog().log(Level.FINE, "invoking getUserRoles, by: " + userId);
         HashMap<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         return this.queryForResultList(

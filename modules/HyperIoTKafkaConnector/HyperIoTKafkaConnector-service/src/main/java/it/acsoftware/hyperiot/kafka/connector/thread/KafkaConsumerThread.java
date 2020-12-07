@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * will be notified looking at their OSGi properties.
  */
 public class KafkaConsumerThread implements Runnable {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(KafkaConsumerThread.class.getName());
     private boolean consume;
     private final Consumer<byte[], byte[]> consumer;
     private BundleContext ctx;

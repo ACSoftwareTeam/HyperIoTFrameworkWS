@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Component(service = HadoopManagerUtil.class, immediate = true)
 public class HadoopManagerUtilImpl implements HadoopManagerUtil {
 
-    private static final Logger LOGGER = Logger.getLogger("it.acsoftware.hyperiot");
+    private static final Logger LOGGER = Logger.getLogger(HadoopManagerUtilImpl.class.getName());
 
     private Properties props;
 

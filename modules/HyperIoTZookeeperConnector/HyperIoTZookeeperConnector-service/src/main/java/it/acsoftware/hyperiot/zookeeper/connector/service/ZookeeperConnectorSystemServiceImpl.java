@@ -36,14 +36,13 @@ import java.util.stream.Collectors;
  */
 @Component(service = ZookeeperConnectorSystemApi.class, immediate = true)
 public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSystemServiceImpl implements ZookeeperConnectorSystemApi {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
     private CuratorFramework client;
     private Properties zkProperties;
     private HashMap<String, LeaderLatch> leaderSelectorsMap;
     private ServiceTracker<HyperIoTLeadershipRegistrar, HyperIoTLeadershipRegistrar> leadershipRegistrarServiceTracker;
 
     public ZookeeperConnectorSystemServiceImpl() {
-        log.log(Level.FINE, "Creating service for ZookeeperConnectorSystemApi");
+        getLog().log(Level.FINE, "Creating service for ZookeeperConnectorSystemApi");
         leaderSelectorsMap = new HashMap<>();
     }
 
@@ -53,11 +52,11 @@ public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSyste
      */
     @Activate
     public void activate(BundleContext bundleContext) {
-        log.log(Level.FINE, "Activating bundle Zookeeper Connector System API");
+        getLog().log(Level.FINE, "Activating bundle Zookeeper Connector System API");
         this.loadZookeeperConfig();
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 10);
         Object zkConn = zkProperties.getOrDefault(HyperIoTZookeeperConstants.ZOOKEEPER_CONNECTION_URL, "localhost:2181");
-        log.log(Level.FINE, "Connecting to zookeeper {0}", new Object[]{zkConn});
+        getLog().log(Level.FINE, "Connecting to zookeeper {0}", new Object[]{zkConn});
         this.client = CuratorFrameworkFactory.newClient((String) (zkProperties.getOrDefault(HyperIoTZookeeperConstants.ZOOKEEPER_CONNECTION_URL, "localhost:2181")), retryPolicy);
         client.start();
         this.registerContainerInfo();
@@ -91,7 +90,7 @@ public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSyste
 
     @Deactivate
     public void deactivate() {
-        log.log(Level.FINE, "Disconnecting from Zookeeper....");
+        getLog().log(Level.FINE, "Disconnecting from Zookeeper....");
         this.client.close();
         leadershipRegistrarServiceTracker.close();
     }
@@ -107,10 +106,10 @@ public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSyste
             String path = HyperIoTZookeeperConstants.HYPERIOT_ZOOKEEPER_BASE_PATH + "/" + layer + "/" + nodeId;
             data.addinfo("nodeId", nodeId);
             data.addinfo("layer", layer);
-            log.log(Level.FINE, "Registering Container info on zookeeper with nodeId: {0} layer: {1} data: \n {2}", new Object[]{nodeId, layer, new String(data.getBytes())});
+            getLog().log(Level.FINE, "Registering Container info on zookeeper with nodeId: {0} layer: {1} data: \n {2}", new Object[]{nodeId, layer, new String(data.getBytes())});
             this.create(CreateMode.EPHEMERAL, path, data.getBytes(), true);
         } catch (Exception e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
+            getLog().log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -119,7 +118,7 @@ public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSyste
         try {
             this.startLeaderLatch(zkPath);
         } catch (Exception e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
+            getLog().log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -128,7 +127,7 @@ public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSyste
         try {
             this.closeLeaderLatch(zkPath);
         } catch (Exception e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
+            getLog().log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -136,7 +135,7 @@ public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSyste
      * Loads zookeeper config
      */
     private void loadZookeeperConfig() {
-        log.log(Level.FINE, "Zookeeper Properties not cached, reading from .cfg file...");
+        getLog().log(Level.FINE, "Zookeeper Properties not cached, reading from .cfg file...");
         BundleContext context = HyperIoTUtil.getBundleContext(this.getClass());
         ServiceReference<?> configurationAdminReference = context
             .getServiceReference(ConfigurationAdmin.class.getName());
@@ -148,17 +147,17 @@ public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSyste
                 Configuration configuration = confAdmin.getConfiguration(
                     HyperIoTConstants.HYPERIOT_ZOOKEEPER_CONNECTOR_CONFIG_FILE_NAME);
                 if (configuration != null && configuration.getProperties() != null) {
-                    log.log(Level.FINE, "Reading properties for Zookeeper....");
+                    getLog().log(Level.FINE, "Reading properties for Zookeeper....");
                     Dictionary<String, Object> dict = configuration.getProperties();
                     List<String> keys = Collections.list(dict.keys());
                     Map<String, Object> dictCopy = keys.stream()
                         .collect(Collectors.toMap(Function.identity(), dict::get));
                     zkProperties = new Properties();
                     zkProperties.putAll(dictCopy);
-                    log.log(Level.FINER, "Loaded properties For Zookeeper: {0}", zkProperties);
+                    getLog().log(Level.FINER, "Loaded properties For Zookeeper: {0}", zkProperties);
                 }
             } catch (Exception e) {
-                log.log(Level.SEVERE,
+                getLog().log(Level.SEVERE,
                     "Impossible to find {0}, please create it!", new Object[]{HyperIoTConstants.HYPERIOT_ZOOKEEPER_CONNECTOR_CONFIG_FILE_NAME, e});
             }
         }
@@ -203,11 +202,11 @@ public final class ZookeeperConnectorSystemServiceImpl extends HyperIoTBaseSyste
     @Override
     public void addListener(LeaderLatchListener listener, String leadershipPath) {
         String zkPath = HyperIoTZookeeperConstants.HYPERIOT_ZOOKEEPER_BASE_PATH + leadershipPath;
-        log.info("Adding listener to LeaderLatch on zkPath " + zkPath);
+        getLog().info("Adding listener to LeaderLatch on zkPath " + zkPath);
         if (leaderSelectorsMap.containsKey(zkPath))
             leaderSelectorsMap.get(zkPath).addListener(listener);
         else
-            log.warning("Could not add listener: LeaderLatch does not exist on zkPath " + zkPath);
+            getLog().warning("Could not add listener: LeaderLatch does not exist on zkPath " + zkPath);
     }
 
     /**

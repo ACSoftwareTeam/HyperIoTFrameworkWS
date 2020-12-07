@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  */
 @Component(immediate = true)
 public class KafkaWebSocketBridgeKeySessionMonitor implements KafkaMessageReceiver {
-    private Logger logger = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger logger = Logger.getLogger(KafkaWebSocketBridgeKeySessionMonitor.class.getName());
     private KafkaConnectorSystemApi kafkaConnectorSystemApi;
     /**
      *

@@ -52,7 +52,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 	 * @return The current SharedEntitySystemApi
 	 */
 	protected SharedEntitySystemApi getSystemService() {
-		log.log(Level.FINEST, "invoking getSystemService, returning: {}" , this.systemService);
+		getLog().log(Level.FINEST, "invoking getSystemService, returning: {}" , this.systemService);
 		return systemService;
 	}
 
@@ -62,7 +62,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 	 */
 	@Reference
 	protected void setSystemService(SharedEntitySystemApi sharedEntitySystemService) {
-		log.log(Level.FINEST, "invoking setSystemService, setting: {}" , systemService);
+		getLog().log(Level.FINEST, "invoking setSystemService, setting: {}" , systemService);
 		this.systemService = sharedEntitySystemService ;
 	}
 
@@ -131,7 +131,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 
     @Override
 	public void removeByPK(String entityResourceName, long entityId, long userId, HyperIoTContext ctx) {
-		this.log.log(Level.FINE,
+		this.getLog().log(Level.FINE,
 				"Service Remove entity {0} with primary key (entityResourceName: {1}, entityId: {2}, userId: {3}) with context: {4}",
 				new Object[]{this.getEntityType().getSimpleName(), entityResourceName, entityId, userId, ctx});
 
@@ -177,7 +177,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 
 	@Override
 	public SharedEntity findByPK(String entityResourceName, long entityId, long userId, HashMap<String, Object> filter, HyperIoTContext ctx) {
-		this.log.log(Level.FINE,
+		this.getLog().log(Level.FINE,
 				"Service Find entity {0} with primary key (entityResourceName: {1}, entityId: {2}, userId: {3}) with context: {4}",
 				new Object[]{this.getEntityType().getSimpleName(), entityResourceName, entityId, userId, ctx});
 
@@ -206,7 +206,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 
 	@Override
 	public List<SharedEntity> findByEntity(String entityResourceName, long entityId, HashMap<String, Object> filter, HyperIoTContext ctx) {
-		this.log.log(Level.FINE, "Service Find entity {0} with entityResourceName {1}, entityId {2} with context: {3}",
+		this.getLog().log(Level.FINE, "Service Find entity {0} with entityResourceName {1}, entityId {2} with context: {3}",
 				new Object[]{this.getEntityType().getSimpleName(), entityResourceName, entityId, ctx});
 		if (HyperIoTSecurityUtil.checkPermission(ctx, this.getEntityType().getName(), this.getAction(this.getEntityType().getName(), HyperIoTCrudAction.FIND))) {
 			return this.getSystemService().findByEntity(entityResourceName, entityId, filter, ctx);
@@ -217,7 +217,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 
 	@Override
 	public List<SharedEntity> findByUser(long userId, HashMap<String, Object> filter, HyperIoTContext ctx) {
-		this.log.log(Level.FINE, "Service Find entity {0} with userId {1} with context: {2}", new Object[]{this.getEntityType().getSimpleName(), userId, ctx});
+		this.getLog().log(Level.FINE, "Service Find entity {0} with userId {1} with context: {2}", new Object[]{this.getEntityType().getSimpleName(), userId, ctx});
 		if (HyperIoTSecurityUtil.checkPermission(ctx, this.getEntityType().getName(), this.getAction(this.getEntityType().getName(), HyperIoTCrudAction.FIND))) {
 			return this.getSystemService().findByUser(userId, filter, ctx);
 		} else {
@@ -227,7 +227,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 
 	@Override
 	public List<HyperIoTUser> getSharingUsers(String entityResourceName, long entityId, HyperIoTContext context) {
-		this.log.log(Level.FINE, "Service getSharingUsers {0} with entityResourceName {1}, entityId {2} with context: {3}",
+		this.getLog().log(Level.FINE, "Service getSharingUsers {0} with entityResourceName {1}, entityId {2} with context: {3}",
 				new Object[]{this.getEntityType().getSimpleName(), entityResourceName, entityId, context});
 		if (HyperIoTSecurityUtil.checkPermission(context, this.getEntityType().getName(), this.getAction(this.getEntityType().getName(), HyperIoTCrudAction.FIND))) {
 			return this.getSystemService().getSharingUsers(entityResourceName, entityId, context);
@@ -238,7 +238,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 
 	@Override
 	public List<Long> getEntityIdsSharedWithUser(String entityResourceName, long userId, HyperIoTContext context) {
-		this.log.log(Level.FINE, "Service getEntityIdsSharedWithUser {0} with entityResourceName {1}, userId {2} with context: {3}",
+		this.getLog().log(Level.FINE, "Service getEntityIdsSharedWithUser {0} with entityResourceName {1}, userId {2} with context: {3}",
 				new Object[]{this.getEntityType().getSimpleName(), entityResourceName, userId, context});
 		if (HyperIoTSecurityUtil.checkPermission(context, this.getEntityType().getName(), this.getAction(this.getEntityType().getName(), HyperIoTCrudAction.FIND))) {
 			return this.getSystemService().getEntityIdsSharedWithUser(entityResourceName, userId, context);
@@ -248,7 +248,7 @@ public final class SharedEntityServiceImpl extends HyperIoTBaseEntityServiceImpl
 	}
 
 	private HyperIoTBaseEntitySystemApi<? extends HyperIoTSharedEntity> getEntitySystemService(Class<?> entityClass) {
-		this.log.log(Level.FINE, "Get system service of entity {0}", new Object[]{this.getEntityType().getSimpleName()});
+		this.getLog().log(Level.FINE, "Get system service of entity {0}", new Object[]{this.getEntityType().getSimpleName()});
 
 		Class<?> systemApiClass = null;
 		try {

@@ -37,7 +37,7 @@ public class AuthenticationRestApi extends HyperIoTBaseRestApi {
     @Path("/module/status")
     @ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
     public Response checkModuleWorking() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/authentication/module/status");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/authentication/module/status");
         return Response.ok("Authentication Module works!").build();
     }
 
@@ -63,7 +63,7 @@ public class AuthenticationRestApi extends HyperIoTBaseRestApi {
             @ApiResponse(code = 200, message = "login successed")})
     @JsonView(HyperIoTJSONView.Public.class)
     public Response login(@FormParam("username") String username, @FormParam("password") String password) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/authentication/login with username: {0}" , username);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/authentication/login with username: {0}" , username);
         try {
             HyperIoTAuthenticable user = service.login(username, password);
             if (user != null) {
@@ -74,7 +74,7 @@ public class AuthenticationRestApi extends HyperIoTBaseRestApi {
                 return Response.status(401).build();
             }
         } catch (Throwable t) {
-            log.log(Level.SEVERE, t.getMessage(), t);
+            getLog().log(Level.SEVERE, t.getMessage(), t);
             return handleException(t);
         }
     }
@@ -83,7 +83,7 @@ public class AuthenticationRestApi extends HyperIoTBaseRestApi {
      * @return the current service
      */
     protected HyperIoTBaseApi getService() {
-        log.log(Level.FINEST, "invoking getService, returning: {0}" , this.service);
+        getLog().log(Level.FINEST, "invoking getService, returning: {0}" , this.service);
         return service;
     }
 
@@ -92,7 +92,7 @@ public class AuthenticationRestApi extends HyperIoTBaseRestApi {
      */
     @Reference(service = AuthenticationApi.class)
     protected void setService(AuthenticationApi service) {
-        log.log(Level.FINEST, "invoking setService, setting: {0}" , service);
+        getLog().log(Level.FINEST, "invoking setService, setting: {0}" , service);
         this.service = service;
     }
 

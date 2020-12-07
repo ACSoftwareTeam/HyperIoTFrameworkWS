@@ -21,15 +21,15 @@ import java.util.logging.Level;
 
 
 /**
- * 
+ *
  * @author Aristide Cittadino ZookeeperConnector rest service class. Registered with DOSGi CXF
- * 
+ *
  */
 @SwaggerDefinition(basePath = "/zookeeperConnectors", info = @Info(description = "HyperIoT ZookeeperConnector API", version = "2.0.0", title = "hyperiot ZookeeperConnector", contact = @Contact(name = "ACSoftware.it", email = "users@acsoftware.it")),securityDefinition = @SecurityDefinition(apiKeyAuthDefinitions = {
 		@ApiKeyAuthDefinition(key = "jwt-auth", name = "AUTHORIZATION", in = ApiKeyLocation.HEADER)}))
 @Api(value = "/zookeeperConnectors", produces = "application/json")
 @Produces(MediaType.APPLICATION_JSON)
-@Component(service = ZookeeperConnectorRestApi.class, property = { 
+@Component(service = ZookeeperConnectorRestApi.class, property = {
 	    "service.exported.interfaces=it.acsoftware.hyperiot.zookeeper.connector.service.rest.ZookeeperConnectorRestApi",
 		"service.exported.configs=org.apache.cxf.rs","org.apache.cxf.rs.address=/zookeeperConnectors",
 		"service.exported.intents=jackson", "service.exported.intents=jwtAuthFilter",
@@ -42,14 +42,14 @@ public class ZookeeperConnectorRestApi extends HyperIoTBaseRestApi {
 
 	/**
 	 * Simple service for checking module status
-	 * 
+	 *
 	 * @return HyperIoT Role Module work!
 	 */
 	@GET
 	@Path("/module/status")
 	@ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
 	public Response checkModuleWorking() {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/zookeeperConnectors/module/status");
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/zookeeperConnectors/module/status");
 		return Response.ok("ZookeeperConnector Module works!").build();
 	}
 
@@ -57,17 +57,17 @@ public class ZookeeperConnectorRestApi extends HyperIoTBaseRestApi {
 	 * @Return the current service class
 	 */
 	protected HyperIoTBaseApi getService() {
-		log.log(Level.FINEST, "invoking getService, returning: {}" , this.service);
+		getLog().log(Level.FINEST, "invoking getService, returning: {}" , this.service);
 		return service;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param service: Injecting service class
 	 */
 	@Reference(service = ZookeeperConnectorApi.class)
 	protected void setService(ZookeeperConnectorApi service) {
-		log.log(Level.FINEST, "invoking setService, setting: {}" , service);
+		getLog().log(Level.FINEST, "invoking setService, setting: {}" , service);
 		this.service = service;
 	}
 
@@ -88,9 +88,9 @@ public class ZookeeperConnectorRestApi extends HyperIoTBaseRestApi {
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response isLeader(
 			@ApiParam(value = "ZkNode path", required = true) @QueryParam("mutexPath") String mutexPath) {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/zookeeperConnectors/isLeader?mutexPath={0}", mutexPath);
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/zookeeperConnectors/isLeader?mutexPath={0}", mutexPath);
 		boolean isLeader = service.isLeader(getHyperIoTContext(), mutexPath);
 		return Response.ok(isLeader).build();
 	}
-	
+
 }

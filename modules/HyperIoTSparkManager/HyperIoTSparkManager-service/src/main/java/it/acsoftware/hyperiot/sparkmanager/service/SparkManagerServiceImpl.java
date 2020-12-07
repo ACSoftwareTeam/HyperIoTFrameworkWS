@@ -20,7 +20,7 @@ import  it.acsoftware.hyperiot.base.service.HyperIoTBaseServiceImpl;
 
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of SparkManagerApi interface.
  *         It is used to implement all additional methods in order to interact with the system layer.
  */
@@ -30,23 +30,23 @@ public final class SparkManagerServiceImpl extends  HyperIoTBaseServiceImpl  imp
 	 * Injecting the SparkManagerSystemApi
 	 */
 	private SparkManagerSystemApi systemService;
-	
+
 	/**
-	 * 
+	 *
 	 * @return The current SparkManagerSystemApi
 	 */
 	protected SparkManagerSystemApi getSystemService() {
-		log.log(Level.FINEST, "invoking getSystemService, returning: {}" , this.systemService);
+		getLog().log(Level.FINEST, "invoking getSystemService, returning: {}" , this.systemService);
 		return systemService;
 	}
 
 	/**
-	 * 
-	 * @param sparkManagerSystemService Injecting via OSGi DS current systemService 
+	 *
+	 * @param sparkManagerSystemService Injecting via OSGi DS current systemService
 	 */
 	@Reference
 	protected void setSystemService(SparkManagerSystemApi sparkManagerSystemService) {
-		log.log(Level.FINEST, "invoking setSystemService, setting: {}" , systemService);
+		getLog().log(Level.FINEST, "invoking setSystemService, setting: {}" , systemService);
 		this.systemService = sparkManagerSystemService ;
 	}
 

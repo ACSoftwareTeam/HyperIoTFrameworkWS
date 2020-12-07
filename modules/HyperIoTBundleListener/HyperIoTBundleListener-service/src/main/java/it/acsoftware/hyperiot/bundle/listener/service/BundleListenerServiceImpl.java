@@ -14,7 +14,7 @@ import it.acsoftware.hyperiot.bundle.listener.model.BundleTrackerItem;
 
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of BundleListenerApi interface.
  *         It is used to implement all additional methods in order to interact with the system layer.
  */
@@ -24,23 +24,23 @@ public final class BundleListenerServiceImpl extends  HyperIoTBaseServiceImpl  i
 	 * Injecting the BundleListenerSystemApi
 	 */
 	private BundleListenerSystemApi systemService;
-	
+
 	/**
-	 * 
+	 *
 	 * @return The current BundleListenerSystemApi
 	 */
 	protected BundleListenerSystemApi getSystemService() {
-		log.log(Level.FINEST, "invoking getSystemService, returning: {}" , this.systemService);
+        getLog().log(Level.FINEST, "invoking getSystemService, returning: {}" , this.systemService);
 		return systemService;
 	}
 
 	/**
-	 * 
-	 * @param bundleListenerSystemService Injecting via OSGi DS current systemService 
+	 *
+	 * @param bundleListenerSystemService Injecting via OSGi DS current systemService
 	 */
 	@Reference
 	protected void setSystemService(BundleListenerSystemApi bundleListenerSystemService) {
-		log.log(Level.FINEST, "invoking setSystemService, setting: {}" , systemService);
+        getLog().log(Level.FINEST, "invoking setSystemService, setting: {}" , systemService);
 		this.systemService = bundleListenerSystemService ;
 	}
 

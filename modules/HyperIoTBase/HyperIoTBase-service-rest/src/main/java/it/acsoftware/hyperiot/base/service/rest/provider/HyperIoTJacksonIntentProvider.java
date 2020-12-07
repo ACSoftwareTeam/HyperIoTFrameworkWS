@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 @Component(property = {"org.apache.cxf.dosgi.IntentName=jackson"}, immediate = true)
 public class HyperIoTJacksonIntentProvider implements IntentsProvider {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTJacksonIntentProvider.class.getName());
     private JacksonJsonProvider jsonProvider;
     private ObjectMapper mapper;
 

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 @Component(service = HyperIoTPostRemoveAction.class, property = {"type=it.acsoftware.hyperiot.huser.model.HUser"})
 public class HyperIoTHUserPostRemoveAction<T extends HyperIoTBaseEntity> implements HyperIoTPostRemoveAction<T> {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTHUserPostRemoveAction.class.getName());
 
     private SharedEntitySystemApi sharedEntitySystemService;
 

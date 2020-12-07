@@ -75,8 +75,6 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
     private final String KAFKA_CONNECT_SERVICE_PATH = "/connectors";
     private final String CONNECTOR_ADD_TEMPLATE = "{\"name\":\"%s\", \"config\": {\"max.poll.interval.ms\":\"500\", \"connector.class\":\"\",\"tasks.max\":\"1\"}}";
 
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
-
     private List<KafkaConsumerThread> kcts;
     private Producer<byte[], byte[]> producer;
 
@@ -141,7 +139,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
      */
     @Activate
     public void activate(Map<String, Object> properties) {
-        log.log(Level.INFO, "activating Kafka Connector with properties: {0}", properties);
+        getLog().log(Level.INFO, "activating Kafka Connector with properties: {0}", properties);
         this.ctx = HyperIoTUtil.getBundleContext(this.getClass());
         this.loadKafkaConfiguration(HyperIoTUtil.getBundleContext(this));
         this.adminClient = AdminClient.create(adminProperties);
@@ -158,7 +156,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
      */
     @Deactivate
     public void deactivate(BundleContext ctx) {
-        log.log(Level.INFO, "deactivating Kafka Connector....");
+        getLog().log(Level.INFO, "deactivating Kafka Connector....");
         this.stopConsumingFromKafka();
         this.reactorScheduler.dispose();
     }
@@ -168,7 +166,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
      */
     @Override
     public void stopConsumingFromKafka() {
-        log.log(Level.FINER, "Stopping admin client from Kafka...");
+        getLog().log(Level.FINER, "Stopping admin client from Kafka...");
         try {
             // close call is blocking, so better to put it inside a thread
             Runnable r = new Runnable() {
@@ -180,9 +178,9 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
             Thread t = new Thread(r);
             t.start();
         } catch (Exception e) {
-            log.log(Level.WARNING, e.getMessage(), e);
+            getLog().log(Level.WARNING, e.getMessage(), e);
         }
-        log.log(Level.FINER, "Stopping consuming from Kafka...");
+        getLog().log(Level.FINER, "Stopping consuming from Kafka...");
         kcts.stream().forEach(kct -> kct.stop());
         executor.shutdown();
     }
@@ -193,7 +191,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
      */
     @Override
     public void startConsumingFromKafka(List<String> basicTopics) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
             "Activating bundle Kafka Connector, creating kafka thread with this topics: {0}"
             , basicTopics.toString());
         if (consumerProperties != null && consumerProperties.size() > 0) {
@@ -218,10 +216,10 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
                     executor.submit(kct);
                 }
             } catch (Exception e) {
-                log.log(Level.SEVERE, e.getMessage(), e);
+                getLog().log(Level.SEVERE, e.getMessage(), e);
             }
         } else {
-            log.log(Level.SEVERE, "No Kafka Properties found, Consumer thread did not start!");
+            getLog().log(Level.SEVERE, "No Kafka Properties found, Consumer thread did not start!");
         }
     }
 
@@ -242,7 +240,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
                 try {
                     this.producer = new KafkaProducer<>(producerProperties);
                 } catch (Exception e) {
-                    log.log(Level.SEVERE, e.getMessage(), e);
+                    getLog().log(Level.SEVERE, e.getMessage(), e);
                 } finally {
                     Thread.currentThread().setContextClassLoader(karafClassLoader);
                 }
@@ -269,9 +267,9 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
                 @Override
                 public void onCompletion(RecordMetadata metadata, Exception exception) {
                     if (exception != null)
-                        log.log(Level.SEVERE, exception.getMessage(), exception);
+                        getLog().log(Level.SEVERE, exception.getMessage(), exception);
                     else
-                        log.log(Level.FINE, metadata.toString());
+                        getLog().log(Level.FINE, metadata.toString());
                 }
             });
     }
@@ -294,7 +292,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
             try {
                 newProducer = new KafkaProducer<>(producerProperties);
             } catch (Exception e) {
-                log.log(Level.SEVERE, e.getMessage(), e);
+                getLog().log(Level.SEVERE, e.getMessage(), e);
             } finally {
                 Thread.currentThread().setContextClassLoader(karafClassLoader);
             }
@@ -314,9 +312,9 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
             receiverOptions.consumerProperties().put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);
             ReceiverOptions<byte[], byte[]> options = receiverOptions
                 .subscription(Collections.synchronizedCollection(topics))
-                .addAssignListener(partitions -> log.log(Level.FINE, "Consumer Reactive onPartitionsAssigned {0}",
+                .addAssignListener(partitions -> getLog().log(Level.FINE, "Consumer Reactive onPartitionsAssigned {0}",
                     partitions))
-                .addRevokeListener(partitions -> log.log(Level.FINE, "Consumer Reactive onPartitionsRevoked {0}",
+                .addRevokeListener(partitions -> getLog().log(Level.FINE, "Consumer Reactive onPartitionsRevoked {0}",
                     partitions));
             Flux<ReceiverRecord<byte[], byte[]>> kafkaFlux = KafkaReceiver.create(options).receive().subscribeOn(reactorScheduler);
             return kafkaFlux;
@@ -361,7 +359,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
                 byte[] key = m.key();
                 int partition = m.partition();
                 HyperIoTKafkaMessage message = new HyperIoTKafkaMessage(key, topic, partition, m.value());
-                log.log(Level.FINE, "Got message from kafka: {0} on partition {1} with key {2}", new Object[]{message.toString(), partition, new String(m.key())});
+                getLog().log(Level.FINE, "Got message from kafka: {0} on partition {1} with key {2}", new Object[]{message.toString(), partition, new String(m.key())});
 
                 OSGiFilter specificKeyFilter = OSGiFilterBuilder.createFilter(HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_OSGI_KEY_FILTER, new String(m.key()));
                 OSGiFilter filter = OSGiFilterBuilder
@@ -369,17 +367,17 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
                         m.topic())
                     .and(specificKeyFilter);
                 String topicFilter = filter.getFilter();
-                log.log(Level.FINE, "Searching for components with OSGi filter: {0}", topicFilter);
+                getLog().log(Level.FINE, "Searching for components with OSGi filter: {0}", topicFilter);
                 try {
                     Collection<ServiceReference<KafkaMessageReceiver>> references = this.ctx.getServiceReferences(KafkaMessageReceiver.class, topicFilter);
                     references.stream().parallel().forEach(reference -> {
-                        log.log(Level.FINE, "Receiver Found , invoking receive for key {0}", new Object[]{new String(m.key())});
+                        getLog().log(Level.FINE, "Receiver Found , invoking receive for key {0}", new Object[]{new String(m.key())});
                         KafkaMessageReceiver messageReceiver = (KafkaMessageReceiver) this.ctx.getService(reference);
                         if (messageReceiver != null)
                             messageReceiver.receive(message);
                     });
                 } catch (InvalidSyntaxException e) {
-                    log.log(Level.SEVERE, e.getMessage(), e);
+                    getLog().log(Level.SEVERE, e.getMessage(), e);
                 }
             });
         }
@@ -398,7 +396,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
      * @param context Bundle Context
      */
     private void loadKafkaConfiguration(BundleContext context) {
-        log.log(Level.FINE, "Kafka Properties not cached, reading from .cfg file...");
+        getLog().log(Level.FINE, "Kafka Properties not cached, reading from .cfg file...");
         ServiceReference<?> configurationAdminReference = context
             .getServiceReference(ConfigurationAdmin.class.getName());
 
@@ -409,7 +407,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
                 Configuration configuration = confAdmin.getConfiguration(
                     HyperIoTConstants.HYPERIOT_KAFKA_CONNECTOR_CONFIG_FILE_NAME);
                 if (configuration != null && configuration.getProperties() != null) {
-                    log.log(Level.FINE, "Reading properties for Kafka....");
+                    getLog().log(Level.FINE, "Reading properties for Kafka....");
                     Dictionary<String, Object> dict = configuration.getProperties();
                     List<String> keys = Collections.list(dict.keys());
                     Map<String, Object> dictCopy = keys.stream()
@@ -420,25 +418,25 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
                         String propName = it.next();
                         if (propName.startsWith(
                             HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_PROPS_CONSUMER_PREFIX)) {
-                            log.log(Level.FINE, "Reading consumer property for Kafka: {0}", propName);
+                            getLog().log(Level.FINE, "Reading consumer property for Kafka: {0}", propName);
                             consumerProperties.put(propName.replaceAll(
                                 HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_PROPS_CONSUMER_PREFIX,
                                 "").substring(1), dictCopy.get(propName));
                         } else if (propName.startsWith(
                             HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_PROPS_PRODUCER_PREFIX)) {
-                            log.log(Level.FINE, "Reading producer property for Kafka: {0}", propName);
+                            getLog().log(Level.FINE, "Reading producer property for Kafka: {0}", propName);
                             producerProperties.put(propName.replaceAll(
                                 HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_PROPS_PRODUCER_PREFIX,
                                 "").substring(1), dictCopy.get(propName));
                         } else if (propName.startsWith(
                             HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_PROPS_ADMIN_PREFIX)) {
-                            log.log(Level.FINE, "Reading admin property for Kafka: {0}", propName);
+                            getLog().log(Level.FINE, "Reading admin property for Kafka: {0}", propName);
                             adminProperties.put(propName.replaceAll(
                                 HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_PROPS_ADMIN_PREFIX,
                                 "").substring(1), dictCopy.get(propName));
                         } else if (propName.startsWith(
                             HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_PROPS_GLOBAL_PREFIX)) {
-                            log.log(Level.FINE, "Reading global property for Kafka: {0}", propName);
+                            getLog().log(Level.FINE, "Reading global property for Kafka: {0}", propName);
                             String globalPropName = propName.replaceAll(
                                 HyperIoTKafkaConnectorConstants.HYPERIOT_KAFKA_PROPS_GLOBAL_PREFIX,
                                 "").substring(1);
@@ -452,16 +450,16 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
                     this.receiverOptions = ReceiverOptions.create(consumerProperties);
                     return;
                 } else {
-                    log.log(Level.SEVERE,
+                    getLog().log(Level.SEVERE,
                         "Impossible to find Configuration admin reference, kafka consumer won't start!");
                 }
             } catch (IOException e) {
-                log.log(Level.SEVERE,
+                getLog().log(Level.SEVERE,
                     "Impossible to find {0}", new Object[]{HyperIoTConstants.HYPERIOT_KAFKA_CONNECTOR_CONFIG_FILE_NAME, e});
 
             }
         }
-        log.log(Level.SEVERE,
+        getLog().log(Level.SEVERE,
             "Impossible to find {0}", new Object[]{HyperIoTConstants.HYPERIOT_KAFKA_CONNECTOR_CONFIG_FILE_NAME});
 
     }
@@ -480,7 +478,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
      * order to communicate with HyperIoT Infrastructure
      */
     private List<String> createBasicTopics() {
-        log.log(Level.INFO, "Creating basic topic on kafka if they do not exists...");
+        getLog().log(Level.INFO, "Creating basic topic on kafka if they do not exists...");
         // register on hyperiot_layer_<layer>
         String[] topics = new String[2];
         int[] numPartitions = new int[2];
@@ -493,7 +491,7 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
         numReplicas[1] = (short) 1;
         this.adminCreateTopic(topics, numPartitions, numReplicas);
         List<String> topicList = Arrays.asList(topics);
-        log.log(Level.FINE, "Topics for this node are: {0}", topicList.toString());
+        getLog().log(Level.FINE, "Topics for this node are: {0}", topicList.toString());
         return topicList;
     }
 
@@ -527,10 +525,10 @@ public final class KafkaConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
 
         List<NewTopic> topicsList = new ArrayList<>();
         for (int i = 0; i < topics.length; i++) {
-            log.log(Level.FINE, "Topic to be created: {0}", topics[i]);
+            getLog().log(Level.FINE, "Topic to be created: {0}", topics[i]);
             topicsList.add(new NewTopic(topics[i], numPartitions[i], numReplicas[i]));
         }
-        log.log(Level.FINE, "Invoking Kafka ADMIN Client..");
+        getLog().log(Level.FINE, "Invoking Kafka ADMIN Client..");
 
         CreateTopicsResult result = this.adminClient.createTopics(topicsList);
         return result;

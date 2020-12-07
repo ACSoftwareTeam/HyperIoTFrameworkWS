@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class BundleTracker {
-    protected static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    protected static Logger log = Logger.getLogger(BundleTracker.class.getName());
 
     private MyBundleTracker bundleTracker;
 

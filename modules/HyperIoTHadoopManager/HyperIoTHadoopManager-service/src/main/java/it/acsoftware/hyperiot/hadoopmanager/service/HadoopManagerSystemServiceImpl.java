@@ -64,7 +64,7 @@ public final class HadoopManagerSystemServiceImpl extends HyperIoTBaseSystemServ
             }
             return FileSystem.get(configuration);
         } catch (Throwable t) {
-            log.log(Level.SEVERE, t.getMessage(), t);
+            getLog().log(Level.SEVERE, t.getMessage(), t);
         } finally {
             Thread.currentThread().setContextClassLoader(karafClassLoader);
         }

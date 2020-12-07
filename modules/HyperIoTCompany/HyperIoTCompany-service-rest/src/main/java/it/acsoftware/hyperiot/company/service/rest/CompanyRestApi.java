@@ -41,7 +41,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
     @Path("/module/status")
     @ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
     public Response checkModuleWorking() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/company/module/status");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/company/module/status");
         return Response.ok("Company Module works!").build();
     }
 
@@ -50,7 +50,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
      */
     @Override
     protected HyperIoTBaseEntityApi<Company> getEntityService() {
-        log.log(Level.FINEST, "invoking getEntityService, returning: {0}", this.entityService);
+        getLog().log(Level.FINEST, "invoking getEntityService, returning: {0}", this.entityService);
         return entityService;
     }
 
@@ -59,7 +59,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
      */
     @Reference(service = CompanyApi.class)
     protected void setEntityService(CompanyApi entityService) {
-        log.log(Level.FINEST, "invoking setEntityService, setting: {0}", this.entityService);
+        getLog().log(Level.FINEST, "invoking setEntityService, setting: {0}", this.entityService);
         this.entityService = entityService;
     }
 
@@ -79,7 +79,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response findCompany(
             @ApiParam(value = "id from which Company object will retrieve", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/companies/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/companies/{0}", id);
         return this.find(id);
     }
 
@@ -99,7 +99,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
             @ApiResponse(code = 500, message = "Internal error")})
     public Response saveCompany(
             @ApiParam(value = "Company entity which must be saved ", required = true) Company entity) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/companies \n Body: {0}", entity);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/companies \n Body: {0}", entity);
         return this.save(entity);
     }
 
@@ -118,7 +118,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
             @ApiResponse(code = 500, message = "Invalid ID supplied")})
     public Response updateCompany(
             @ApiParam(value = "Company entity which must be updated ", required = true) Company entity) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/companies \n Body: {0}", entity);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/companies \n Body: {0}", entity);
         return this.update(entity);
     }
 
@@ -138,7 +138,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response deleteCompany(
             @ApiParam(value = "The company id which must be deleted", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/companies/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/companies/{0}", id);
         return this.remove(id);
     }
 
@@ -156,7 +156,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllCompany() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/companies/all");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/companies/all");
         return this.findAll();
     }
 
@@ -173,7 +173,7 @@ public class CompanyRestApi extends HyperIoTBaseEntityRestApi<Company> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllCompanyPaginated(@QueryParam("delta") Integer delta, @QueryParam("page") Integer page) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/companies/");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/companies/");
         return this.findAll(delta, page);
     }
 

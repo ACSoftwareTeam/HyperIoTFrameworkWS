@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HyperIoTRSAWithAESEncryptionMode extends HyperIoTWebSocketMixedEncryptionMode {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTRSAWithAESEncryptionMode.class.getName());
 
     public static final String MODE_PARAM_AES_PASSWORD = "aesPassword";
     public static final String MODE_PARAM_AES_IV = "aesIv";

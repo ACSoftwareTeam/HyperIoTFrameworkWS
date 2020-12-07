@@ -49,7 +49,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
      */
     @Reference(service = KafkaConnectorApi.class)
     protected void setKafkaServiceApi(KafkaConnectorApi kafkaServiceApi) {
-        log.log(Level.FINEST, "invoking setKafkaMqttServiceApi, setting: {0}", this.kafkaServiceApi);
+        getLog().log(Level.FINEST, "invoking setKafkaMqttServiceApi, setting: {0}", this.kafkaServiceApi);
         this.kafkaServiceApi = kafkaServiceApi;
     }
 
@@ -57,7 +57,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
     @Path("/module/status")
     @ApiOperation(value = "/hyperiot/kafka/mqtt/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
     public Response checkModuleWorking() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/kafka/mqtt/module/status: ");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/kafka/mqtt/module/status: ");
         return Response.ok("HyperIoT Kafka Connector Module works!").build();
     }
 
@@ -83,7 +83,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
             @ApiParam(value = "Connector configuration", required = true)
                     ConnectorConfig connectorConfig
     ) {
-        log.log(Level.FINE, "In REST Service POST /hyperiot/kafka/mqtt/connectors/add");
+        getLog().log(Level.FINE, "In REST Service POST /hyperiot/kafka/mqtt/connectors/add");
         /*
         // Example POST data:
         {
@@ -131,7 +131,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
             @ApiParam(value = "Connector configuration", required = true)
                     ConnectorConfig connectorConfig
     ) {
-        log.log(Level.FINE, "In REST Service PUT /hyperiot/kafka/mqtt/connectors/{0}", instanceName);
+        getLog().log(Level.FINE, "In REST Service PUT /hyperiot/kafka/mqtt/connectors/{0}", instanceName);
         /*
         // Example PUT data:
         {
@@ -175,7 +175,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
             @PathParam("instance_name")
                     String instanceName
     ) {
-        log.log(Level.FINE, "In REST Service GET /hyperiot/kafka/connectors/{0}", instanceName);
+        getLog().log(Level.FINE, "In REST Service GET /hyperiot/kafka/connectors/{0}", instanceName);
         try {
             kafkaServiceApi.deleteConnector(this.getHyperIoTContext(), instanceName, true);
             return Response.ok().entity("Connector deleted.").build();
@@ -203,7 +203,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
             @ApiParam(value = "Topic config for creation", required = true) TopicConfig topicConfig
 
     ) {
-        log.log(Level.FINE, "In REST Service POST /hyperiot/kafka/topics: {0}", topicConfig);
+        getLog().log(Level.FINE, "In REST Service POST /hyperiot/kafka/topics: {0}", topicConfig);
         try {
             CreateTopicsResult result = kafkaServiceApi.adminCreateTopic(this.getHyperIoTContext(), topicConfig.getTopic(), topicConfig.getNumPartition(), topicConfig.getReplicationFactor());
             return Response.ok().entity(result).build();
@@ -231,7 +231,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
             @ApiParam(value = "Topic config for creation", required = true) TopicConfig[] topicsConfig
 
     ) {
-        log.log(Level.FINE, "In REST Service PUT /hyperiot/kafka/topics: {0}", topicsConfig);
+        getLog().log(Level.FINE, "In REST Service PUT /hyperiot/kafka/topics: {0}", topicsConfig);
         try {
             String[] topics = new String[topicsConfig.length];
             int[] numPartitions = new int[topicsConfig.length];
@@ -267,7 +267,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
     public Response dropTopics(
             @ApiParam(value = "Topic list for deletion", required = true) String[] topics
     ) {
-        log.log(Level.FINE, "In REST Service DELETE /hyperiot/kafka/topics: {0}", topics);
+        getLog().log(Level.FINE, "In REST Service DELETE /hyperiot/kafka/topics: {0}", topics);
         try {
             DeleteTopicsResult result = kafkaServiceApi.adminDropTopic(this.getHyperIoTContext(), Arrays.asList(topics));
             return Response.ok().entity(result).build();
@@ -298,7 +298,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     public Response addACLs(@ApiParam(value = "ACL definition for creation", required = true) ACLConfig aclConfig) {
-        log.log(Level.FINE, "In REST Service POST /hyperiot/acl: {0}", aclConfig);
+        getLog().log(Level.FINE, "In REST Service POST /hyperiot/acl: {0}", aclConfig);
         try {
             CreateAclsResult result = kafkaServiceApi.adminAddACLs(this.getHyperIoTContext(), aclConfig.getUsername(), aclConfig.getPermissions());
             return Response.ok().entity(result).build();
@@ -321,7 +321,7 @@ public class HyperIoTKafkaConnectorRestApi extends HyperIoTBaseRestApi {
             @ApiResponse(code = 500, message = "Internal server error")
     })
     public Response adminDeleteACLs(@ApiParam(value = "ACL definition for deletion", required = true) ACLConfig aclConfig) {
-        log.log(Level.FINE, "In REST Service DELETE /hyperiot/acl: {0}", aclConfig);
+        getLog().log(Level.FINE, "In REST Service DELETE /hyperiot/acl: {0}", aclConfig);
         try {
             DeleteAclsResult result = kafkaServiceApi.adminDeleteACLs(this.getHyperIoTContext(), aclConfig.getUsername(), aclConfig.getPermissions());
             return Response.ok().entity(result).build();

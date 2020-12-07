@@ -31,7 +31,7 @@ public final class AssetTagServiceImpl extends HyperIoTBaseEntityServiceImpl<Ass
      * @return The current AssetTagSystemApi
      */
     protected AssetTagSystemApi getSystemService() {
-        log.log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
+        getLog().log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
         return systemService;
     }
 
@@ -40,7 +40,7 @@ public final class AssetTagServiceImpl extends HyperIoTBaseEntityServiceImpl<Ass
      */
     @Reference
     protected void setSystemService(AssetTagSystemApi assetTagSystemService) {
-        log.log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
+        getLog().log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
         this.systemService = assetTagSystemService;
     }
 

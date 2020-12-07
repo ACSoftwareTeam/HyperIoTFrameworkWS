@@ -40,7 +40,7 @@ import it.acsoftware.hyperiot.mail.model.MailTemplate;
 import it.acsoftware.hyperiot.mail.util.MailUtil;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of the MailSystemApi
  *         interface. This class is used to implements all additional methods to
  *         interact with the persistence layer.
@@ -75,7 +75,7 @@ public final class MailSystemServiceImpl extends HyperIoTBaseEntitySystemService
 	 * Return the current repository
 	 */
 	protected MailRepository getRepository() {
-		log.log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
+		getLog().log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
 		return repository;
 	}
 
@@ -85,7 +85,7 @@ public final class MailSystemServiceImpl extends HyperIoTBaseEntitySystemService
 	 */
 	@Reference
 	protected void setRepository(MailRepository mailRepository) {
-		log.log(Level.FINEST, "invoking setRepository, setting:{0}" , mailRepository);
+		getLog().log(Level.FINEST, "invoking setRepository, setting:{0}" , mailRepository);
 		this.repository = mailRepository;
 	}
 
@@ -115,7 +115,7 @@ public final class MailSystemServiceImpl extends HyperIoTBaseEntitySystemService
 					subject, content, attachments);
 			sendMail(m);
 		} catch (MessagingException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
+			getLog().log(Level.SEVERE, e.getMessage(), e);
 			throw new RuntimeException(e.getMessage());
 		}
 	}
@@ -144,7 +144,7 @@ public final class MailSystemServiceImpl extends HyperIoTBaseEntitySystemService
 			template.process(params, stringWriter);
 			return stringWriter.toString();
 		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
+			getLog().log(Level.SEVERE, e.getMessage(), e);
 			throw new RuntimeException(e.getMessage());
 		} finally {
 			try { stringWriter.close(); } catch (Exception e) {}
@@ -160,7 +160,7 @@ public final class MailSystemServiceImpl extends HyperIoTBaseEntitySystemService
 			template.process(params, stringWriter);
 			return stringWriter.toString();
 		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
+			getLog().log(Level.SEVERE, e.getMessage(), e);
 			throw new RuntimeException(e.getMessage());
 		} finally {
 			stringWriter.close();
@@ -241,7 +241,7 @@ public final class MailSystemServiceImpl extends HyperIoTBaseEntitySystemService
 		// adds attachments
 		if (attachFiles != null && attachFiles.size() > 0) {
 			// TO DO: manage attachments from bytes
-//			
+//
 //			for (String filePath : attachFiles) {
 //				MimeBodyPart attachPart = new MimeBodyPart();
 //

@@ -11,7 +11,7 @@ import it.acsoftware.hyperiot.asset.category.model.AssetCategory;
 import it.acsoftware.hyperiot.base.service.entity.HyperIoTBaseEntityServiceImpl;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of AssetCategoryApi
  *         interface. It is used to implement all additional methods in order to
  *         interact with the system layer.
@@ -32,21 +32,21 @@ public final class AssetCategoryServiceImpl extends HyperIoTBaseEntityServiceImp
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The current AssetCategorySystemApi
 	 */
 	protected AssetCategorySystemApi getSystemService() {
-		log.log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
+		getLog().log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
 		return systemService;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param assetCategorySystemService Injecting via OSGi DS current systemService
 	 */
 	@Reference
 	protected void setSystemService(AssetCategorySystemApi assetCategorySystemService) {
-		log.log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
+        getLog().log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
 		this.systemService = assetCategorySystemService;
 	}
 

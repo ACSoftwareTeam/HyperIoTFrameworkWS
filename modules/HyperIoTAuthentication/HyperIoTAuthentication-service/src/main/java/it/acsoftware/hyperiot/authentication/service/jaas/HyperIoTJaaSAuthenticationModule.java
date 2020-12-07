@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  * Default Behaviour is only HUsers can login into the platform
  */
 public class HyperIoTJaaSAuthenticationModule implements LoginModule {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTJaaSAuthenticationModule.class.getName());
 
     protected Subject subject;
     protected CallbackHandler callbackHandler;

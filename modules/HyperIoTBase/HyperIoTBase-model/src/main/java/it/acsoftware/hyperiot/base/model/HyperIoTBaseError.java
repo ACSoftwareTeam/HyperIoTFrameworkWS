@@ -145,7 +145,7 @@ public class HyperIoTBaseError {
         this.validationErrors = validationErrors;
     }
 
-    protected static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    protected static Logger log = Logger.getLogger(HyperIoTBaseError.class.getName());
 
     /**
      * Return errors produced during interaction with HyperIoT platform

@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 @Component(immediate = true, property = {"org.apache.cxf.dosgi.IntentName=jwtAuthFilter"})
 public class HyperIoTAuthenticationFilter extends HyperIoTJwtFilter
         implements ContainerRequestFilter {
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(HyperIoTAuthenticationFilter.class.getName());
 
     @Context
     protected ResourceInfo info;

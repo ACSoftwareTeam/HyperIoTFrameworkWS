@@ -44,7 +44,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
     @Path("/module/status")
     @ApiOperation(value = "/hyperiot/huser/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
     public Response checkModuleWorking() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/huser/module/status: ");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/huser/module/status: ");
         return Response.ok("HyperIoT HUser Module works!").build();
     }
 
@@ -53,7 +53,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
      */
     @Override
     public HUserApi getEntityService() {
-        log.log(Level.FINEST, "invoking getEntityService, returning: {0}", this.entityService);
+        getLog().log(Level.FINEST, "invoking getEntityService, returning: {0}", this.entityService);
         return entityService;
     }
 
@@ -62,7 +62,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
      */
     @Reference(service = HUserApi.class)
     protected void setEntityService(HUserApi entityService) {
-        log.log(Level.FINEST, "invoking setEntityService, setting: {0}", this.entityService);
+        getLog().log(Level.FINEST, "invoking setEntityService, setting: {0}", this.entityService);
         this.entityService = entityService;
     }
 
@@ -83,7 +83,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
     @JsonView(HyperIoTJSONView.Public.class)
     public Response findHUser(
             @ApiParam(value = "id from which user object will retrieve", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/husers/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/husers/{0}", id);
         return this.find(id);
     }
 
@@ -103,7 +103,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
             @ApiResponse(code = 500, message = "Internal error")})
     @JsonView(HyperIoTJSONView.Public.class)
     public Response saveHUser(@ApiParam(value = "HUser object to store in database", required = true) HUser h) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/husers/ \n Body: {0}", h);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/husers/ \n Body: {0}", h);
         return this.save(h);
     }
 
@@ -122,7 +122,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
             @ApiResponse(code = 422, message = "Not validated"), @ApiResponse(code = 500, message = "Internal error")})
     @JsonView(HyperIoTJSONView.Public.class)
     public Response register(@ApiParam(value = "HUser object to store in database", required = true) HUser h) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/husers/register \n Body: {0}", h);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/husers/register \n Body: {0}", h);
         try {
             // forcing active false
             h.setActive(false);
@@ -152,7 +152,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
     public Response activate(
             @ApiParam(value = "Email of the activating user", required = true) @QueryParam("email") String email,
             @ApiParam(value = "Code of the activating user", required = true) @QueryParam("code") String code) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
                 "In Rest Service POST /hyperiot/husers/activate with code: {0}", new Object[]{code, email});
         try {
             this.entityService.activateUser(email, code);
@@ -179,7 +179,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
     @JsonView(HyperIoTJSONView.Public.class)
     public Response resetPasswordRequest(
             @ApiParam(value = "Email of the user", required = true) @QueryParam("email") String email) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/husers/resetPassword?email={0}", email);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/husers/resetPassword?email={0}", email);
         try {
             this.entityService.passwordResetRequest(email);
             return Response.ok().build();
@@ -205,7 +205,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
     @JsonView(HyperIoTJSONView.Public.class)
     public Response resetPassword(
             @ApiParam(value = "Code for resetting user password", required = true) HUserPasswordReset pwdReset) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/husers/changePassword?email={0}", pwdReset.getEmail()
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/husers/changePassword?email={0}", pwdReset.getEmail()
                 + "  with code:" + pwdReset.getResetCode());
         try {
             if (pwdReset.getPassword() == null || pwdReset.getPasswordConfirm() == null) {
@@ -235,7 +235,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
             @ApiResponse(code = 500, message = "Invalid ID supplied")})
     @JsonView(HyperIoTJSONView.Public.class)
     public Response updateHUser(@ApiParam(value = "HUser object to update in database", required = true) HUser h) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/husers/ \n Body: {0}", h);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/husers/ \n Body: {0}", h);
         return this.update(h);
     }
 
@@ -256,7 +256,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
     @JsonView(HyperIoTJSONView.Public.class)
     public Response updateAccountInfo(
             @ApiParam(value = "HUser object to update in database", required = true) HUser hUser) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/husers/ \n Body: {0}", hUser);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/husers/ \n Body: {0}", hUser);
         try {
             return Response.ok().entity(this.entityService.updateAccountInfo(this.getHyperIoTContext(), hUser)).build();
         } catch (Throwable e) {
@@ -288,7 +288,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
             @ApiParam(value = "Old HUser Password", required = true) @FormParam("oldPassword") String oldPassword,
             @ApiParam(value = "New HUser Password", required = true) @FormParam("newPassword") String newPassword,
             @ApiParam(value = "New HUser Password confirm", required = true) @FormParam("passwordConfirm") String passwordConfirm) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/husers/password \n Body: {0}", userId);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/husers/password \n Body: {0}", userId);
         try {
             return Response.ok(this.entityService.changePassword(this.getHyperIoTContext(), userId, oldPassword,
                     newPassword, passwordConfirm)).build();
@@ -314,7 +314,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
     @JsonView(HyperIoTJSONView.Public.class)
     public Response deleteHUser(
             @ApiParam(value = "id from which user object will deleted", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/husers/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/husers/{0}", id);
         return this.remove(id);
     }
 
@@ -333,7 +333,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
             @ApiResponse(code = 500, message = "Internal error")})
     @JsonView(HyperIoTJSONView.Public.class)
     public Response findAllHUser() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/husers/ ");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/husers/ ");
         return this.findAll();
     }
 
@@ -351,7 +351,7 @@ public class HUserRestApi extends HyperIoTBaseEntityRestApi<HUser> {
             @ApiResponse(code = 500, message = "Internal error")})
     @JsonView(HyperIoTJSONView.Public.class)
     public Response findAllHUserPaginated(@QueryParam("delta") Integer delta, @QueryParam("page") Integer page) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/husers/ ");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/husers/ ");
         return this.findAll(delta, page);
     }
 

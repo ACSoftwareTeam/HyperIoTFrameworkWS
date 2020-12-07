@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MaxPayloadBytesPolicy extends HyperIoTWebSocketAbstractPolicy {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(MaxPayloadBytesPolicy.class.getName());
     private long maxPayloadBytes;
 
     public MaxPayloadBytesPolicy(Session s, long maxPayloadBytes) {

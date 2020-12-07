@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @author Aristide Cittadino Class with some helper methods about Actions
  */
 public class HyperIoTActionsUtil {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTActionsUtil.class.getName());
 
     /**
      * @param className className related to the Action

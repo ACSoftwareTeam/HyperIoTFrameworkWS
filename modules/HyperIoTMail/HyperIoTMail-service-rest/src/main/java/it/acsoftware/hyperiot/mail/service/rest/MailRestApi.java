@@ -34,7 +34,7 @@ import java.util.logging.Logger;
         "service.exported.intents=swagger", "service.exported.intents=exceptionmapper"}, immediate = true)
 @Path("")
 public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(MailRestApi.class.getName());
 
     private MailApi service;
 
@@ -48,7 +48,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
     @ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET", authorizations = @Authorization("jwt-auth"))
     @LoggedIn
     public Response checkModuleWorking() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/module/status");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/module/status");
         return Response.ok("Mail Module works!").build();
     }
 
@@ -62,7 +62,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
     @ApiOperation(value = "/test/send", notes = "Simple service for checking mail service status", httpMethod = "GET", authorizations = @Authorization("jwt-auth"))
     @LoggedIn
     public Response testEmailSend() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/module/status");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/module/status");
         List<String> recipients = MailUtil.getTestRecipients();
         try {
             HashMap<String, Object> params = new HashMap<>();
@@ -70,7 +70,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
             String mailBody = this.service.generateTextFromTemplate(MailConstants.MAIL_TEMPLATE_TEST, params);
             this.service.sendMail(MailUtil.getUsername(), recipients, null, null, "MAIL TEST", mailBody, null);
         } catch (Exception e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
+            getLog().log(Level.SEVERE, e.getMessage(), e);
             return Response.ok("Error while sending mail, please check logs: {0}", e.getMessage()).build();
         }
         return Response.ok("Mail Module works!").build();
@@ -82,7 +82,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
      */
     @Override
     protected HyperIoTBaseEntityApi<MailTemplate> getEntityService() {
-        log.log(Level.FINEST, "invoking getEntityService, returning: {0}", this.service);
+        getLog().log(Level.FINEST, "invoking getEntityService, returning: {0}", this.service);
         return service;
     }
 
@@ -91,7 +91,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
      */
     @Reference(service = MailApi.class)
     protected void setEntityService(MailApi entityService) {
-        log.log(Level.FINEST, "invoking setEntityService, setting: {0}", this.service);
+        getLog().log(Level.FINEST, "invoking setEntityService, setting: {0}", this.service);
         this.service = entityService;
     }
 
@@ -110,7 +110,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response findMail(@PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/{0}", id);
         return this.find(id);
     }
 
@@ -130,7 +130,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
             @ApiResponse(code = 500, message = "Internal error")})
     public Response saveMail(
             @ApiParam(value = "Mail entity which must be saved ", required = true) MailTemplate entity) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/mail/templates/ \n Body: {0}", entity);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/mail/templates/ \n Body: {0}", entity);
         return this.save(entity);
     }
 
@@ -149,7 +149,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
             @ApiResponse(code = 500, message = "Invalid ID supplied")})
     public Response updateMail(
             @ApiParam(value = "Mail entity which must be updated ", required = true) MailTemplate entity) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/mail/templates/ \n Body: {0}", entity);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/mail/templates/ \n Body: {0}", entity);
         return this.update(entity);
     }
 
@@ -169,7 +169,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response deleteMail(
             @ApiParam(value = "The mail id which must be deleted", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/mail/templates/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/mail/templates/{0}", id);
         return this.remove(id);
     }
 
@@ -187,7 +187,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllMail() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/all");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/all");
         return this.findAll();
     }
 
@@ -204,7 +204,7 @@ public class MailRestApi extends HyperIoTBaseEntityRestApi<MailTemplate> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllMailPaginated(@QueryParam("delta") Integer delta, @QueryParam("page") Integer page) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/mail/templates/");
         return this.findAll(delta, page);
     }
 

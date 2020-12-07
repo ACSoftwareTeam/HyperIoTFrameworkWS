@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 @Component(service = BackingEngine.class)
 public class HyperIoTJaaSBackingEngine implements BackingEngine {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTJaaSBackingEngine.class.getName());
 
     private HUserSystemApi gethUserSystemApi() {
         log.log(Level.FINE,

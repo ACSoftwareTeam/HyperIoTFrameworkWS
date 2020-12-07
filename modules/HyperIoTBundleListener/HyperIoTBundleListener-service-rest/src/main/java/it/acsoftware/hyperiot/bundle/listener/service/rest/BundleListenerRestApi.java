@@ -25,15 +25,15 @@ import it.acsoftware.hyperiot.bundle.listener.api.BundleListenerApi;
 
 
 /**
- * 
+ *
  * @author Aristide Cittadino BundleListener rest service class. Registered with DOSGi CXF
- * 
+ *
  */
 @SwaggerDefinition(basePath = "/bundles", info = @Info(description = "HyperIoT BundleListener API", version = "2.0.0", title = "hyperiot BundleListener", contact = @Contact(name = "ACSoftware.it", email = "users@acsoftware.it")),securityDefinition = @SecurityDefinition(apiKeyAuthDefinitions = {
 		@ApiKeyAuthDefinition(key = "jwt-auth", name = "AUTHORIZATION", in = ApiKeyLocation.HEADER)}))
 @Api(value = "/bundles", produces = "application/json")
 @Produces(MediaType.APPLICATION_JSON)
-@Component(service = BundleListenerRestApi.class, property = { 
+@Component(service = BundleListenerRestApi.class, property = {
 	    "service.exported.interfaces=it.acsoftware.hyperiot.bundle.listener.service.rest.BundleListenerRestApi",
 		"service.exported.configs=org.apache.cxf.rs","org.apache.cxf.rs.address=/bundles",
 		"service.exported.intents=jackson", "service.exported.intents=jwtAuthFilter",
@@ -45,33 +45,33 @@ public class BundleListenerRestApi extends  HyperIoTBaseRestApi  {
 
 	/**
 	 * Simple service for checking module status
-	 * 
+	 *
 	 * @return HyperIoT Role Module work!
 	 */
 	@GET
 	@Path("/module/status")
 	@ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
 	public Response checkModuleWorking() {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/bundlelistener/module/status");
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/bundlelistener/module/status");
 		return Response.ok("BundleListener Module works!").build();
 	}
 
-	
+
 	/**
 	 * @Return the current service class
 	 */
 	protected HyperIoTBaseApi getService() {
-		log.log(Level.FINEST, "invoking getService, returning: {}" , this.service);
+		getLog().log(Level.FINEST, "invoking getService, returning: {}" , this.service);
 		return service;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param service: Injecting service class
 	 */
 	@Reference(service = BundleListenerApi.class)
 	protected void setService(BundleListenerApi service) {
-		log.log(Level.FINEST, "invoking setService, setting: {}" , service);
+		getLog().log(Level.FINEST, "invoking setService, setting: {}" , service);
 		this.service = service;
 	}
 
@@ -89,7 +89,7 @@ public class BundleListenerRestApi extends  HyperIoTBaseRestApi  {
 			@ApiResponse(code = 500, message = "Internal error")})
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response findAll() {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/bundles/");
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/bundles/");
 		return Response.ok(service.list()).build();
 	}
 
@@ -108,7 +108,7 @@ public class BundleListenerRestApi extends  HyperIoTBaseRestApi  {
 			@ApiResponse(code = 500, message = "Internal error")})
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response find(@ApiParam(value = "id of the bundle", required = true) @PathParam("id") String id) {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/bundles/{0}", id);
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/bundles/{0}", id);
 		return Response.ok(service.get(id)).build();
 	}
 

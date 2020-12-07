@@ -9,7 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 import it.acsoftware.hyperiot.base.validation.PowOf2;
 
 public class PowOf2Validator implements ConstraintValidator<PowOf2, Number> {
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(PowOf2Validator.class.getName());
 
     @Override
     public boolean isValid(Number value, ConstraintValidatorContext context) {

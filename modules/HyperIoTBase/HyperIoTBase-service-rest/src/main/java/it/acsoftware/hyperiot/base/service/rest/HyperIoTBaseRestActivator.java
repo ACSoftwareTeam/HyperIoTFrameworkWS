@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HyperIoTBaseRestActivator implements BundleActivator {
-    private Logger logger = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger logger = Logger.getLogger(HyperIoTBaseRestActivator.class.getName());
     private HyperIoTBaseRestService instance;
 
     @Override

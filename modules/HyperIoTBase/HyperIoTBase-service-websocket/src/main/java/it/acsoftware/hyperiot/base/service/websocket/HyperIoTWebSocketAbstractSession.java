@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * This class implements the concept of a Web Socket Session
  */
 public abstract class HyperIoTWebSocketAbstractSession implements HyperIoTWebSocketSession {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTWebSocketAbstractSession.class.getName());
 
     private Session session;
     private HyperIoTJwtContext context;

@@ -14,7 +14,7 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(property = { "org.apache.cxf.dosgi.IntentName=swagger" }, immediate = true)
 public class HyperIoTSwaggerIntentProvider implements IntentsProvider {
-	private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+	private Logger log = Logger.getLogger(HyperIoTSwaggerIntentProvider.class.getName());
 
 	@Override
 	public List<?> getIntents() {

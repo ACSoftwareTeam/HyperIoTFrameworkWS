@@ -42,7 +42,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
     @LoggedIn
     @ApiOperation(value = "/hyperiot/roles/module/status", notes = "Simple service for checking module status", httpMethod = "GET", authorizations = @Authorization("jwt-auth"))
     public Response checkModuleWorking() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/roles/module/status");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/roles/module/status");
         return Response.ok("HyperIoT Role Module works!").build();
     }
 
@@ -51,7 +51,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
      */
     @Override
     public HyperIoTBaseEntityApi<Role> getEntityService() {
-        log.log(Level.FINEST, "invoking getEntityService, returning: {0}", this.entityService);
+        getLog().log(Level.FINEST, "invoking getEntityService, returning: {0}", this.entityService);
         return entityService;
     }
 
@@ -60,7 +60,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
      */
     @Reference(service = RoleApi.class)
     protected void setEntityService(RoleApi entityService) {
-        log.log(Level.FINEST, "invoking setEntityService, setting: {0}", this.entityService);
+        getLog().log(Level.FINEST, "invoking setEntityService, setting: {0}", this.entityService);
         this.entityService = entityService;
     }
 
@@ -80,7 +80,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response findRole(
             @ApiParam(value = "id from which role object will retrieve", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/roles/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/roles/{0}", id);
         return this.find(id);
     }
 
@@ -99,7 +99,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
             @ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response saveRole(@ApiParam(value = "Role object to store in database", required = true) Role r) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/roles/ \n Body: {0}", r);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/roles/ \n Body: {0}", r);
         return this.save(r);
     }
 
@@ -117,7 +117,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
             @ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated"),
             @ApiResponse(code = 500, message = "Invalid ID supplied")})
     public Response updateRole(@ApiParam(value = "Role object to update in database", required = true) Role r) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/roles/ \n Body: {0}", r);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/roles/ \n Body: {0}", r);
         return this.update(r);
     }
 
@@ -137,7 +137,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response deleteRole(
             @ApiParam(value = "id from which role object will deleted", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/roles/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/roles/{0}", id);
         return this.remove(id);
     }
 
@@ -155,7 +155,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllRoles() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/roles/");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/roles/");
         return this.findAll();
     }
 
@@ -172,7 +172,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllRolesPaginated(@QueryParam("delta") Integer delta, @QueryParam("page") Integer page) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/roles/");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/roles/");
         return this.findAll(delta, page);
     }
 
@@ -192,7 +192,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response findAllUserRoles(
             @ApiParam(value = "id from which user object will retrieve", required = true) @PathParam("userId") long userId) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/roles/user/{0}", userId);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/roles/user/{0}", userId);
         return this.createResponse(new HyperIoTRestAction() {
             @Override
             public Response doAction() {
@@ -221,7 +221,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
     public Response saveUserRole(
             @ApiParam(value = "id from which role object will saved", required = true) @PathParam("roleId") long roleId,
             @ApiParam(value = "id from which user object will saved", required = true) @PathParam("userId") long userId) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/roles/{0}/user/{1}", new Object[]{roleId, userId});
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/roles/{0}/user/{1}", new Object[]{roleId, userId});
         return this.createResponse(new HyperIoTRestAction() {
             @Override
             public Response doAction() {
@@ -249,7 +249,7 @@ public class RoleRestApi extends HyperIoTBaseEntityRestApi<Role> {
     public Response deleteUserRole(
             @ApiParam(value = "id from which role object will deleted", required = true) @PathParam("roleId") long roleId,
             @ApiParam(value = "id from which user object will deleted", required = true) @PathParam("userId") long userId) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/roles/{0}/user/{1}", new Object[]{roleId, userId});
+        getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/roles/{0}/user/{1}", new Object[]{roleId, userId});
         return this.createResponse(new HyperIoTRestAction() {
             @Override
             public Response doAction() {

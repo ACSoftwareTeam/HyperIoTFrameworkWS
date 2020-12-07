@@ -15,7 +15,7 @@ import it.acsoftware.hyperiot.base.exception.GenericExceptionMapperProvider;
  */
 @Component(property = {"org.apache.cxf.dosgi.IntentName=exceptionmapper"}, immediate = true)
 public class HyperIoTExceptionMapperProvider implements IntentsProvider {
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(HyperIoTExceptionMapperProvider.class.getName());
 
     @Override
     public List<?> getIntents() {

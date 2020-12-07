@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * generic entity of HyperIoT platform.
  */
 public abstract class HyperIoTPermissionActivator implements BundleActivator {
-    protected Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    protected Logger log = Logger.getLogger(HyperIoTPermissionActivator.class.getName());
 
     /**
      * Generic class for HyperIoT platform

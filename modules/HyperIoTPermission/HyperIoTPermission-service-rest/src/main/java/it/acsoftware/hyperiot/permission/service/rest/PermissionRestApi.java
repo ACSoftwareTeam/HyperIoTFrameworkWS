@@ -46,7 +46,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
      */
     @Override
     public HyperIoTBaseEntityApi<Permission> getEntityService() {
-        log.log(Level.FINEST, "invoking getEntityService, returning: " + this.entityService);
+        getLog().log(Level.FINEST, "invoking getEntityService, returning: " + this.entityService);
         return entityService;
     }
 
@@ -55,7 +55,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
      */
     @Reference(service = PermissionApi.class)
     protected void setEntityService(PermissionApi entityService) {
-        log.log(Level.FINEST, "invoking setEntityService, setting: {0}", entityService);
+        getLog().log(Level.FINEST, "invoking setEntityService, setting: {0}", entityService);
         this.entityService = entityService;
     }
 
@@ -69,7 +69,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
     @LoggedIn
     @ApiOperation(value = "/hyperiot/permissions/module/status", notes = "Simple service for checking module status", httpMethod = "GET", authorizations = @Authorization("jwt-auth"))
     public Response sayHi() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/permissions/module/status");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/permissions/module/status");
         return Response.ok("HyperIoT Permission Module works!").build();
     }
 
@@ -89,7 +89,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response findPermission(
             @ApiParam(value = "id from which permission object will retrieve", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/permissions/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/permissions/{0}", id);
         return this.find(id);
     }
 
@@ -109,7 +109,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
             @ApiResponse(code = 500, message = "Internal error")})
     public Response savePermission(
             @ApiParam(value = "Permission object to store in database", required = true) Permission p) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/permissions \n Body: {0}", p);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/permissions \n Body: {0}", p);
         return this.save(p);
     }
 
@@ -128,7 +128,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
             @ApiResponse(code = 500, message = "Invalid ID supplied")})
     public Response updatePermission(
             @ApiParam(value = "Permission object to update in database", required = true) Permission p) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/permissions \n Body: {0}", p);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/permissions \n Body: {0}", p);
         return this.update(p);
     }
 
@@ -148,7 +148,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response deletePermission(
             @ApiParam(value = "id from which permission object will deleted", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/permissions/{0}", id);
+        getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/permissions/{0}", id);
         return this.remove(id);
     }
 
@@ -166,7 +166,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllPermission() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/permissions");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/permissions");
         return this.findAll();
     }
 
@@ -200,7 +200,7 @@ public class PermissionRestApi extends HyperIoTBaseEntityRestApi<Permission> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllActions() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/permissions");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/permissions");
         List<HyperIoTAction> actions = HyperIoTActionsUtil.getHyperIoTActions();
         HyperIoTContext context = this.getHyperIoTContext();
         try {

@@ -57,7 +57,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
      * @return The current HUserSystemService
      */
     protected HUserSystemApi getSystemService() {
-        log.log(Level.FINEST, "invoking getSystemService, returning: {0}", this.systemService);
+        getLog().log(Level.FINEST, "invoking getSystemService, returning: {0}", this.systemService);
         return systemService;
     }
 
@@ -66,7 +66,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
      */
     @Reference
     protected void setSystemService(HUserSystemApi hUserSystemService) {
-        log.log(Level.FINEST, "invoking setSystemService, setting: {0}", hUserSystemService);
+        getLog().log(Level.FINEST, "invoking setSystemService, setting: {0}", hUserSystemService);
         this.systemService = hUserSystemService;
     }
 
@@ -105,7 +105,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
      */
     @Override
     public void registerUser(HUser u, HyperIoTContext ctx) {
-        log.log(Level.FINE, "Invoking registerUser User {0} Context: {1}", new Object[]{u, ctx});
+        getLog().log(Level.FINE, "Invoking registerUser User {0} Context: {1}", new Object[]{u, ctx});
         this.systemService.registerUser(u, ctx);
         // if ok sending mail
         List<String> recipients = new ArrayList<>();
@@ -119,7 +119,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
             this.mailService.sendMail(MailUtil.getUsername(), recipients, null, null, "HyperIoT Account Activation!",
                 mailBody, null);
         } catch (Exception e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
+            getLog().log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -189,7 +189,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
                 this.mailService.sendMail(MailUtil.getUsername(), recipients, null, null, "Reset Password", mailBody,
                     null);
             } catch (Exception e) {
-                log.log(Level.SEVERE, e.getMessage(), e);
+                getLog().log(Level.SEVERE, e.getMessage(), e);
             }
         } else {
             throw new HyperIoTEntityNotFound();
@@ -258,7 +258,7 @@ public final class HUserServiceImpl extends HyperIoTBaseEntityServiceImpl<HUser>
             }
             return huser != null;
         } catch (NoResultException e) {
-            log.log(Level.FINE, "No devices with device name: {0}", hyperIoTAuthenticable.getScreenName());
+            getLog().log(Level.FINE, "No devices with device name: {0}", hyperIoTAuthenticable.getScreenName());
         }
         return false;
     }

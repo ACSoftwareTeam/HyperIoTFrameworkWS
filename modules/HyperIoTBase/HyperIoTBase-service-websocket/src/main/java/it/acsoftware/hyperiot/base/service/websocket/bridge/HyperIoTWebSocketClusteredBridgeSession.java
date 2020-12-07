@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * So the bridge is phisically divided on 2 or more server. Some orchestration is required
  */
 public abstract class HyperIoTWebSocketClusteredBridgeSession extends HyperIoTWebSocketBridgeSession {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTWebSocketClusteredBridgeSession.class.getName());
 
     private Executor executor;
     private boolean partecipantAdded;

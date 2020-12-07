@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 @Provider
 public class GenericExceptionMapperProvider implements ExceptionMapper<Throwable> {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(GenericExceptionMapperProvider.class.getName());
 
     class ErrorMessage {
         int status;

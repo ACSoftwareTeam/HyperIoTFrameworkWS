@@ -41,7 +41,7 @@ public final class HUserSystemServiceImpl extends HyperIoTBaseEntitySystemServic
      * Return the current repository
      */
     protected HUserRepository getRepository() {
-        log.log(Level.FINEST, "invoking getRepository, returning: {0}", this.repository);
+        getLog().log(Level.FINEST, "invoking getRepository, returning: {0}", this.repository);
         return repository;
     }
 
@@ -50,7 +50,7 @@ public final class HUserSystemServiceImpl extends HyperIoTBaseEntitySystemServic
      */
     @Reference
     protected void setRepository(HUserRepository hUserRepository) {
-        log.log(Level.FINEST, "invoking setRepository, setting: {0}", hUserRepository);
+        getLog().log(Level.FINEST, "invoking setRepository, setting: {0}", hUserRepository);
         this.repository = hUserRepository;
     }
 
@@ -76,7 +76,7 @@ public final class HUserSystemServiceImpl extends HyperIoTBaseEntitySystemServic
             user = this.findUserByUsername(username);
             //try to find by mail
         } catch (NoResultException e) {
-            log.log(Level.FINE, "trying to login with email");
+            getLog().log(Level.FINE, "trying to login with email");
         }
         try {
             if (user == null) {
@@ -89,7 +89,7 @@ public final class HUserSystemServiceImpl extends HyperIoTBaseEntitySystemServic
                     return user;
             }
         } catch (NoResultException e) {
-            log.log(Level.FINE, "No User found with specified username: {0}", username);
+            getLog().log(Level.FINE, "No User found with specified username: {0}", username);
         }
         return null;
     }
@@ -112,7 +112,7 @@ public final class HUserSystemServiceImpl extends HyperIoTBaseEntitySystemServic
      * @param ctx user context of HyperIoT platform
      */
     public void registerUser(HUser u, HyperIoTContext ctx) {
-        log.log(Level.FINE, "invoking registerUser, User: {0}", new Object[]{u, ctx});
+        getLog().log(Level.FINE, "invoking registerUser, User: {0}", new Object[]{u, ctx});
         this.save(u, ctx);
     }
 

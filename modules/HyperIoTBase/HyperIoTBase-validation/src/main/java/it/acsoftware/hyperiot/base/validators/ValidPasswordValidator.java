@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * to validate password with a @ValidPassword annotation.
  */
 public class ValidPasswordValidator implements ConstraintValidator<ValidPassword, HyperIoTAuthenticable> {
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(ValidPasswordValidator.class.getName());
 
     @Override
     public boolean isValid(HyperIoTAuthenticable authEntity, ConstraintValidatorContext context) {

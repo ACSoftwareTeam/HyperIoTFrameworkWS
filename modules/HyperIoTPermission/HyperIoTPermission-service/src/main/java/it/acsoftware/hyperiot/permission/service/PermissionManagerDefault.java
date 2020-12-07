@@ -35,7 +35,7 @@ import java.util.logging.Logger;
     HyperIoTConstants.OSGI_PERMISSION_MANAGER_IMPLEMENTATION
         + "=default"}, immediate = true, servicefactory = false)
 public class PermissionManagerDefault implements HyperIoTPermissionManager {
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(PermissionManagerDefault.class.getName());
     /**
      * Injecting the PermissionSystemService to use methods in PermissionSystemApi
      * interface

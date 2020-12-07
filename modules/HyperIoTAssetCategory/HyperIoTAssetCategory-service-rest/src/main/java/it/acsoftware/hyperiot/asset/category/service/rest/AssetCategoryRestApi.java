@@ -41,7 +41,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
     @Path("/module/status")
     @ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
     public Response checkModuleWorking() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/assets/categories/module/status");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/assets/categories/module/status");
         return Response.ok("AssetCategory Module works!").build();
     }
 
@@ -50,7 +50,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
      */
     @Override
     protected HyperIoTBaseEntityApi<AssetCategory> getEntityService() {
-        log.log(Level.FINEST, "invoking getEntityService, returning: {0}", this.entityService);
+        getLog().log(Level.FINEST, "invoking getEntityService, returning: {0}", this.entityService);
         return entityService;
     }
 
@@ -59,7 +59,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
      */
     @Reference(service = AssetCategoryApi.class)
     protected void setEntityService(AssetCategoryApi entityService) {
-        log.log(Level.FINEST, "invoking setEntityService, setting: {0}" , this.entityService);
+        getLog().log(Level.FINEST, "invoking setEntityService, setting: {0}" , this.entityService);
         this.entityService = entityService;
     }
 
@@ -79,7 +79,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response findAssetCategory(
             @ApiParam(value = "id from which assetcategory object will retrieve", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/assets/categories/{0}" , id);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/assets/categories/{0}" , id);
         return this.find(id);
     }
 
@@ -99,7 +99,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
             @ApiResponse(code = 500, message = "Internal error")})
     public Response saveAssetCategory(
             @ApiParam(value = "AssetCategory entity which must be saved ", required = true) AssetCategory entity) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/assets/categories/ \n Body: {0}" , entity);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/assets/categories/ \n Body: {0}" , entity);
         return this.save(entity);
     }
 
@@ -117,7 +117,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
             @ApiResponse(code = 403, message = "Not authorized"), @ApiResponse(code = 422, message = "Not validated")})
     public Response updateAssetCategory(
             @ApiParam(value = "AssetCategory entity which must be updated ", required = true) AssetCategory entity) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/assets/categories/ \n Body: {0}" , entity);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/assets/categories/ \n Body: {0}" , entity);
         return this.update(entity);
     }
 
@@ -137,7 +137,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response deleteAssetCategory(
             @ApiParam(value = "The assetcategory id which must be deleted", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/assets/categories/{0}" , id);
+        getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/assets/categories/{0}" , id);
         return this.remove(id);
     }
 
@@ -155,7 +155,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllAssetCategory() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/assets/categories/all");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/assets/categories/all");
         return this.findAll();
     }
 
@@ -172,7 +172,7 @@ public class AssetCategoryRestApi extends HyperIoTBaseEntityRestApi<AssetCategor
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllAssetCategoryPaginated(@QueryParam("delta") Integer delta, @QueryParam("page") Integer page) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/assets/categories/");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/assets/categories/");
         return this.findAll(delta, page);
     }
 

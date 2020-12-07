@@ -17,7 +17,7 @@ import it.acsoftware.hyperiot.asset.category.model.AssetCategory;
 import it.acsoftware.hyperiot.base.service.entity.HyperIoTBaseEntitySystemServiceImpl;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of the AssetCategorySystemApi
  *         interface. This class is used to implements all additional methods to
  *         interact with the persistence layer.
@@ -45,7 +45,7 @@ public final class AssetCategorySystemServiceImpl extends HyperIoTBaseEntitySyst
 	 * Return the current repository
 	 */
 	protected AssetCategoryRepository getRepository() {
-		log.log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
+		getLog().log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
 		return repository;
 	}
 
@@ -55,7 +55,7 @@ public final class AssetCategorySystemServiceImpl extends HyperIoTBaseEntitySyst
 	 */
 	@Reference
 	protected void setRepository(AssetCategoryRepository assetCategoryRepository) {
-		log.log(Level.FINEST, "invoking setRepository, setting: {0}" , assetCategoryRepository);
+		getLog().log(Level.FINEST, "invoking setRepository, setting: {0}" , assetCategoryRepository);
 		this.repository = assetCategoryRepository;
 	}
 

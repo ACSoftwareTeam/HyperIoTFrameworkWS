@@ -1,9 +1,9 @@
 package it.acsoftware.hyperiot.base.api;
 
+import it.acsoftware.hyperiot.base.api.entity.HyperIoTProtectedEntity;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import it.acsoftware.hyperiot.base.api.entity.HyperIoTProtectedEntity;
 
 /**
  * @author Aristide Cittadino Generic Interface Component for
@@ -12,6 +12,7 @@ import it.acsoftware.hyperiot.base.api.entity.HyperIoTProtectedEntity;
  * platform.
  */
 public interface HyperIoTPermissionManager {
+    static final Logger logger = Logger.getLogger(HyperIoTPermissionManager.class.getName());
 
     /**
      * Checks if an existing user has permissions for action of HyperIoTAction.
@@ -78,9 +79,9 @@ public interface HyperIoTPermissionManager {
      * @return protected entity
      */
     static boolean isProtectedEntity(Object entity) {
-        Logger.getLogger("it.acsoftware.hyperiot").log(Level.FINE,
-                "invoking Permission Manager getProtectedEntity "
-                        + entity.getClass().getSimpleName());
+        logger.log(Level.FINE,
+            "invoking Permission Manager getProtectedEntity "
+                + entity.getClass().getSimpleName());
         if (entity instanceof HyperIoTProtectedEntity)
             return true;
 
@@ -98,14 +99,14 @@ public interface HyperIoTPermissionManager {
      * @return protected resource name of entity
      */
     static boolean isProtectedEntity(String resourceName) {
-        Logger.getLogger("it.acsoftware.hyperiot").log(Level.FINE,
-                "invoking Permission getProtectedEntity " + resourceName);
+        logger.log(Level.FINE,
+            "invoking Permission getProtectedEntity " + resourceName);
         try {
             boolean isAssignable = HyperIoTProtectedEntity.class.isAssignableFrom(Class.forName(resourceName));
             isAssignable = isAssignable || HyperIoTProtectedResource.class.isAssignableFrom(Class.forName(resourceName));
             return isAssignable;
         } catch (ClassNotFoundException e) {
-            Logger.getLogger("it.acsoftware.hyperiot").log(Level.WARNING, e.getMessage());
+            logger.log(Level.WARNING, e.getMessage());
         }
         // return the most restrictive condition
         return true;

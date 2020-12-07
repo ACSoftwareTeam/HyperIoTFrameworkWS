@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Component(service = HBaseConnectorUtil.class, immediate = true)
 public class HBaseConnectorUtilImpl implements HBaseConnectorUtil {
 
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HBaseConnectorUtilImpl.class.getName());
 
     private Properties props;
 

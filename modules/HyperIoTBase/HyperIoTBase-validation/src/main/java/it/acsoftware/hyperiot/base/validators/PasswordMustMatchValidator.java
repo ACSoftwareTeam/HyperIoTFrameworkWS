@@ -14,7 +14,7 @@ import it.acsoftware.hyperiot.base.validation.PasswordMustMatch;
  * to validate password with a @PasswordMustMatch annotation.
  */
 public class PasswordMustMatchValidator implements ConstraintValidator<PasswordMustMatch, HyperIoTAuthenticable> {
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(PasswordMustMatchValidator.class.getName());
 
     @Override
     public boolean isValid(HyperIoTAuthenticable authEntity, ConstraintValidatorContext context) {

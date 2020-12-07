@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 @WebSocket()
 public class WebSocketService {
     public final String WEB_SOCKET_SERVICE_URL = HyperIoTUtil.getHyperIoTBaseRestContext(HyperIoTUtil.getBundleContext(WebSocketService.class)) + "/ws";
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(WebSocketService.class.getName());
 
     /**
      * Managing all websocket sessions in terms of:

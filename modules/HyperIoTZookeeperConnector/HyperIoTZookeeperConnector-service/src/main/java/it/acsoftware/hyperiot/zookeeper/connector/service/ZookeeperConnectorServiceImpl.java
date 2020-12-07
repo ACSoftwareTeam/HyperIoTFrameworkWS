@@ -18,7 +18,7 @@ import it.acsoftware.hyperiot.zookeeper.connector.api.ZookeeperConnectorApi;
 import  it.acsoftware.hyperiot.base.service.HyperIoTBaseServiceImpl;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of ZookeeperConnectorApi interface.
  *         It is used to implement all additional methods in order to interact with the system layer.
  */
@@ -28,23 +28,23 @@ public final class ZookeeperConnectorServiceImpl extends  HyperIoTBaseServiceImp
 	 * Injecting the ZookeeperConnectorSystemApi
 	 */
 	private ZookeeperConnectorSystemApi systemService;
-	
+
 	/**
-	 * 
+	 *
 	 * @return The current ZookeeperConnectorSystemApi
 	 */
 	protected ZookeeperConnectorSystemApi getSystemService() {
-		log.log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
+		getLog().log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
 		return systemService;
 	}
 
 	/**
-	 * 
-	 * @param zookeeperConnectorSystemService Injecting via OSGi DS current systemService 
+	 *
+	 * @param zookeeperConnectorSystemService Injecting via OSGi DS current systemService
 	 */
 	@Reference
 	protected void setSystemService(ZookeeperConnectorSystemApi zookeeperConnectorSystemService) {
-		log.log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
+		getLog().log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
 		this.systemService = zookeeperConnectorSystemService ;
 	}
 

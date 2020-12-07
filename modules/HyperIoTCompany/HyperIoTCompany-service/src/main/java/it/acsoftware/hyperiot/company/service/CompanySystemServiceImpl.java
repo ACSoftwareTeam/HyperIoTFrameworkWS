@@ -11,14 +11,14 @@ import it.acsoftware.hyperiot.company.api.CompanySystemApi;
 import it.acsoftware.hyperiot.company.model.Company;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of the CompanySystemApi
  *         interface. This  class is used to implements all additional
  *         methods to interact with the persistence layer.
  */
 @Component(service = CompanySystemApi.class, immediate = true)
 public final class CompanySystemServiceImpl extends HyperIoTBaseEntitySystemServiceImpl<Company>   implements CompanySystemApi {
-	
+
 	/**
 	 * Injecting the CompanyRepository to interact with persistence layer
 	 */
@@ -35,18 +35,18 @@ public final class CompanySystemServiceImpl extends HyperIoTBaseEntitySystemServ
 	 * Return the current repository
 	 */
 	protected CompanyRepository getRepository() {
-		log.log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
+        getLog().log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
 		return repository;
 	}
-	
+
 	/**
-	 * @param CompanyRepository The current value of CompanyRepository to interact with persistence layer
+	 * @param companyRepository The current value of CompanyRepository to interact with persistence layer
 	 */
 	@Reference
 	protected void setRepository(CompanyRepository companyRepository) {
-		log.log(Level.FINEST, "invoking setRepository, setting: {0}" , companyRepository);
+        getLog().log(Level.FINEST, "invoking setRepository, setting: {0}" , companyRepository);
 		this.repository = companyRepository;
 	}
-	
-	
+
+
 }

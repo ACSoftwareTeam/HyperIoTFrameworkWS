@@ -37,7 +37,7 @@ public class PermissionServiceImpl extends HyperIoTBaseEntityServiceImpl<Permiss
      * @return The current PermissionSystemService
      */
     public PermissionSystemApi getSystemService() {
-        log.log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
+        getLog().log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
         return systemService;
     }
 
@@ -46,7 +46,7 @@ public class PermissionServiceImpl extends HyperIoTBaseEntityServiceImpl<Permiss
      */
     @Reference
     protected void setSystemService(PermissionSystemApi systemService) {
-        log.log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
+        getLog().log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
         this.systemService = systemService;
     }
 
@@ -55,7 +55,7 @@ public class PermissionServiceImpl extends HyperIoTBaseEntityServiceImpl<Permiss
      */
     @Override
     public HashMap<String, List<HyperIoTAction>> getAvailablePermissions() {
-        log.log(Level.FINE, "invoking getAvailablePermissions ");
+        getLog().log(Level.FINE, "invoking getAvailablePermissions ");
         return null;
     }
 

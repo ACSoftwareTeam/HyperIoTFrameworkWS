@@ -56,7 +56,7 @@ public final class AuthenticationSystemServiceImpl extends HyperIoTBaseSystemSer
      */
     @Override
     public HyperIoTAuthenticable login(String username, String password) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
                 "Invoking login with all auth providers");
         List<HyperIoTAuthenticationProvider> authenticationProviders = this.getAuthenticationProviders(null);
         return this.login(username, password, authenticationProviders);
@@ -72,7 +72,7 @@ public final class AuthenticationSystemServiceImpl extends HyperIoTBaseSystemSer
      */
     @Override
     public HyperIoTAuthenticable login(String username, String password, String authProviderFilter) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
                 "Invoking login with auth providers which match filter: {0}" , authProviderFilter);
         List<HyperIoTAuthenticationProvider> authenticationProviders = this.getAuthenticationProviders(authProviderFilter);
         return this.login(username, password, authenticationProviders);
@@ -112,7 +112,7 @@ public final class AuthenticationSystemServiceImpl extends HyperIoTBaseSystemSer
      * @return Authenticable
      */
     private HyperIoTAuthenticable loginWithJWTToken(String username, String jwt, HyperIoTAuthenticationProvider provider) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
                 "Checking if user attempted login with JWT Token");
         try {
             JwtToken token = authFilter.getJwtToken(jwt);
@@ -124,7 +124,7 @@ public final class AuthenticationSystemServiceImpl extends HyperIoTBaseSystemSer
             }
             return null;
         } catch (Exception e) {
-            log.log(Level.FINE, e.getMessage(), e);
+            getLog().log(Level.FINE, e.getMessage(), e);
             return null;
         }
     }
@@ -142,7 +142,7 @@ public final class AuthenticationSystemServiceImpl extends HyperIoTBaseSystemSer
      * @return
      */
     private List<HyperIoTAuthenticationProvider> getAuthenticationProviders(String filter) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
                 "Invoking getAuthenticationProviders for searching for AuthenticationProviders");
         List<HyperIoTAuthenticationProvider> providers = new ArrayList<>();
         try {
@@ -157,7 +157,7 @@ public final class AuthenticationSystemServiceImpl extends HyperIoTBaseSystemSer
                 return providers;
             }
         } catch (InvalidSyntaxException e) {
-            log.log(Level.WARNING, e.getMessage(), e);
+            getLog().log(Level.WARNING, e.getMessage(), e);
         }
         return null;
     }

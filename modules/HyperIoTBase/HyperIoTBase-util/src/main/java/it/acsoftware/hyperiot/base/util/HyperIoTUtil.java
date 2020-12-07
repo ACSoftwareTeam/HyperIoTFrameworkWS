@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  * MD5 algorithm.
  */
 public final class HyperIoTUtil {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTUtil.class.getName());
     private static Properties props;
     private static HyperIoTUtil localInstance;
 

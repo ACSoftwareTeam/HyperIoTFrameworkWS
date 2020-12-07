@@ -40,7 +40,7 @@ public final class SharedEntitySystemServiceImpl extends HyperIoTBaseEntitySyste
 	 * Return the current repository
 	 */
 	protected SharedEntityRepository getRepository() {
-		log.log(Level.FINEST, "invoking getRepository, returning: {}" , this.repository);
+		getLog().log(Level.FINEST, "invoking getRepository, returning: {}" , this.repository);
 		return repository;
 	}
 
@@ -49,7 +49,7 @@ public final class SharedEntitySystemServiceImpl extends HyperIoTBaseEntitySyste
 	 */
 	@Reference
 	protected void setRepository(SharedEntityRepository sharedEntityRepository) {
-		log.log(Level.FINEST, "invoking setRepository, setting: {}" , sharedEntityRepository);
+		getLog().log(Level.FINEST, "invoking setRepository, setting: {}" , sharedEntityRepository);
 		this.repository = sharedEntityRepository;
 	}
 
@@ -70,7 +70,7 @@ public final class SharedEntitySystemServiceImpl extends HyperIoTBaseEntitySyste
 
 	@Override
 	public void removeByPK(String entityResourceName, long entityId, long userId, HyperIoTContext ctx) {
-		this.log.log(Level.FINE,
+		this.getLog().log(Level.FINE,
 				"System Service Removing entity " + this.getEntityType().getSimpleName() + " with primary key: (entityResourceName: {0}, entityId: {1}, userId: {2})",
 				new Object[]{entityResourceName, entityId, userId});
 		this.getRepository().removeByPK(entityResourceName, entityId, userId);
@@ -78,7 +78,7 @@ public final class SharedEntitySystemServiceImpl extends HyperIoTBaseEntitySyste
 
 	@Override
 	public SharedEntity findByPK(String entityResourceName, long entityId, long userId, HashMap<String, Object> filter, HyperIoTContext ctx) {
-		this.log.log(Level.FINE,
+		this.getLog().log(Level.FINE,
 				"System Service Finding entity " + this.getEntityType().getSimpleName() + " with primary key: (entityResourceName: {0}, entityId: {1}, userId: {2})",
 				new Object[]{entityResourceName, entityId, userId});
 		return this.getRepository().findByPK(entityResourceName, entityId, userId, filter);
@@ -86,27 +86,27 @@ public final class SharedEntitySystemServiceImpl extends HyperIoTBaseEntitySyste
 
 	@Override
 	public List<SharedEntity> findByUser(long userId, HashMap<String, Object> filter, HyperIoTContext ctx) {
-		this.log.log(Level.FINE, "System Service Finding entity " + this.getEntityType().getSimpleName() + " with userId: {0}", userId);
+		this.getLog().log(Level.FINE, "System Service Finding entity " + this.getEntityType().getSimpleName() + " with userId: {0}", userId);
 		return this.getRepository().findByUser(userId, filter);
 	}
 
 	@Override
 	public List<SharedEntity> findByEntity(String entityResourceName, long entityId, HashMap<String, Object> filter, HyperIoTContext ctx) {
-		this.log.log(Level.FINE, "System Service Finding entity " + this.getEntityType().getSimpleName() + " with entityResourceName: {0} and entityId: {1}",
+		this.getLog().log(Level.FINE, "System Service Finding entity " + this.getEntityType().getSimpleName() + " with entityResourceName: {0} and entityId: {1}",
 				new Object[]{entityId, entityResourceName});
 		return this.getRepository().findByEntity(entityResourceName, entityId, filter);
 	}
 
 	@Override
 	public List<HyperIoTUser> getSharingUsers(String entityResourceName, long entityId, HyperIoTContext context) {
-		this.log.log(Level.FINE, "System Service getSharingUsers with entityResourceName: {0} and entityId: {1}",
+		this.getLog().log(Level.FINE, "System Service getSharingUsers with entityResourceName: {0} and entityId: {1}",
 				new Object[]{entityResourceName, entityId});
 		return this.getRepository().getSharingUsers(entityResourceName, entityId);
 	}
 
 	@Override
 	public List<Long> getEntityIdsSharedWithUser(String entityResourceName, long userId, HyperIoTContext context) {
-		this.log.log(Level.FINE, "System Service getEntityIdsSharedWithUser with entityResourceName: {0} and userId: {1}",
+		this.getLog().log(Level.FINE, "System Service getEntityIdsSharedWithUser with entityResourceName: {0} and userId: {1}",
 				new Object[]{entityResourceName, userId});
 		return this.getRepository().getEntityIdsSharedWithUser(entityResourceName, userId);
 	}

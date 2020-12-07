@@ -37,9 +37,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
  */
 @Component(service = JobSchedulerSystemApi.class, immediate = true)
 public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServiceImpl implements JobSchedulerSystemApi {
-
-    private static final Logger log = Logger.getLogger("it.acsoftware.hyperiot");
-
+    private static final Logger log = Logger.getLogger(JobSchedulerSystemServiceImpl.class.getName());
     /**
      * Reference to this OSGi component, although it is not used.
      * We need it to tell Osgi to wait until datasource has been activated.
@@ -58,16 +56,16 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
     public void onActivate(BundleContext context) {
         try {
             // Get the scheduler
-            log.info("Get scheduler");
+            getLog().info("Get scheduler");
             StdSchedulerFactory stdSchedulerFactory = new StdSchedulerFactory(getQuartzProperties(context));
             scheduler = stdSchedulerFactory.getScheduler();
             if (zookeeperConnectorSystemApi.isLeader(jobSchedulerLeadershipRegistrar.getLeadershipPath())) {
-                log.info("Scheduler is on zk leader, start");
+                getLog().info("Scheduler is on zk leader, start");
                 scheduler.start();
             }
             addLeaderLatchListener();
         } catch (SchedulerException e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
+            getLog().log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -77,7 +75,7 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
             if (scheduler != null)
                 scheduler.shutdown();
         } catch (SchedulerException e) {
-            log.log(Level.SEVERE, e.getMessage(), e);
+            getLog().log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -86,21 +84,20 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
         JobDetail jobDetail = job.getJobDetail();
         if (jobDetail == null) {
             String errorMsg = "Could not add job: jobDetail was null";
-            log.severe(errorMsg);
+            getLog().severe(errorMsg);
             throw new HyperIoTRuntimeException(errorMsg);
         }
         JobKey jobKey = jobDetail.getKey();
-        log.log(Level.INFO, "Adding job {0} to scheduler", jobKey);
+        getLog().log(Level.INFO, "Adding job {0} to scheduler", jobKey);
         try {
             if (!scheduler.checkExists(jobKey)) {
                 // Add the the job to the store of scheduler
                 scheduler.addJob(jobDetail, false);
                 schedule(job);
-            }
-            else
-                log.log(Level.WARNING, "Job {0} already exists, it has not been added", jobKey);
-        } catch(ParseException | SchedulerException e){
-            log.log(Level.SEVERE, "Could not schedule job {0}: {1}", new Object[] {jobKey, e.getMessage()});
+            } else
+                getLog().log(Level.WARNING, "Job {0} already exists, it has not been added", jobKey);
+        } catch (ParseException | SchedulerException e) {
+            getLog().log(Level.SEVERE, "Could not schedule job {0}: {1}", new Object[]{jobKey, e.getMessage()});
             throw new HyperIoTRuntimeException(e);
         }
     }
@@ -114,21 +111,21 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
 
             @Override
             public void isLeader() {
-                log.info("This node has became a zk leader, start scheduler");
+                getLog().info("This node has became a zk leader, start scheduler");
                 try {
                     scheduler.start();
                 } catch (SchedulerException e) {
-                    log.log(Level.SEVERE, "Scheduler has not been started: {0}", e.getMessage());
+                    getLog().log(Level.SEVERE, "Scheduler has not been started: {0}", e.getMessage());
                 }
             }
 
             @Override
             public void notLeader() {
-                log.info("This node is not a zk leader anymore, standby scheduler");
+                getLog().info("This node is not a zk leader anymore, standby scheduler");
                 try {
                     scheduler.standby();
                 } catch (SchedulerException e) {
-                    log.log(Level.SEVERE, "Scheduler has not been paused: {0}", e.getMessage());
+                    getLog().log(Level.SEVERE, "Scheduler has not been paused: {0}", e.getMessage());
                 }
             }
 
@@ -140,18 +137,18 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
         JobKey jobKey = job.getJobKey();
         if (jobKey == null) {
             String errorMsg = "Could not delete job: jobKey was null";
-            log.severe(errorMsg);
+            getLog().severe(errorMsg);
             throw new HyperIoTRuntimeException(errorMsg);
         }
-        log.log(Level.INFO, "Removing job {0} from scheduler", jobKey);
+        getLog().log(Level.INFO, "Removing job {0} from scheduler", jobKey);
         try {
-            if(!scheduler.checkExists(jobKey))
-                log.log(Level.WARNING, "Job {0} does not exist", jobKey);
+            if (!scheduler.checkExists(jobKey))
+                getLog().log(Level.WARNING, "Job {0} does not exist", jobKey);
             else
                 unschedule(job);
         } catch (SchedulerException e) {
-            log.log(Level.SEVERE, "Job" + jobKey + " has not been removed: {1}",
-                    new Object[] {jobKey, e.getMessage()});
+            getLog().log(Level.SEVERE, "Job" + jobKey + " has not been removed: {1}",
+                new Object[]{jobKey, e.getMessage()});
             throw new HyperIoTRuntimeException(e);
         }
     }
@@ -159,19 +156,19 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
     private static Properties getQuartzProperties(BundleContext context) {
         if (quartzProps == null) {
             ServiceReference<?> configurationAdminReference = context
-                    .getServiceReference(ConfigurationAdmin.class.getName());
+                .getServiceReference(ConfigurationAdmin.class.getName());
 
             if (configurationAdminReference != null) {
                 ConfigurationAdmin confAdmin = (ConfigurationAdmin) context
-                        .getService(configurationAdminReference);
+                    .getService(configurationAdminReference);
                 try {
                     Configuration configuration = confAdmin
-                            .getConfiguration("it.acsoftware.hyperiot.scheduler");
+                        .getConfiguration("it.acsoftware.hyperiot.scheduler");
                     if (configuration != null && configuration.getProperties() != null) {
                         Dictionary<String, Object> dict = configuration.getProperties();
                         List<String> keys = Collections.list(dict.keys());
                         Map<String, Object> dictCopy = keys.stream()
-                                .collect(Collectors.toMap(Function.identity(), dict::get));
+                            .collect(Collectors.toMap(Function.identity(), dict::get));
                         quartzProps = new Properties();
                         quartzProps.putAll(dictCopy);
                         log.log(Level.FINER, "Loaded properties For HyperIoT: {0}", quartzProps);
@@ -179,12 +176,12 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
                     }
                 } catch (IOException e) {
                     log.log(Level.SEVERE,
-                            "Impossible to find it.acsoftware.hyperiot.scheduler.cfg, please create it!", e);
+                        "Impossible to find it.acsoftware.hyperiot.scheduler.cfg, please create it!", e);
                     return null;
                 }
             }
             log.log(Level.SEVERE,
-                    "Impossible to find it.acsoftware.hyperiot.scheduler.cfg, please create it!");
+                "Impossible to find it.acsoftware.hyperiot.scheduler.cfg, please create it!");
             return null;
         }
         return quartzProps;
@@ -192,14 +189,15 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
 
     /**
      * This method tells to quartz scheduler to schedule job
+     *
      * @param job Job to be scheduled
-     * @throws ParseException ParseException
+     * @throws ParseException     ParseException
      * @throws SchedulerException SchedulerException
      */
     private void schedule(HyperIoTJob job)
-            throws ParseException, SchedulerException {
+        throws ParseException, SchedulerException {
         JobKey jobKey = job.getJobKey();
-        log.log(Level.INFO, "Scheduling job {0}", jobKey);
+        getLog().log(Level.INFO, "Scheduling job {0}", jobKey);
         String cronExpression = job.getCronExpression();
         // Validate cron expression
         CronExpression.validateExpression(cronExpression);
@@ -211,14 +209,13 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
         if (scheduler.checkExists(triggerKey)) {
             oldTrigger = scheduler.getTrigger(triggerKey);
             triggerBuilder = oldTrigger.getTriggerBuilder();
-        }
-        else {
+        } else {
             triggerBuilder = newTrigger().withIdentity(triggerKey);
         }
         Trigger trigger = triggerBuilder
-                .withSchedule(cronSchedule(cronExpression))
-                .forJob(jobKey)
-                .build();
+            .withSchedule(cronSchedule(cronExpression))
+            .forJob(jobKey)
+            .build();
         // Tell quartz to schedule the job using trigger set above
         if (oldTrigger == null)
             scheduler.scheduleJob(trigger);
@@ -228,17 +225,17 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
 
     /**
      * This method tells to quartz scheduler to remove job
+     *
      * @param job Job to be removed
      */
     private void unschedule(HyperIoTJob job) throws SchedulerException {
         JobKey jobKey = job.getJobKey();
-        log.log(Level.INFO, "Unscheduling job {0}", jobKey);
+        getLog().log(Level.INFO, "Unscheduling job {0}", jobKey);
         if (scheduler.checkExists(jobKey)) {
             scheduler.deleteJob(jobKey);
-            log.log(Level.INFO, "Job {0} has been unscheduled successfully", jobKey);
-        }
-        else
-            log.log(Level.INFO, "Job {0} has not been scheduled yet", jobKey);
+            getLog().log(Level.INFO, "Job {0} has been unscheduled successfully", jobKey);
+        } else
+            getLog().log(Level.INFO, "Job {0} has not been scheduled yet", jobKey);
     }
 
     @Override
@@ -246,20 +243,19 @@ public final class JobSchedulerSystemServiceImpl extends HyperIoTBaseSystemServi
         JobDetail jobDetail = job.getJobDetail();
         if (jobDetail == null) {
             String errorMsg = "Could not update job: jobDetail was null";
-            log.severe(errorMsg);
+            getLog().severe(errorMsg);
             throw new HyperIoTRuntimeException(errorMsg);
         }
         JobKey jobKey = job.getJobKey();
-        log.log(Level.INFO, "Updating job {0} to scheduler", jobKey);
+        getLog().log(Level.INFO, "Updating job {0} to scheduler", jobKey);
         try {
             if (scheduler.checkExists(jobKey)) {
                 scheduler.addJob(jobDetail, true);
                 schedule(job);
-            }
-            else
-                log.warning("Job does not exists, it has been neither updated nor scheduled");
+            } else
+                getLog().warning("Job does not exists, it has been neither updated nor scheduled");
         } catch (ParseException | SchedulerException e) {
-            log.log(Level.SEVERE, "Job {} has not been updated: ", new Object[] {jobKey, e.getMessage()});
+            getLog().log(Level.SEVERE, "Job {} has not been updated: ", new Object[]{jobKey, e.getMessage()});
             throw new HyperIoTRuntimeException(e);
         }
     }

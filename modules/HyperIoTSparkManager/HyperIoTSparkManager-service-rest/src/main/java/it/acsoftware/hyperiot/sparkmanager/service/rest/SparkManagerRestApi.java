@@ -24,15 +24,15 @@ import it.acsoftware.hyperiot.sparkmanager.api.SparkManagerApi;
 
 
 /**
- * 
+ *
  * @author Aristide Cittadino SparkManager rest service class. Registered with DOSGi CXF
- * 
+ *
  */
 @SwaggerDefinition(basePath = "/sparkmanager", info = @Info(description = "HyperIoT SparkManager API", version = "2.0.0", title = "hyperiot SparkManager", contact = @Contact(name = "ACSoftware.it", email = "users@acsoftware.it")),securityDefinition = @SecurityDefinition(apiKeyAuthDefinitions = {
 		@ApiKeyAuthDefinition(key = "jwt-auth", name = "AUTHORIZATION", in = ApiKeyLocation.HEADER)}))
 @Api(value = "/sparkmanager", produces = "application/json")
 @Produces(MediaType.APPLICATION_JSON)
-@Component(service = SparkManagerRestApi.class, property = { 
+@Component(service = SparkManagerRestApi.class, property = {
 	    "service.exported.interfaces=it.acsoftware.hyperiot.sparkmanager.service.rest.SparkManagerRestApi",
 		"service.exported.configs=org.apache.cxf.rs","org.apache.cxf.rs.address=/sparkmanager",
 		"service.exported.intents=jackson", "service.exported.intents=jwtAuthFilter",
@@ -44,33 +44,33 @@ public class SparkManagerRestApi extends  HyperIoTBaseRestApi  {
 
 	/**
 	 * Simple service for checking module status
-	 * 
+	 *
 	 * @return HyperIoT Role Module work!
 	 */
 	@GET
 	@Path("/module/status")
 	@ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
 	public Response checkModuleWorking() {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/sparkmanager/module/status");
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/sparkmanager/module/status");
 		return Response.ok("SparkManager Module works!").build();
 	}
 
-	
+
 	/**
 	 * @return the current service class
 	 */
 	protected HyperIoTBaseApi getService() {
-		log.log(Level.FINEST, "invoking getService, returning: {}" , this.service);
+		getLog().log(Level.FINEST, "invoking getService, returning: {}" , this.service);
 		return service;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param service: Injecting service class
 	 */
 	@Reference(service = SparkManagerApi.class)
 	protected void setService(SparkManagerApi service) {
-		log.log(Level.FINEST, "invoking setService, setting: {}" , service);
+		getLog().log(Level.FINEST, "invoking setService, setting: {}" , service);
 		this.service = service;
 	}
 
@@ -92,7 +92,7 @@ public class SparkManagerRestApi extends  HyperIoTBaseRestApi  {
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response getStatus(
 			@ApiParam(value = "Driver ID", required = true) @PathParam("driverId") String driverId) {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/sparkmanager/submissions/status/{0}", driverId);
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/sparkmanager/submissions/status/{0}", driverId);
 		SparkRestApiResponse response = service.getStatus(this.getHyperIoTContext(), driverId);
 		return Response.ok(response).build();
 	}
@@ -115,7 +115,7 @@ public class SparkManagerRestApi extends  HyperIoTBaseRestApi  {
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response kill(
 			@ApiParam(value = "Driver ID", required = true) @PathParam("driverId") String driverId) {
-		log.log(Level.FINE, "In Rest Service POST /hyperiot/sparkmanager/submissions/kill/{0}", driverId);
+		getLog().log(Level.FINE, "In Rest Service POST /hyperiot/sparkmanager/submissions/kill/{0}", driverId);
 		SparkRestApiResponse response = service.kill(this.getHyperIoTContext(), driverId);
 		return Response.ok(response).build();
 	}
@@ -139,9 +139,9 @@ public class SparkManagerRestApi extends  HyperIoTBaseRestApi  {
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response submitJob(
 			@ApiParam(value = "Job config in JSON format", required = true) SparkRestApiSubmissionRequest data) {
-		log.log(Level.FINE, "In Rest Service POST /hyperiot/sparkmanager/submissions");
+		getLog().log(Level.FINE, "In Rest Service POST /hyperiot/sparkmanager/submissions");
 		SparkRestApiResponse response = service.submitJob(this.getHyperIoTContext(), data);
 		return Response.ok(response).build();
 	}
-	
+
 }

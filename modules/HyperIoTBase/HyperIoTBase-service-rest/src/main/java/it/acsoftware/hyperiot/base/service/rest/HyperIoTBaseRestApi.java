@@ -42,7 +42,8 @@ public abstract class HyperIoTBaseRestApi {
     @Context
     protected SecurityContext securityContext;
 
-    protected static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger internalLogger = Logger.getLogger(HyperIoTBaseRestApi.class.getName());
+    private Logger log = Logger.getLogger(this.getClass().getName());
 
     /**
      * @return The current HyperIoTContext
@@ -188,8 +189,15 @@ public abstract class HyperIoTBaseRestApi {
                 }
             }
         } catch (InvalidSyntaxException e) {
-            log.log(Level.SEVERE, e.getMessage());
+            internalLogger.log(Level.SEVERE, e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * @return class logger
+     */
+    protected Logger getLog() {
+        return log;
     }
 }

@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public abstract class HyperIoTSparkJob implements Job {
 
-    protected static final Logger LOGGER = Logger.getLogger("it.acsoftware.hyperiot");
+    protected static final Logger LOGGER = Logger.getLogger(HyperIoTSparkJob.class.getName());
     private static final String ERROR_MESSAGE = "Job {0} is not going to be fired because of empty value for argument {1}";
 
     @Override

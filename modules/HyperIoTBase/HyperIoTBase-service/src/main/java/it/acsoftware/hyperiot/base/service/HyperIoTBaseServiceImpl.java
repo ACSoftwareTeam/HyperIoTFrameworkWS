@@ -9,9 +9,7 @@ import it.acsoftware.hyperiot.base.api.HyperIoTBaseSystemApi;
  * @author Aristide Cittadino Implementation class of HyperIoTBaseApi. It is
  * used to implement methods in order to interact with the system layer.
  */
-public abstract class HyperIoTBaseServiceImpl implements HyperIoTBaseApi {
-    protected Logger log = Logger.getLogger("it.acsoftware.hyperiot");
-
+public abstract class HyperIoTBaseServiceImpl extends HyperIoTBaseAbstractService implements HyperIoTBaseApi {
     /**
      * @return The current SystemService
      */

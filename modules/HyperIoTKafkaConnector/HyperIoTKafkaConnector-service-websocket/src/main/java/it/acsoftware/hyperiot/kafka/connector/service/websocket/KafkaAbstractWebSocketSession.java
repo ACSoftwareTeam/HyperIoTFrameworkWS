@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * Class which generalize the consumption of messages from kafka and returning them as websocket.
  */
 public abstract class KafkaAbstractWebSocketSession extends HyperIoTWebSocketAbstractSession {
-    protected static Logger logger = Logger.getLogger("it.acsoftware.hyperiot");
+    protected static Logger logger = Logger.getLogger(KafkaAbstractWebSocketSession.class.getName());
 
     /**
      * Kafka Connector Api for consuming messages

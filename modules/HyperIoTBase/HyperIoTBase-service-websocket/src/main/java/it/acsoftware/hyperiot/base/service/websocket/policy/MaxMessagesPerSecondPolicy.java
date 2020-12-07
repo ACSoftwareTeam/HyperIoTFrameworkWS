@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * Max message per second Policy
  */
 public class MaxMessagesPerSecondPolicy extends HyperIoTWebSocketAbstractPolicy {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(MaxMessagesPerSecondPolicy.class.getName());
 
     public static final long TIME_WINDOW_MS = 1000;
     private long startTimestamp = -1;

@@ -41,7 +41,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
     @Path("/module/status")
     @ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
     public Response checkModuleWorking() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/assets/tags/module/status");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/assets/tags/module/status");
         return Response.ok("AssetTag Module works!").build();
     }
 
@@ -50,7 +50,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
      */
     @Override
     protected HyperIoTBaseEntityApi<AssetTag> getEntityService() {
-        log.log(Level.FINEST, "invoking getEntityService, returning: {0}" , this.entityService);
+        getLog().log(Level.FINEST, "invoking getEntityService, returning: {0}" , this.entityService);
         return entityService;
     }
 
@@ -59,7 +59,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
      */
     @Reference(service = AssetTagApi.class)
     protected void setEntityService(AssetTagApi entityService) {
-        log.log(Level.FINEST, "invoking setEntityService, setting: {0}" , this.entityService);
+        getLog().log(Level.FINEST, "invoking setEntityService, setting: {0}" , this.entityService);
         this.entityService = entityService;
     }
 
@@ -79,7 +79,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response findAssetTag(
             @ApiParam(value = "id from which AssetTag object will retrieve", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/assets/tags/{0}" , id);
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/assets/tags/{0}" , id);
         return this.find(id);
     }
 
@@ -99,7 +99,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
             @ApiResponse(code = 500, message = "Internal error")})
     public Response saveAssetTag(
             @ApiParam(value = "AssetTag entity which must be saved ", required = true) AssetTag entity) {
-        log.log(Level.FINE, "In Rest Service POST /hyperiot/assets/tags/ \n Body: {0}", entity);
+        getLog().log(Level.FINE, "In Rest Service POST /hyperiot/assets/tags/ \n Body: {0}", entity);
         return this.save(entity);
     }
 
@@ -118,7 +118,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
             @ApiResponse(code = 500, message = "Invalid ID supplied")})
     public Response updateAssetTag(
             @ApiParam(value = "AssetTag entity which must be updated ", required = true) AssetTag entity) {
-        log.log(Level.FINE, "In Rest Service PUT /hyperiot/assets/tags/ \n Body: {0}" , entity);
+        getLog().log(Level.FINE, "In Rest Service PUT /hyperiot/assets/tags/ \n Body: {0}" , entity);
         return this.update(entity);
     }
 
@@ -138,7 +138,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
             @ApiResponse(code = 404, message = "Entity not found")})
     public Response deleteAssetTag(
             @ApiParam(value = "The assettag id which must be deleted", required = true) @PathParam("id") long id) {
-        log.log(Level.FINE, "In Rest Service DELETE /hyperiot/assets/tags/{0}" , id);
+        getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/assets/tags/{0}" , id);
         return this.remove(id);
     }
 
@@ -156,7 +156,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllAssetTag() {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/assets/tags/all");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/assets/tags/all");
         return this.findAll();
     }
 
@@ -173,7 +173,7 @@ public class AssetTagRestApi extends HyperIoTBaseEntityRestApi<AssetTag> {
             @ApiResponse(code = 403, message = "Not authorized"),
             @ApiResponse(code = 500, message = "Internal error")})
     public Response findAllAssetTagPaginated(@QueryParam("delta") Integer delta, @QueryParam("page") Integer page) {
-        log.log(Level.FINE, "In Rest Service GET /hyperiot/assets/tags/");
+        getLog().log(Level.FINE, "In Rest Service GET /hyperiot/assets/tags/");
         return this.findAll(delta, page);
     }
 

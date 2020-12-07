@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Component(service = SparkManagerUtil.class, immediate = true)
 public class SparkManagerUtilImpl implements SparkManagerUtil {
 
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(SparkManagerUtilImpl.class.getName());
 
     private Properties props;
 

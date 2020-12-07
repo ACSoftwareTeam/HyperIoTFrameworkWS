@@ -42,7 +42,7 @@ public final class AssetTagSystemServiceImpl extends HyperIoTBaseEntitySystemSer
      * Return the current repository
      */
     protected AssetTagRepository getRepository() {
-        log.log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
+        getLog().log(Level.FINEST, "invoking getRepository, returning: {0}" , this.repository);
         return repository;
     }
 
@@ -52,7 +52,7 @@ public final class AssetTagSystemServiceImpl extends HyperIoTBaseEntitySystemSer
      */
     @Reference
     protected void setRepository(AssetTagRepository assetTagRepository) {
-        log.log(Level.FINEST, "invoking setRepository, setting: {0}" , assetTagRepository);
+        getLog().log(Level.FINEST, "invoking setRepository, setting: {0}" , assetTagRepository);
         this.repository = assetTagRepository;
     }
 

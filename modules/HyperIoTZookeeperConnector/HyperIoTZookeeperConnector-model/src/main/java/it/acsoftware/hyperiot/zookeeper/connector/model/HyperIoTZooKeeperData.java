@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HyperIoTZooKeeperData {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTZooKeeperData.class.getName());
     private static ObjectMapper mapper = new ObjectMapper();
     Map<String, Object> data;
 

@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * the LB groups sessions on nodes by their key, so websocket with same keys will land on the same machine.
  */
 public class HyperIoTWebSocketGroupedBridgeSession extends HyperIoTWebSocketBridgeSession {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTWebSocketGroupedBridgeSession.class.getName());
     private static Map<String, HyperIoTWebSocketGroupedBridgeSession> bridgedSessions;
 
     static {

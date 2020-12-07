@@ -33,15 +33,15 @@ import it.acsoftware.hyperiot.shared.entity.model.SharedEntity;
 
 
 /**
- * 
+ *
  * @author Aristide Cittadino SharedEntity rest service class. Registered with DOSGi CXF
- * 
+ *
  */
 @SwaggerDefinition(basePath = "/sharedentity", info = @Info(description = "HyperIoT SharedEntity API", version = "2.0.0", title = "hyperiot SharedEntity", contact = @Contact(name = "ACSoftware.it", email = "users@acsoftware.it")),securityDefinition = @SecurityDefinition(apiKeyAuthDefinitions = {
 		@ApiKeyAuthDefinition(key = "jwt-auth", name = "AUTHORIZATION", in = ApiKeyLocation.HEADER)}))
 @Api(value = "/sharedentity", produces = "application/json")
 @Produces(MediaType.APPLICATION_JSON)
-@Component(service = SharedEntityRestApi.class, property = { 
+@Component(service = SharedEntityRestApi.class, property = {
 	    "service.exported.interfaces=it.acsoftware.hyperiot.shared.entity.service.rest.SharedEntityRestApi",
 		"service.exported.configs=org.apache.cxf.rs","org.apache.cxf.rs.address=/sharedentity",
 		"service.exported.intents=jackson", "service.exported.intents=jwtAuthFilter",
@@ -53,14 +53,14 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 
 	/**
 	 * Simple service for checking module status
-	 * 
+	 *
 	 * @return HyperIoT Role Module work!
 	 */
 	@GET
 	@Path("/module/status")
 	@ApiOperation(value = "/module/status", notes = "Simple service for checking module status", httpMethod = "GET")
 	public Response checkModuleWorking() {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/module/status");
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/module/status");
 		return Response.ok("SharedEntity Module works!").build();
 	}
 
@@ -69,32 +69,32 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 	 */
 	@Override
 	protected HyperIoTBaseEntityApi<SharedEntity> getEntityService() {
-		log.log(Level.FINEST, "invoking getEntityService, returning: {}" , this.entityService);
+		getLog().log(Level.FINEST, "invoking getEntityService, returning: {}" , this.entityService);
 		return entityService;
 	}
 
 	/**
-	 * 
-	 * @param entityService: Injecting entityService 
+	 *
+	 * @param entityService: Injecting entityService
 	 */
 	@Reference(service = SharedEntityApi.class)
 	protected void setEntityService(SharedEntityApi entityService) {
-		log.log(Level.FINEST, "invoking setEntityService, setting: {}" , this.entityService);
+		getLog().log(Level.FINEST, "invoking setEntityService, setting: {}" , this.entityService);
 		this.entityService = entityService;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param entityService: Unsetting current entityService
 	 */
 	protected void unsetEntityService(SharedEntityApi entityService) {
-		log.log(Level.FINEST, "invoking unsetEntityService, setting: {}" , entityService);
+		getLog().log(Level.FINEST, "invoking unsetEntityService, setting: {}" , entityService);
 		this.entityService = entityService;
 	}
 
 	/**
 	 * Service saves a new SharedEntity
-	 * 
+	 *
 	 * @param entity SharedEntity object to store in database
 	 * @return the SharedEntity saved
 	 */
@@ -111,13 +111,13 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response saveSharedEntity(
 		@ApiParam(value = "SharedEntity entity which must be saved ", required = true) SharedEntity entity) {
-		log.log(Level.FINE, "In Rest Service POST /hyperiot/sharedentity \n Body: {}" , entity);
+		getLog().log(Level.FINE, "In Rest Service POST /hyperiot/sharedentity \n Body: {}" , entity);
 		return this.save(entity);
 	}
 
 	/**
 	 * Service finds all available sharedentity
-	 * 
+	 *
 	 * @return list of all available sharedentity
 	 */
 	@GET
@@ -130,7 +130,7 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 			@ApiResponse(code = 500, message = "Internal error") })
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response findAllSharedEntity() {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/");
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/");
 		return this.findAll();
 	}
 
@@ -148,7 +148,7 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 			@ApiResponse(code = 500, message = "Internal error") })
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response findAllSharedEntityPaginated(@QueryParam("delta") Integer delta,@QueryParam("page") Integer page) {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/");
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/");
 		return this.findAll(delta,page);
 	}
 
@@ -169,13 +169,13 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response deleteSharedEntity(
 			@ApiParam(value = "The sharedentity which must be deleted", required = true) SharedEntity sharedEntity) {
-		log.log(Level.FINE, "In Rest Service DELETE /hyperiot/sharedentity/");
+		getLog().log(Level.FINE, "In Rest Service DELETE /hyperiot/sharedentity/");
 		try {
 			String entityResourceName = sharedEntity.getEntityResourceName();
 			long entityId = sharedEntity.getEntityId();
 			long userId = sharedEntity.getUserId();
 
-			this.log.log(Level.FINER,
+			this.getLog().log(Level.FINER,
 					"Invoking Remove entity from rest service for {0} with primary key: (entityResourceName: {1}, entityId: {2}, userId: {3})",
 					new Object[]{this.getEntityService().getEntityType().getSimpleName(), entityResourceName, entityId, userId});
 
@@ -203,7 +203,7 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 			@ApiResponse(code = 500, message = "Entity not found") })
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response findByPK(@ApiParam(value = "SharedEntity entity which must find ", required = true) SharedEntity sharedEntity) {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/findByPK {0}" , sharedEntity);
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/findByPK {0}" , sharedEntity);
 		try {
 			String entityResourceName = sharedEntity.getEntityResourceName();
 			long entityId = sharedEntity.getEntityId();
@@ -232,7 +232,7 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 			@ApiResponse(code = 500, message = "Entity not found") })
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response findByEntity(@QueryParam("entityResourceName") String entityResourceName, @QueryParam("entityId") long entityId) {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/findByEntity?entityResourceName={0}&entityId={1}",
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/findByEntity?entityResourceName={0}&entityId={1}",
 				new Object[]{entityResourceName, entityId});
 		try {
 			return Response.ok(entityService.findByEntity(entityResourceName, entityId, (HashMap<String, Object>)null, this.getHyperIoTContext())).build();
@@ -257,7 +257,7 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 			@ApiResponse(code = 500, message = "Entity not found") })
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response findByUser(@PathParam("userId") long userId) {
-		log.log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/findByUser/{0}" , userId);
+		getLog().log(Level.FINE, "In Rest Service GET /hyperiot/sharedentity/findByUser/{0}" , userId);
 		try {
 			return Response.ok(entityService.findByUser(userId, (HashMap<String, Object>)null, this.getHyperIoTContext())).build();
 		} catch (Throwable t) {
@@ -283,7 +283,7 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 			@ApiResponse(code = 500, message = "Entity not found") })
 	@JsonView(HyperIoTJSONView.Public.class)
 	public Response getUsers(@QueryParam("entityResourceName") String entityResourceName, @QueryParam("entityId") long entityId) {
-		log.log(Level.FINE,
+		getLog().log(Level.FINE,
 				"In Rest Service GET /hyperiot/sharedentity/getUsers?entityResourceName={0}&entityId={1}" ,
 				new Object[]{entityResourceName, entityId});
 		try {
@@ -292,5 +292,5 @@ public class SharedEntityRestApi extends HyperIoTBaseEntityRestApi<SharedEntity>
 			return this.handleException(t);
 		}
 	}
-	
+
 }

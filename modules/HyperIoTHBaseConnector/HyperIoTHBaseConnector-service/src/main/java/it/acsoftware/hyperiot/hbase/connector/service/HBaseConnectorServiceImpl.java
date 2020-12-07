@@ -19,7 +19,7 @@ import java.util.logging.Level;
 
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of HBaseConnectorApi interface.
  *         It is used to implement all additional methods in order to interact with the system layer.
  */
@@ -31,21 +31,21 @@ public final class HBaseConnectorServiceImpl extends  HyperIoTBaseServiceImpl im
 	private HBaseConnectorSystemApi systemService;
 
 	/**
-	 * 
+	 *
 	 * @return The current HBaseConnectorSystemApi
 	 */
 	protected HBaseConnectorSystemApi getSystemService() {
-		log.log(Level.FINEST, "invoking getSystemService, returning: " + this.systemService);
+        getLog().log(Level.FINEST, "invoking getSystemService, returning: " + this.systemService);
 		return systemService;
 	}
 
 	/**
-	 * 
-	 * @param hBaseConnectorSystemService Injecting via OSGi DS current systemService 
+	 *
+	 * @param hBaseConnectorSystemService Injecting via OSGi DS current systemService
 	 */
 	@Reference
 	protected void setSystemService(HBaseConnectorSystemApi hBaseConnectorSystemService) {
-		log.log(Level.FINEST, "invoking setSystemService, setting: " + systemService);
+        getLog().log(Level.FINEST, "invoking setSystemService, setting: " + systemService);
 		this.systemService = hBaseConnectorSystemService ;
 	}
 

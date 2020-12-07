@@ -15,7 +15,7 @@ import it.acsoftware.hyperiot.mail.api.MailSystemApi;
 import it.acsoftware.hyperiot.mail.model.MailTemplate;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of MailApi interface. It is
  *         used to implement all additional methods in order to interact with
  *         the system layer.
@@ -23,7 +23,6 @@ import it.acsoftware.hyperiot.mail.model.MailTemplate;
 @Component(service = MailApi.class, immediate = true)
 public final class MailServiceImpl extends HyperIoTBaseEntityServiceImpl<MailTemplate>
 		implements MailApi {
-	private Logger log = Logger.getLogger("it.acsoftware.hypertio");
 
 	/**
 	 * Injecting the MailSystemApi
@@ -38,21 +37,21 @@ public final class MailServiceImpl extends HyperIoTBaseEntityServiceImpl<MailTem
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The current MailSystemApi
 	 */
 	protected MailSystemApi getSystemService() {
-		log.log(Level.FINEST, "invoking getSystemService, returning: {0}" , systemService);
+		getLog().log(Level.FINEST, "invoking getSystemService, returning: {0}" , systemService);
 		return systemService;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mailSystemService Injecting via OSGi DS current systemService
 	 */
 	@Reference
 	protected void setSystemService(MailSystemApi mailSystemService) {
-		log.log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
+		getLog().log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
 		systemService = mailSystemService;
 	}
 

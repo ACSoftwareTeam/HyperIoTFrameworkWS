@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  * For this cases please use the KafkaWebSocketBridgeSession
  */
 public abstract class KafkaWebSocketBridgeSession extends HyperIoTWebSocketClusteredBridgeSession implements KafkaMessageReceiver {
-    private static Logger logger = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger logger = Logger.getLogger(KafkaWebSocketBridgeSession.class.getName());
 
     //Same Kafka topic but different partitions:
     // Partition 1 used from the bridge owner

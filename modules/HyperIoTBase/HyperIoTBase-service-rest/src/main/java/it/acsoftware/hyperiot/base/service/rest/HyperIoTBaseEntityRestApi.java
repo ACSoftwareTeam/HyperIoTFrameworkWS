@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * services.
  */
 public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> extends HyperIoTBaseRestApi {
-    protected Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(HyperIoTBaseEntityRestApi.class.getName());
 
     /**
      * Response and any exceptions for save operation
@@ -31,7 +31,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
      */
     public Response save(T entity) {
         log.log(Level.FINER, "Invoking Save entity from rest service for {0} {1}"
-                , new Object[]{this.getEntityService().getEntityType().getSimpleName(), entity});
+            , new Object[]{this.getEntityService().getEntityType().getSimpleName(), entity});
         try {
             entity = this.getEntityService().save(entity, this.getHyperIoTContext());
             return Response.ok(entity).build();
@@ -48,7 +48,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
      */
     public Response update(T entity) {
         log.log(Level.FINER, "Invoking Update entity from rest service for {0} {1}"
-                , new Object[]{this.getEntityService().getEntityType().getSimpleName(), entity});
+            , new Object[]{this.getEntityService().getEntityType().getSimpleName(), entity});
         try {
             T updatedEntity = this.getEntityService().update(entity, this.getHyperIoTContext());
             return Response.ok(updatedEntity).build();
@@ -66,7 +66,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
     public Response remove(long id) {
         try {
             log.log(Level.FINER, "Invoking Remove entity from rest service for {0} with id: {1}"
-                    , new Object[]{this.getEntityService().getEntityType().getSimpleName(), id});
+                , new Object[]{this.getEntityService().getEntityType().getSimpleName(), id});
             this.getEntityService().remove(id, this.getHyperIoTContext());
             return Response.ok().build();
         } catch (Throwable e) {
@@ -82,7 +82,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
      */
     public Response find(long id) {
         log.log(Level.FINER, "Invoking Find entity from rest service for {0} with id: {1}"
-                , new Object[]{this.getEntityService().getEntityType().getSimpleName(), id});
+            , new Object[]{this.getEntityService().getEntityType().getSimpleName(), id});
         try {
             HyperIoTBaseEntity entity = this.getEntityService().find(id, this.getHyperIoTContext());
             return Response.ok(entity).build();
@@ -98,9 +98,9 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
      */
     public Response findAll() {
         log.log(Level.FINER, "Invoking Find All entity from rest service for {0}"
-                , this.getEntityService().getEntityType().getSimpleName());
+            , this.getEntityService().getEntityType().getSimpleName());
         try {
-            Collection<T> list = this.getEntityService().findAll((HyperIoTQueryFilter)null, this.getHyperIoTContext());
+            Collection<T> list = this.getEntityService().findAll((HyperIoTQueryFilter) null, this.getHyperIoTContext());
             return Response.ok(list).build();
         } catch (Throwable e) {
             return handleException(e);
@@ -114,7 +114,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
      */
     public Response findAll(HashMap<String, Object> filter) {
         log.log(Level.FINER, "Invoking Find All entity from rest service for {0}"
-                ,this.getEntityService().getEntityType().getSimpleName());
+            , this.getEntityService().getEntityType().getSimpleName());
         try {
             Collection<T> list = this.getEntityService().findAll(filter, this.getHyperIoTContext());
             return Response.ok(list).build();
@@ -130,13 +130,13 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
      */
     public Response findAll(Integer delta, Integer page) {
         log.log(Level.FINER, "Invoking Find All entity from rest service for {0}"
-                ,this.getEntityService().getEntityType().getSimpleName());
+            , this.getEntityService().getEntityType().getSimpleName());
         if (delta == null || delta <= 0)
             delta = HyperIoTConstants.HYPERIOT_DEFAULT_PAGINATION_DELTA;
         if (page == null || page <= 0)
             page = 1;
         try {
-            HyperIoTPaginableResult<T> result = this.getEntityService().findAll((HyperIoTQueryFilter)null, this.getHyperIoTContext(), delta, page);
+            HyperIoTPaginableResult<T> result = this.getEntityService().findAll((HyperIoTQueryFilter) null, this.getHyperIoTContext(), delta, page);
             return Response.ok(result).build();
         } catch (Throwable e) {
             return handleException(e);
@@ -150,7 +150,7 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
      */
     public Response findAll(Integer delta, Integer page, HashMap<String, Object> filter) {
         log.log(Level.FINER, "Invoking Find All entity from rest service for {0}"
-                , this.getEntityService().getEntityType().getSimpleName());
+            , this.getEntityService().getEntityType().getSimpleName());
         if (delta == null || delta <= 0)
             delta = HyperIoTConstants.HYPERIOT_DEFAULT_PAGINATION_DELTA;
         if (page == null || page <= 0)
@@ -182,4 +182,10 @@ public abstract class HyperIoTBaseEntityRestApi<T extends HyperIoTBaseEntity> ex
      */
     protected abstract HyperIoTBaseEntityApi<T> getEntityService();
 
+    /**
+     * @return Logger for this class
+     */
+    protected Logger getLog() {
+        return log;
+    }
 }

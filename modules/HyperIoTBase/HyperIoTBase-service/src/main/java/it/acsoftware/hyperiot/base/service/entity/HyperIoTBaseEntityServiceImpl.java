@@ -10,6 +10,7 @@ import it.acsoftware.hyperiot.base.exception.HyperIoTEntityNotFound;
 import it.acsoftware.hyperiot.base.exception.HyperIoTRuntimeException;
 import it.acsoftware.hyperiot.base.exception.HyperIoTUnauthorizedException;
 import it.acsoftware.hyperiot.base.security.util.HyperIoTSecurityUtil;
+import it.acsoftware.hyperiot.base.service.HyperIoTBaseAbstractService;
 import it.acsoftware.hyperiot.base.util.HyperIoTConstants;
 import it.acsoftware.hyperiot.base.util.HyperIoTUtil;
 import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilterBuilder;
@@ -25,7 +26,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -35,9 +35,8 @@ import java.util.logging.Logger;
  * methods are reusable by all entities in order to interact with the
  * system layer.
  */
-public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity>
+public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity> extends HyperIoTBaseAbstractService
     implements HyperIoTBaseEntityApi<T> {
-    protected Logger log = Logger.getLogger("it.acsoftware.hyperiot");
 
     /**
      * Generic class for HyperIoT platform
@@ -61,7 +60,7 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      * @return entity saved
      */
     public T save(T entity, HyperIoTContext ctx) {
-        log.log(Level.FINE, "Service Saving entity {0}: {1} with context: {2}", new Object[]{this.type.getSimpleName(), entity, ctx});
+        getLog().log(Level.FINE, "Service Saving entity {0}: {1} with context: {2}", new Object[]{this.type.getSimpleName(), entity, ctx});
 
         if (HyperIoTSecurityUtil.checkPermission(ctx, entity,
             this.getAction(entity.getResourceName(), HyperIoTCrudAction.SAVE)))
@@ -77,7 +76,7 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      * @param ctx    user context of HyperIoT platform
      */
     public T update(T entity, HyperIoTContext ctx) {
-        log.log(Level.FINE, "Service Updating entity entity {0}: {1} with context: {2}", new Object[]{this.type.getSimpleName(), entity, ctx});
+        getLog().log(Level.FINE, "Service Updating entity entity {0}: {1} with context: {2}", new Object[]{this.type.getSimpleName(), entity, ctx});
         if (entity.getId() > 0) {
             if (HyperIoTSecurityUtil.checkPermission(ctx, entity,
                 this.getAction(entity.getResourceName(), HyperIoTCrudAction.UPDATE))) {
@@ -106,7 +105,7 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      * @param ctx user context of HyperIoT platform
      */
     public void remove(long id, HyperIoTContext ctx) {
-        log.log(Level.FINE, "Service Removing entity {0} with id {1} with context: {2}", new Object[]{this.type.getSimpleName(), id, ctx});
+        getLog().log(Level.FINE, "Service Removing entity {0} with id {1} with context: {2}", new Object[]{this.type.getSimpleName(), id, ctx});
         if (HyperIoTSecurityUtil.checkPermission(ctx, type.getName(),
             this.getAction(type.getName(), HyperIoTCrudAction.REMOVE))) {
             HyperIoTResource r;
@@ -158,7 +157,7 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      */
     @Override
     public T find(HyperIoTQueryFilter filter, HyperIoTContext ctx) {
-        log.log(Level.FINE, "Service Find entity {0} with id {1} with context: {2}", new Object[]{this.type.getSimpleName(), filter, ctx});
+        getLog().log(Level.FINE, "Service Find entity {0} with id {1} with context: {2}", new Object[]{this.type.getSimpleName(), filter, ctx});
         if (HyperIoTSecurityUtil.checkPermission(ctx, type.getName(),
             this.getAction(type.getName(), HyperIoTCrudAction.FIND))) {
             T entity;
@@ -189,7 +188,7 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      * @return Collection of entity
      */
     public Collection<T> findAll(HyperIoTQueryFilter filter, HyperIoTContext ctx) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
             "Service Find all entities {0} with context: {1}", new Object[]{this.type.getSimpleName(), ctx});
         if (HyperIoTSecurityUtil.checkPermission(ctx, type.getName(),
             this.getAction(type.getName(), HyperIoTCrudAction.FINDALL))) {
@@ -208,7 +207,7 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      */
     @Override
     public HyperIoTPaginableResult<T> findAll(HyperIoTQueryFilter filter, HyperIoTContext ctx, int delta, int page) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
             "Service Find all entities {0} with context: {1}", new Object[]{this.type.getSimpleName(), ctx});
         if (HyperIoTSecurityUtil.checkPermission(ctx, type.getName(),
             this.getAction(type.getName(), HyperIoTCrudAction.FINDALL))) {
@@ -243,7 +242,6 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
     }
 
     /**
-     *
      * @param initialFilter
      * @param ctx
      * @return
@@ -284,29 +282,29 @@ public abstract class HyperIoTBaseEntityServiceImpl<T extends HyperIoTBaseEntity
      * @return class name and action name registered as OSGi components
      */
     protected HyperIoTAction getAction(String className, HyperIoTCrudAction action) {
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
             "Service getAction for {0} and action {1}", new Object[]{className, action.getName()});
         Collection<ServiceReference<HyperIoTAction>> serviceReferences;
         try {
             String actionFilter = OSGiFilterBuilder
                 .createFilter(HyperIoTConstants.OSGI_ACTION_RESOURCE_NAME, className)
                 .and(HyperIoTConstants.OSGI_ACTION_NAME, action.getName()).getFilter();
-            log.log(Level.FINE,
+            getLog().log(Level.FINE,
                 "Searching for OSGi registered action with filter: {0}", actionFilter);
             serviceReferences = HyperIoTUtil.getBundleContext(this)
                 .getServiceReferences(HyperIoTAction.class, actionFilter);
             if (serviceReferences.size() > 1) {
-                log.log(Level.SEVERE, "More OSGi action found for filter: {0}", actionFilter);
+                getLog().log(Level.SEVERE, "More OSGi action found for filter: {0}", actionFilter);
                 throw new HyperIoTRuntimeException();
             } else if (serviceReferences.size() == 0) {
                 return null;
             }
             HyperIoTAction act = HyperIoTUtil.getBundleContext(this)
                 .getService(serviceReferences.iterator().next());
-            log.log(Level.FINE, "OSGi action found {0}", act);
+            getLog().log(Level.FINE, "OSGi action found {0}", act);
             return act;
         } catch (InvalidSyntaxException e) {
-            log.log(Level.SEVERE, "Invalid OSGi Syntax", e);
+            getLog().log(Level.SEVERE, "Invalid OSGi Syntax", e);
             throw new HyperIoTRuntimeException();
         }
     }

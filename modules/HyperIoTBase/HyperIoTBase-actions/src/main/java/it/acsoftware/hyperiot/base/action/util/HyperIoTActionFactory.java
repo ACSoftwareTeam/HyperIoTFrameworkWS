@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author Aristide Cittadino Model class that registers base actions.
  */
 public class HyperIoTActionFactory {
-    protected static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    protected static Logger log = Logger.getLogger(HyperIoTActionFactory.class.getName());
 
     /**
      * Return action that have to be registered as OSGi components

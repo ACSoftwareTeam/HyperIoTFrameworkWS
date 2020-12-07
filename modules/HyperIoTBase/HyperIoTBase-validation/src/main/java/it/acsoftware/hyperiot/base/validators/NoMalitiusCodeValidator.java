@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class NoMalitiusCodeValidator implements ConstraintValidator<NoMalitiusCode, String> {
-    private Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private Logger log = Logger.getLogger(NoMalitiusCodeValidator.class.getName());
 
     public static final String SQL_TYPES =
             "TABLE, TABLESPACE, PROCEDURE, FUNCTION, TRIGGER, KEY, VIEW, MATERIALIZED VIEW, LIBRARY" +

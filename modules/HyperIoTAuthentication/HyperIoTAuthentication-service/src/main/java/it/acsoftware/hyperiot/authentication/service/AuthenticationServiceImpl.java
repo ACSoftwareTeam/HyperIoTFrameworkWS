@@ -48,7 +48,7 @@ public final class AuthenticationServiceImpl extends HyperIoTBaseServiceImpl
      * return the current AuthenticationSystemService
      */
     public AuthenticationSystemApi getSystemService() {
-        log.log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
+        getLog().log(Level.FINEST, "invoking getSystemService, returning: {0}" , this.systemService);
         return systemService;
     }
 
@@ -58,7 +58,7 @@ public final class AuthenticationServiceImpl extends HyperIoTBaseServiceImpl
      */
     @Reference
     protected void setSystemService(AuthenticationSystemApi authenticationSystemService) {
-        log.log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
+        getLog().log(Level.FINEST, "invoking setSystemService, setting: {0}" , systemService);
         this.systemService = authenticationSystemService;
     }
 

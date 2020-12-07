@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * - The partecipant: user who wants to partecipate to a websocket session that must specify the same key of the owner who wants to be connected to
  */
 public abstract class HyperIoTWebSocketBridgeSession extends HyperIoTWebSocketAbstractSession {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTWebSocketBridgeSession.class.getName());
 
     //bridged session list passed to the component from web socket service
     private static Set<String> bridgeUsedKeys = null;

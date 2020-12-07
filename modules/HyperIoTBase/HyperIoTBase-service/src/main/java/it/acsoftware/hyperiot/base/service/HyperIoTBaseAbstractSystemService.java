@@ -9,9 +9,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class HyperIoTBaseAbstractSystemService {
+public class HyperIoTBaseAbstractSystemService extends HyperIoTAbstractService {
+    private final Logger log = Logger.getLogger(this.getClass().getName());
 
-    protected Logger log = Logger.getLogger("it.acsoftware.hyperiot");
     /**
      * Validates bean instance
      */
@@ -33,4 +33,6 @@ public class HyperIoTBaseAbstractSystemService {
             throw new HyperIoTValidationException(validationResults);
         }
     }
+
+
 }

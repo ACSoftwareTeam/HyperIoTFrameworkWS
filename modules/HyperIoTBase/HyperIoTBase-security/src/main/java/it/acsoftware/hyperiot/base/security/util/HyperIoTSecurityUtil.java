@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  * This class helps developers to interact with permission system
  */
 public class HyperIoTSecurityUtil {
-    private static Logger log = Logger.getLogger("it.acsoftware.hyperiot");
+    private static Logger log = Logger.getLogger(HyperIoTSecurityUtil.class.getName());
     private static final long MILLIS_PER_DAY = 86400000l;
     private static Properties props;
 
