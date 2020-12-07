@@ -35,9 +35,9 @@ dependencies {
 	testCompile group: "it.acsoftware.hyperiot.permission", name: "HyperIoTPermission-model", version:project.hyperIoTVersion
 	testCompile group: "it.acsoftware.hyperiot.permission", name: "HyperIoTPermission-service-rest", version:project.hyperIoTVersion
 
-	testCompile group: "it.acsoftware.hyperiot.hproject", name: "HyperIoTHProject-api", version:project.hyperIoTVersion
-	testCompile group: "it.acsoftware.hyperiot.hproject", name: "HyperIoTHProject-model", version:project.hyperIoTVersion
-	testCompile group: "it.acsoftware.hyperiot.hproject", name: "HyperIoTHProject-service-rest", version:project.hyperIoTVersion
+	testCompile group: "it.acsoftware.hyperiot.company", name: "HyperIoTCompany-api", version:project.hyperIoTVersion
+	testCompile group: "it.acsoftware.hyperiot.company", name: "HyperIoTCompany-model", version:project.hyperIoTVersion
+	testCompile group: "it.acsoftware.hyperiot.company", name: "HyperIoTCompany-service-rest", version:project.hyperIoTVersion
 
 	//Project dependencies
 	testCompile project(":modules:HyperIoTAssetCategory:HyperIoTAssetCategory-actions")
@@ -46,7 +46,6 @@ dependencies {
 	testCompile project(":modules:HyperIoTAssetCategory:HyperIoTAssetCategory-repository")
 	testCompile project(":modules:HyperIoTAssetCategory:HyperIoTAssetCategory-service")
 	testCompile project(":modules:HyperIoTAssetCategory:HyperIoTAssetCategory-service-rest")
-
 
 	//Test dependencies
 	testCompile group: "org.apache.karaf.itests", name:"common", version:"4.2.3"
