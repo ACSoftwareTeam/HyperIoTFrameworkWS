@@ -57,14 +57,14 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 		String features = executeCommand("feature:list -i");
 		assertContains("HyperIoTBase-features ", features);
 		assertContains("HyperIoTMail-features ", features);
+		assertContains("HyperIoTAuthentication-features ", features);
 		assertContains("HyperIoTPermission-features ", features);
 		assertContains("HyperIoTHUser-features ", features);
 		assertContains("HyperIoTCompany-features ", features);
 		assertContains("HyperIoTRole-features ", features);
-		assertContains("HyperIoTAuthentication-features ", features);
-		assertContains("HyperIoTAssetCategory-features ", features);
-		assertContains("HyperIoTAssetTag-features ", features);
-		assertContains("HyperIoTSharedEntity-features ", features);
+		assertContains("HyperIoTAssetCategory-features", features);
+		assertContains("HyperIoTAssetTag-features", features);
+		assertContains("HyperIoTSharedEntity-features", features);
 		assertContains("HyperIoTHadoopManager-features ", features);
 		String datasource = executeCommand("jdbc:ds-list");
 //		System.out.println(executeCommand("bundle:list | grep HyperIoT"));
@@ -74,6 +74,8 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 
 	@Test
 	public void test001_checksIfFileHadoopManagerCfgExists() {
+		// Test will be runs if docker image has been launched.
+		// Please runs "docker-compose -f docker-compose-svil-hdfs-only.yml up"
 		// checks if it.acsoftware.hyperiot.hadoopmanager.cfg exists.
 		// If file not found HyperIoTHadoopManager-service bundle is in Waiting state
 		String hyperIoTHadoopManagerService = executeCommand("bundle:list | grep HyperIoTHadoopManager-service");
@@ -100,6 +102,8 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 
 	@Test (expected = IOException.class)
 	public void test002_copyFileShouldWork() throws IOException {
+		// Test will be runs if docker image has been launched.
+		// Please runs "docker-compose -f docker-compose-svil-hdfs-only.yml up"
 		HadoopManagerSystemApi hadoopManagerSystemApi = getOsgiService(HadoopManagerSystemApi.class);
 		File algorithmFile = new File(jarPath + jarName);
 		hadoopManagerSystemApi.copyFile(algorithmFile, String.valueOf(algorithmFile), true);
@@ -108,6 +112,8 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 
 	@Test
 	public void test003_copyFileShouldFailIfPathAlreadyExistsAsADirectory() {
+		// Test will be runs if docker image has been launched.
+		// Please runs "docker-compose -f docker-compose-svil-hdfs-only.yml up"
 		HadoopManagerSystemApi hadoopManagerSystemApi = getOsgiService(HadoopManagerSystemApi.class);
 		File algorithmFile = new File(jarPath + jarName);
 		try {
@@ -121,6 +127,8 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 
 	@Test
 	public void test004_deleteFileShouldWork() throws IOException {
+		// Test will be runs if docker image has been launched.
+		// Please runs "docker-compose -f docker-compose-svil-hdfs-only.yml up"
 		HadoopManagerSystemApi hadoopManagerSystemApi = getOsgiService(HadoopManagerSystemApi.class);
 		hadoopManagerSystemApi.deleteFile(jarPath + jarName);
 	}

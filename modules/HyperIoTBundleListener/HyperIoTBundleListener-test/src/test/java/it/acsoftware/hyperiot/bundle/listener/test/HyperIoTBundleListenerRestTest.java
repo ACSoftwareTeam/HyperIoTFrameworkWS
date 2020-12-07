@@ -55,13 +55,20 @@ public class HyperIoTBundleListenerRestTest extends KarafTestSupport {
 	@Test
 	public void test00_hyperIoTFrameworkShouldBeInstalled() {
 		// assert on an available service
+		// hyperiot-core import the following features: base, mail, authentication, permission, huser, company, role,
+		// assetcategory, assettag, sharedentity.
 		assertServiceAvailable(FeaturesService.class);
 		String features = executeCommand("feature:list -i");
 		assertContains("HyperIoTBase-features ", features);
-		assertContains("HyperIoTPermission-features ", features);
-		assertContains("HyperIoTRole-features ", features);
-		assertContains("HyperIoTHUser-features ", features);
+		assertContains("HyperIoTMail-features ", features);
 		assertContains("HyperIoTAuthentication-features ", features);
+		assertContains("HyperIoTPermission-features ", features);
+		assertContains("HyperIoTHUser-features ", features);
+		assertContains("HyperIoTCompany-features ", features);
+		assertContains("HyperIoTRole-features ", features);
+		assertContains("HyperIoTAssetCategory-features", features);
+		assertContains("HyperIoTAssetTag-features", features);
+		assertContains("HyperIoTSharedEntity-features", features);
 		assertContains("HyperIoTBundleListener-features ", features);
 		String datasource = executeCommand("jdbc:ds-list");
 //		System.out.println(executeCommand("bundle:list | grep HyperIoT"));
