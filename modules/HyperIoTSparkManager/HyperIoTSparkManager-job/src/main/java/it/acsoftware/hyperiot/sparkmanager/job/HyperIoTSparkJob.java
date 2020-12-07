@@ -94,7 +94,7 @@ public abstract class HyperIoTSparkJob implements Job {
      */
     private SparkRestApiResponse submitJob(SparkRestApiSubmissionRequest request) {
         SparkManagerSystemApi sparkManagerSystemApi =
-                (SparkManagerSystemApi) FrameworkUtil.getBundle(SparkManagerSystemApi.class).getBundleContext().getServiceReference(SparkManagerSystemApi.class);
+                (SparkManagerSystemApi) HyperIoTUtil.getService(SparkManagerSystemApi.class);
         return sparkManagerSystemApi.submitJob(request);
     }
 
