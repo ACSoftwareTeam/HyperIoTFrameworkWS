@@ -68,26 +68,22 @@ public class HyperIoTCompanyRestTest extends KarafTestSupport {
     @Test
     public void test00_hyperIoTFrameworkShouldBeInstalled() {
         // assert on an available service
-        // hyperiot-core import the following features: base, mail, permission, huser, company, role, authentication,
+        // hyperiot-core import the following features: base, mail, authentication, permission, huser, company, role,
         // assetcategory, assettag, sharedentity.
         assertServiceAvailable(FeaturesService.class);
         String features = executeCommand("feature:list -i");
         assertContains("HyperIoTBase-features ", features);
         assertContains("HyperIoTMail-features ", features);
+        assertContains("HyperIoTAuthentication-features ", features);
         assertContains("HyperIoTPermission-features ", features);
         assertContains("HyperIoTHUser-features ", features);
         assertContains("HyperIoTCompany-features ", features);
         assertContains("HyperIoTRole-features ", features);
-        assertContains("HyperIoTAuthentication-features ", features);
-        assertContains("HyperIoTAssetCategory-features ", features);
-        assertContains("HyperIoTAssetTag-features ", features);
-        assertContains("HyperIoTSharedEntity-features ", features);
-        assertContains("HyperIoTArea-features ", features);
-        assertContains("HyperIoTAlgorithm-features ", features);
-        assertContains("HyperIoTHProjectAlgorithm-features ", features);
-        assertContains("HyperIoTHadoopManager-features ", features);
-        assertContains("HyperIoTHBaseConnector-features", features);
+        assertContains("HyperIoTAssetCategory-features", features);
+        assertContains("HyperIoTAssetTag-features", features);
+        assertContains("HyperIoTSharedEntity-features", features);
         String datasource = executeCommand("jdbc:ds-list");
+//		System.out.println(executeCommand("bundle:list | grep HyperIoT"));
         assertContains("hyperiot", datasource);
     }
 

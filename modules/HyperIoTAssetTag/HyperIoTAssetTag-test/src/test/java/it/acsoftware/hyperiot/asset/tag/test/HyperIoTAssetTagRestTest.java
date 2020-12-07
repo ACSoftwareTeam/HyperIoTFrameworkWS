@@ -13,8 +13,8 @@ import it.acsoftware.hyperiot.base.model.HyperIoTBaseError;
 import it.acsoftware.hyperiot.base.service.rest.HyperIoTBaseRestApi;
 import it.acsoftware.hyperiot.base.test.HyperIoTTestConfigurationBuilder;
 import it.acsoftware.hyperiot.base.util.HyperIoTConstants;
-import it.acsoftware.hyperiot.hproject.model.HProject;
-import it.acsoftware.hyperiot.hproject.service.rest.HProjectRestApi;
+import it.acsoftware.hyperiot.company.model.Company;
+import it.acsoftware.hyperiot.company.service.rest.CompanyRestApi;
 import it.acsoftware.hyperiot.huser.model.HUser;
 import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilterBuilder;
 import org.apache.karaf.features.FeaturesService;
@@ -69,20 +69,20 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
     @Test
     public void test00_hyperIoTFrameworkShouldBeInstalled() {
         // assert on an available service
+        // hyperiot-core import the following features: base, mail, authentication, permission, huser, company, role,
+        // assetcategory, assettag, sharedentity.
         assertServiceAvailable(FeaturesService.class);
         String features = executeCommand("feature:list -i");
         assertContains("HyperIoTBase-features ", features);
-        assertContains("HyperIoTPermission-features ", features);
-        assertContains("HyperIoTRole-features ", features);
-        assertContains("HyperIoTHUser-features ", features);
         assertContains("HyperIoTMail-features ", features);
         assertContains("HyperIoTAuthentication-features ", features);
-//        assertContains("HyperIoTHProject-features ", features);
-//        assertContains("HyperIoTHDevice-features ", features);
-//        assertContains("HyperIoTHPacket-features ", features);
-//        assertContains("HyperIoTArea-features", features);
-//        assertContains("HyperIoTDashboard-features", features);
+        assertContains("HyperIoTPermission-features ", features);
+        assertContains("HyperIoTHUser-features ", features);
+        assertContains("HyperIoTCompany-features ", features);
+        assertContains("HyperIoTRole-features ", features);
+        assertContains("HyperIoTAssetCategory-features", features);
         assertContains("HyperIoTAssetTag-features", features);
+        assertContains("HyperIoTSharedEntity-features", features);
         String datasource = executeCommand("jdbc:ds-list");
 //		System.out.println(executeCommand("bundle:list | grep HyperIoT"));
         assertContains("hyperiot", datasource);
@@ -95,17 +95,29 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        HProject hProject = createHProject();
+
+        Company company = createCompany((HUser) adminUser);
+        Assert.assertNotEquals(0, company.getId());
+
         AssetTag assetTag = new AssetTag();
         assetTag.setName("Tag" + java.util.UUID.randomUUID());
         HyperIoTAssetOwnerImpl owner = new HyperIoTAssetOwnerImpl();
-        owner.setOwnerResourceName(hProjectResourceName);
-        owner.setOwnerResourceId(hProject.getId());
+        owner.setOwnerResourceName(companyResourceName);
+        owner.setOwnerResourceId(company.getId());
         owner.setUserId(adminUser.getId());
         assetTag.setOwner(owner);
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.saveAssetTag(assetTag);
         Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertNotEquals(0,
+                ((AssetTag) restResponse.getEntity()).getId());
+        Assert.assertEquals(assetTag.getName(), ((AssetTag) restResponse.getEntity()).getName());
+        Assert.assertEquals(companyResourceName,
+                ((AssetTag) restResponse.getEntity()).getOwner().getOwnerResourceName());
+        Assert.assertEquals((Long)company.getId(),
+                ((AssetTag) restResponse.getEntity()).getOwner().getOwnerResourceId());
+        Assert.assertEquals(adminUser.getId(),
+                ((AssetTag) restResponse.getEntity()).getOwner().getUserId());
     }
 
     @Test
@@ -115,14 +127,18 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '403' HyperIoTUnauthorizedException
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        HProject hProject = createHProject();
+
+        Company company = createCompany((HUser) adminUser);
+        Assert.assertNotEquals(0, company.getId());
+
         AssetTag assetTag = new AssetTag();
         assetTag.setName("Tag" + java.util.UUID.randomUUID());
         HyperIoTAssetOwnerImpl owner = new HyperIoTAssetOwnerImpl();
-        owner.setOwnerResourceName(hProjectResourceName);
-        owner.setOwnerResourceId(hProject.getId());
+        owner.setOwnerResourceName(companyResourceName);
+        owner.setOwnerResourceId(company.getId());
         owner.setUserId(adminUser.getId());
         assetTag.setOwner(owner);
+        //user not logged
         this.impersonateUser(assetTagRestApi, null);
         Response restResponse = assetTagRestApi.saveAssetTag(assetTag);
         Assert.assertEquals(403, restResponse.getStatus());
@@ -138,6 +154,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
         Date date = new Date();
         assetTag.setName("edited in date: " + date);
         this.impersonateUser(assetTagRestApi, adminUser);
@@ -155,6 +172,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // the following call tries to update AssetTag, but HUser is not logged
         // response status code '403' HyperIoTUnauthorizedException
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
         Date date = new Date();
         assetTag.setName("edited failed in date: " + date);
         this.impersonateUser(assetTagRestApi, null);
@@ -172,9 +190,18 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAssetTag(assetTag.getId());
         Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertEquals(assetTag.getId(), ((AssetTag) restResponse.getEntity()).getId());
+        Assert.assertEquals(assetTag.getName(), ((AssetTag) restResponse.getEntity()).getName());
+        Assert.assertEquals(assetTag.getOwner().getOwnerResourceName(),
+                ((AssetTag) restResponse.getEntity()).getOwner().getOwnerResourceName());
+        Assert.assertEquals(assetTag.getOwner().getOwnerResourceId(),
+                ((AssetTag) restResponse.getEntity()).getOwner().getOwnerResourceId());
+        Assert.assertEquals(assetTag.getOwner().getUserId(),
+                ((AssetTag) restResponse.getEntity()).getOwner().getUserId());
     }
 
     @Test
@@ -183,6 +210,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // the following call tries to find AssetTag, but HUser is not logged
         // response status code '403' HyperIoTUnauthorizedException
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
         this.impersonateUser(assetTagRestApi, null);
         Response restResponse = assetTagRestApi.findAssetTag(assetTag.getId());
         Assert.assertEquals(403, restResponse.getStatus());
@@ -212,15 +240,16 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        this.impersonateUser(assetTagRestApi, adminUser);
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
+        this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTag();
         List<AssetTag> listTags = restResponse.readEntity(new GenericType<List<AssetTag>>() {
         });
         Assert.assertFalse(listTags.isEmpty());
         boolean assetTagFound = false;
-        for (AssetTag tags : listTags) {
-            if (assetTag.getId() == tags.getId()) {
+        for (AssetTag tag : listTags) {
+            if (tag.getId() == assetTag.getId()) {
                 assetTagFound = true;
             }
         }
@@ -233,7 +262,8 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         AssetTagRestApi assetTagRestApi = getOsgiService(AssetTagRestApi.class);
         // the following call tries to find all AssetTag, but HUser is not logged
         // response status code '403' HyperIoTUnauthorizedException
-        createAssetTag();
+        AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
         this.impersonateUser(assetTagRestApi, null);
         Response restResponse = assetTagRestApi.findAllAssetTag();
         Assert.assertEquals(403, restResponse.getStatus());
@@ -249,9 +279,11 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.deleteAssetTag(assetTag.getId());
         Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertNull(restResponse.getEntity());
     }
 
     @Test
@@ -260,6 +292,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // the following call tries to delete AssetTag, but HUser is not logged
         // response status code '403' HyperIoTUnauthorizedException
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
         this.impersonateUser(assetTagRestApi, null);
         Response restResponse = assetTagRestApi.deleteAssetTag(assetTag.getId());
         Assert.assertEquals(403, restResponse.getStatus());
@@ -290,12 +323,13 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '422' HyperIoTValidationException
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        HProject hproject = createHProject();
+        Company company = createCompany((HUser) adminUser);
+        Assert.assertNotEquals(0, company.getId());
         AssetTag assetTag = new AssetTag();
         assetTag.setName(null);
         HyperIoTAssetOwnerImpl owner = new HyperIoTAssetOwnerImpl();
-        owner.setOwnerResourceName(hProjectResourceName);
-        owner.setOwnerResourceId(hproject.getId());
+        owner.setOwnerResourceName(companyResourceName);
+        owner.setOwnerResourceId(company.getId());
         owner.setUserId(adminUser.getId());
         assetTag.setOwner(owner);
         this.impersonateUser(assetTagRestApi, adminUser);
@@ -303,6 +337,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(2, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
         boolean msgValidationErrorsIsNull = false;
         boolean msgValidationErrorsIsEmpty = false;
         for (int i = 0; i < ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size(); i++) {
@@ -310,11 +345,15 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
                 msgValidationErrorsIsNull = true;
                 Assert.assertEquals("must not be null",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
+                Assert.assertEquals("assettag-name",
+                        ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
             }
             if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be empty")) {
                 msgValidationErrorsIsEmpty = true;
                 Assert.assertEquals("must not be empty",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
+                Assert.assertEquals("assettag-name",
+                        ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
             }
         }
         Assert.assertTrue(msgValidationErrorsIsNull);
@@ -329,12 +368,13 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '422' HyperIoTValidationException
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        HProject hproject = createHProject();
+        Company company = createCompany((HUser) adminUser);
+        Assert.assertNotEquals(0, company.getId());
         AssetTag assetTag = new AssetTag();
         assetTag.setName("");
         HyperIoTAssetOwnerImpl owner = new HyperIoTAssetOwnerImpl();
-        owner.setOwnerResourceName(hProjectResourceName);
-        owner.setOwnerResourceId(hproject.getId());
+        owner.setOwnerResourceName(companyResourceName);
+        owner.setOwnerResourceId(company.getId());
         owner.setUserId(adminUser.getId());
         assetTag.setOwner(owner);
         this.impersonateUser(assetTagRestApi, adminUser);
@@ -342,8 +382,13 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
         Assert.assertEquals("must not be empty",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
+        Assert.assertEquals("assettag-name",
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
+        Assert.assertEquals("",
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getInvalidValue());
     }
 
     @Test
@@ -354,12 +399,14 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '422' HyperIoTValidationException
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        HProject hproject = createHProject();
+        Company company = createCompany((HUser) adminUser);
+        Assert.assertNotEquals(0, company.getId());
         AssetTag assetTag = new AssetTag();
-        assetTag.setName("javascript:");
+        String maliciousCode = "javascript:";
+        assetTag.setName(maliciousCode);
         HyperIoTAssetOwnerImpl owner = new HyperIoTAssetOwnerImpl();
-        owner.setOwnerResourceName(hProjectResourceName);
-        owner.setOwnerResourceId(hproject.getId());
+        owner.setOwnerResourceName(companyResourceName);
+        owner.setOwnerResourceId(company.getId());
         owner.setUserId(adminUser.getId());
         assetTag.setOwner(owner);
         this.impersonateUser(assetTagRestApi, adminUser);
@@ -367,8 +414,13 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
         Assert.assertEquals("{it.acsoftware.hyperiot.validator.nomalitiuscode.message}",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
+        Assert.assertEquals("assettag-name",
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
+        Assert.assertEquals(maliciousCode,
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getInvalidValue());
     }
 
     @Test
@@ -387,8 +439,11 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
         Assert.assertEquals("must not be null",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
+        Assert.assertEquals("assettag-owner",
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
     }
 
 
@@ -400,13 +455,17 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '422' HyperIoTValidationException
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        this.impersonateUser(assetTagRestApi, adminUser);
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
+        Assert.assertNotNull(assetTag.getName());
+
         assetTag.setName(null);
+        this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.updateAssetTag(assetTag);
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(2, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
         boolean msgValidationErrorsIsNull = false;
         boolean msgValidationErrorsIsEmpty = false;
         for (int i = 0; i < ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size(); i++) {
@@ -414,11 +473,15 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
                 msgValidationErrorsIsNull = true;
                 Assert.assertEquals("must not be null",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
+                Assert.assertEquals("assettag-name",
+                        ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
             }
             if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be empty")) {
                 msgValidationErrorsIsEmpty = true;
                 Assert.assertEquals("must not be empty",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
+                Assert.assertEquals("assettag-name",
+                        ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
             }
         }
         Assert.assertTrue(msgValidationErrorsIsNull);
@@ -435,13 +498,19 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
         this.impersonateUser(assetTagRestApi, adminUser);
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
         assetTag.setName("");
         Response restResponse = assetTagRestApi.updateAssetTag(assetTag);
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
         Assert.assertEquals("must not be empty",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
+        Assert.assertEquals("assettag-name",
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
+        Assert.assertEquals("",
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getInvalidValue());
     }
 
     @Test
@@ -454,13 +523,20 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
         this.impersonateUser(assetTagRestApi, adminUser);
         AssetTag assetTag = createAssetTag();
-        assetTag.setName("vbscript:");
+        Assert.assertNotEquals(0, assetTag.getId());
+        String maliciousCode = "vbscript:";
+        assetTag.setName(maliciousCode);
         Response restResponse = assetTagRestApi.updateAssetTag(assetTag);
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
         Assert.assertEquals("{it.acsoftware.hyperiot.validator.nomalitiuscode.message}",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
+        Assert.assertEquals("assettag-name",
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
+        Assert.assertEquals(maliciousCode,
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getInvalidValue());
     }
 
     @Test
@@ -472,14 +548,19 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
+        Assert.assertNotNull(assetTag.getOwner());
         assetTag.setOwner(null);
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.updateAssetTag(assetTag);
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
         Assert.assertEquals("must not be null",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
+        Assert.assertEquals("assettag-owner",
+                ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
     }
 
     @Test
@@ -491,19 +572,28 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
         AssetTag assetTag = createAssetTag();
-        HProject hProject = createHProject();
+        Assert.assertNotEquals(0, assetTag.getId());
+
+        Company company = createCompany((HUser) adminUser);
+        Assert.assertNotEquals(0, company.getId());
+        Assert.assertEquals(adminUser.getId(), company.getHUserCreator().getId());
+
         AssetTag duplicateAssetTag = new AssetTag();
         duplicateAssetTag.setName(assetTag.getName());
         HyperIoTAssetOwnerImpl owner = new HyperIoTAssetOwnerImpl();
-        owner.setOwnerResourceName(hProjectResourceName);
-        owner.setOwnerResourceId(hProject.getId());
+        owner.setOwnerResourceName(companyResourceName);
+        owner.setOwnerResourceId(company.getId());
         owner.setUserId(adminUser.getId());
         duplicateAssetTag.setOwner(owner);
+
+        Assert.assertEquals(assetTag.getName(), duplicateAssetTag.getName());
+
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.saveAssetTag(duplicateAssetTag);
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTDuplicateEntityException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(3, ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().size());
         boolean nameIsDuplicated = false;
         boolean ownerresourcenameIsDuplicated = false;
         boolean ownerresourceidIsDuplicated = false;
@@ -524,7 +614,6 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
                         ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().get(i));
             }
         }
-        Assert.assertEquals(3, ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().size());
         Assert.assertTrue(nameIsDuplicated);
         Assert.assertTrue(ownerresourcenameIsDuplicated);
         Assert.assertTrue(ownerresourceidIsDuplicated);
@@ -539,13 +628,20 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
         AssetTag assetTag = createAssetTag();
+        Assert.assertNotEquals(0, assetTag.getId());
+
         AssetTag duplicateAssetTag = createAssetTag();
+        Assert.assertNotEquals(0, duplicateAssetTag.getId());
+
         duplicateAssetTag.setName(assetTag.getName());
+        Assert.assertEquals(assetTag.getName(), duplicateAssetTag.getName());
+
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.updateAssetTag(duplicateAssetTag);
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTDuplicateEntityException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(3, ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().size());
         boolean nameIsDuplicated = false;
         boolean ownerresourcenameIsDuplicated = false;
         boolean ownerresourceidIsDuplicated = false;
@@ -566,7 +662,6 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
                         ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().get(i));
             }
         }
-        Assert.assertEquals(3, ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().size());
         Assert.assertTrue(nameIsDuplicated);
         Assert.assertTrue(ownerresourcenameIsDuplicated);
         Assert.assertTrue(ownerresourceidIsDuplicated);
@@ -580,6 +675,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '404' HyperIoTEntityNotFound
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
+        //AssetTag isn't stored in database
         AssetTag assetTag = new AssetTag();
         assetTag.setName("AssetTag not found");
         this.impersonateUser(assetTagRestApi, adminUser);
@@ -596,14 +692,16 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        this.impersonateUser(assetTagRestApi, adminUser);
         Integer delta = 5;
         Integer page = 2;
         List<AssetTag> tags = new ArrayList<>();
         for (int i = 0; i < delta; i++) {
             AssetTag assetTag = createAssetTag();
+            Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
+        Assert.assertEquals((int)delta, tags.size());
+        this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, page);
         HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
@@ -623,14 +721,16 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        this.impersonateUser(assetTagRestApi, adminUser);
         Integer delta = null;
         Integer page = null;
         List<AssetTag> tags = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             AssetTag assetTag = createAssetTag();
+            Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
+        Assert.assertEquals(10, tags.size());
+        this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, page);
         HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
@@ -650,13 +750,15 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        this.impersonateUser(assetTagRestApi, adminUser);
         Integer page = 2;
         List<AssetTag> tags = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             AssetTag assetTag = createAssetTag();
+            Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
+        Assert.assertEquals(10, tags.size());
+        this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(-1, page);
         HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
@@ -676,13 +778,15 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        this.impersonateUser(assetTagRestApi, adminUser);
         Integer page = 3;
         List<AssetTag> tags = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             AssetTag assetTag = createAssetTag();
+            Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
+        Assert.assertEquals(10, tags.size());
+        this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(0, page);
         HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
@@ -702,14 +806,16 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        this.impersonateUser(assetTagRestApi, adminUser);
         Integer delta = 5;
         Integer page = -1;
         List<AssetTag> tags = new ArrayList<>();
         for (int i = 0; i < delta; i++) {
             AssetTag assetTag = createAssetTag();
+            Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
+        Assert.assertEquals((int)delta, tags.size());
+        this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, page);
         HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
@@ -729,13 +835,15 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        this.impersonateUser(assetTagRestApi, adminUser);
         Integer delta = 5;
         List<AssetTag> tags = new ArrayList<>();
         for (int i = 0; i < delta; i++) {
             AssetTag assetTag = createAssetTag();
+            Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
+        Assert.assertEquals((int)delta, tags.size());
+        this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, 0);
         HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
@@ -759,7 +867,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(hyperIoTException + "HyperIoTUnauthorizedException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
     }
-    
+
 
     /*
      *
@@ -769,44 +877,61 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
      *
      */
 
-    private HProject createHProject() {
-        HProjectRestApi hprojectRestService = getOsgiService(HProjectRestApi.class);
-        AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
-        HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        Assert.assertNotNull(adminUser);
-        Assert.assertTrue(adminUser.isAdmin());
-        this.impersonateUser(hprojectRestService, adminUser);
-        HProject hproject = new HProject();
-        hproject.setName("Project " + java.util.UUID.randomUUID());
-        hproject.setDescription("Description");
-        hproject.setUser((HUser) adminUser);
-        Response restResponse = hprojectRestService.saveHProject(hproject);
-        Assert.assertEquals(200, restResponse.getStatus());
-        Assert.assertNotEquals(0,
-                ((HProject) restResponse.getEntity()).getId());
-        Assert.assertEquals("Description",
-                ((HProject) restResponse.getEntity()).getDescription());
-        Assert.assertEquals(adminUser.getId(),
-                ((HProject) restResponse.getEntity()).getUser().getId());
-        return hproject;
-    }
 
     private AssetTag createAssetTag() {
         AssetTagRestApi assetTagRestApi = getOsgiService(AssetTagRestApi.class);
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        HProject hproject = createHProject();
+
+        Company company = createCompany((HUser) adminUser);
+        Assert.assertNotEquals(0, company.getId());
+
         AssetTag assetTag = new AssetTag();
         assetTag.setName("Tag" + java.util.UUID.randomUUID());
         HyperIoTAssetOwnerImpl owner = new HyperIoTAssetOwnerImpl();
-        owner.setOwnerResourceName(hProjectResourceName + java.util.UUID.randomUUID());
-        owner.setOwnerResourceId(hproject.getId());
+        owner.setOwnerResourceName(companyResourceName);
+        owner.setOwnerResourceId(company.getId());
         owner.setUserId(adminUser.getId());
         assetTag.setOwner(owner);
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.saveAssetTag(assetTag);
         Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertNotEquals(0,
+                ((AssetTag) restResponse.getEntity()).getId());
+        Assert.assertEquals(assetTag.getName(), ((AssetTag) restResponse.getEntity()).getName());
+        Assert.assertEquals(companyResourceName,
+                ((AssetTag) restResponse.getEntity()).getOwner().getOwnerResourceName());
+        Assert.assertEquals((Long)company.getId(),
+                ((AssetTag) restResponse.getEntity()).getOwner().getOwnerResourceId());
+        Assert.assertEquals(adminUser.getId(),
+                ((AssetTag) restResponse.getEntity()).getOwner().getUserId());
         return assetTag;
+    }
+
+    private Company createCompany(HUser huser) {
+        CompanyRestApi companyRestApi = getOsgiService(CompanyRestApi.class);
+        AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
+        HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
+        Company company = new Company();
+        company.setBusinessName("ACSoftware");
+        company.setCity("Lamezia Terme");
+        company.setInvoiceAddress("Lamezia Terme");
+        company.setNation("Italy");
+        company.setPostalCode("88046");
+        company.setVatNumber("01234567890" + java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+        company.setHUserCreator(huser);
+        this.impersonateUser(companyRestApi, adminUser);
+        Response restResponse = companyRestApi.saveCompany(company);
+        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertNotEquals(0, ((Company) restResponse.getEntity()).getId());
+        Assert.assertEquals("ACSoftware", ((Company) restResponse.getEntity()).getBusinessName());
+        Assert.assertEquals("Lamezia Terme", ((Company) restResponse.getEntity()).getCity());
+        Assert.assertEquals("Lamezia Terme", ((Company) restResponse.getEntity()).getInvoiceAddress());
+        Assert.assertEquals("Italy", ((Company) restResponse.getEntity()).getNation());
+        Assert.assertEquals("88046", ((Company) restResponse.getEntity()).getPostalCode());
+        Assert.assertEquals(company.getVatNumber(), ((Company) restResponse.getEntity()).getVatNumber());
+        Assert.assertEquals(huser.getId(), ((Company) restResponse.getEntity()).getHUserCreator().getId());
+        return company;
     }
 
 }
