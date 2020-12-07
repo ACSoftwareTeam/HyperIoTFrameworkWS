@@ -5,6 +5,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: project.osgiCompendiumVersion
 	// HyperIoTBase Dependencies
 	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-api", version:project.hyperIoTVersion
+	compileOnly group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-util", version:project.hyperIoTVersion
 	// Project dependencies
 	compileOnly project(":modules:HyperIoTSparkManager:HyperIoTSparkManager-api")
 	compileOnly project(":modules:HyperIoTSparkManager:HyperIoTSparkManager-model")
