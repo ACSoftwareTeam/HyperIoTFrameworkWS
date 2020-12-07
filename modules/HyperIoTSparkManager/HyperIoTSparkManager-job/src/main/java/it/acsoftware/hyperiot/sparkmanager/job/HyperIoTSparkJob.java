@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@SuppressWarnings("unused")
 public abstract class HyperIoTSparkJob implements Job {
 
     protected static final Logger LOGGER = Logger.getLogger("it.acsoftware.hyperiot");
@@ -36,18 +37,21 @@ public abstract class HyperIoTSparkJob implements Job {
             String sparkJarsProperty = getJobArg(jobKey, jobDataMap, "spark.jars");
             if (sparkJarsProperty == null)
                 return;
+            // get SparkManagerUtil OSGi service
+            SparkManagerUtil sparkManagerUtil =
+                    (SparkManagerUtil) HyperIoTUtil.getService(SparkManagerUtil.class);
             // get Spark job arguments
             String[] appArgs = getAppArgs(jobDetail);
-            // get env variables
+            // set env variables
             Map<String, String> envVars = new HashMap<>();
-            envVars.put("SPARK_ENV_LOADED", "1");
+            envVars.put("SPARK_ENV_LOADED", String.valueOf(sparkManagerUtil.getSparkEnvLoaded()));
             // get Spark properties
-            Map<String, String> sparkProps = getSparkProperties(jobKey.toString(), sparkJarsProperty);
+            Map<String, String> sparkProps = getSparkProperties(sparkManagerUtil, jobKey.toString(), sparkJarsProperty);
 
             request.setAction("CreateSubmissionRequest");
             request.setAppResource(appResource);
             request.setMainClass(mainClass);
-            request.setClientSparkVersion("2.4.5");
+            request.setClientSparkVersion(sparkManagerUtil.getSparkClientVersion());
             request.setAppArgs(appArgs);
             request.setEnvironmentVariables(envVars);
             request.setSparkProperties(sparkProps);
@@ -60,6 +64,11 @@ public abstract class HyperIoTSparkJob implements Job {
         }
     }
 
+    /**
+     * This method get specific job arguments
+     * @param jobDetail jobDetail
+     * @return String array containing job arguments
+     */
     public abstract String[] getAppArgs(JobDetail jobDetail);
 
     private String getJobArg(JobKey jobKey, JobDataMap jobDataMap, String key) {
@@ -73,27 +82,26 @@ public abstract class HyperIoTSparkJob implements Job {
 
     /**
      * It returns Spark properties. Parameters appName and sparkJarsProperty are related to job which will be executed
+     * @param sparkManagerUtil SparkManagerUtil OSGi service
      * @param appName Job app name
      * @param sparkJarsProperty Jars which job needs
      * @return Map containing Spark properties
      */
-    private Map<String, String> getSparkProperties(String appName, String sparkJarsProperty) {
-        SparkManagerUtil sparkManagerUtil =
-                (SparkManagerUtil) HyperIoTUtil.getService(SparkManagerUtil.class);
-        String sparkMasterUrl =
-                sparkManagerUtil.getSparkMasterHostname() + ":" + sparkManagerUtil.getSparkRestApiPort();
+    private Map<String, String> getSparkProperties(SparkManagerUtil sparkManagerUtil, String appName,
+                                                   String sparkJarsProperty) {
+
         Map<String, String> sparkProps = new HashMap<>();
         sparkProps.put("spark.jars", sparkJarsProperty);
-        sparkProps.put("spark.driver.supervise", "false");
-        sparkProps.put("spark.app.name", appName); // This property is mandatory, however if job define its name, the latter will override the former
-        sparkProps.put("spark.submit.deployMode", "cluster");
-        sparkProps.put("spark.master", sparkMasterUrl);
-        sparkProps.put("spark.jars.packages", "org.apache.spark:spark-avro_2.11:2.4.5");
+        sparkProps.put("spark.driver.supervise", String.valueOf(sparkManagerUtil.getSparkDriverSupervise()));
+        sparkProps.put("spark.app.name", appName); // This property is mandatory as the others, however if job define its name, the latter will override the former
+        sparkProps.put("spark.submit.deployMode", sparkManagerUtil.getSparkSubmitDeployMode());
+        sparkProps.put("spark.master", sparkManagerUtil.getSparkRestApiUrl());
+        sparkProps.put("spark.jars.packages", "org.apache.spark:spark-avro_2.11:2.4.5");    // HyperIoT Spark jobs need avro dependency to read data on which they do computation
         return sparkProps;
     }
 
     /**
-     * It submit Spark job asynchronously
+     * It submits Spark job asynchronously
      * @param request Request to be sent to Spark hidden REST api
      * @return SparkRestApiResponse
      */
