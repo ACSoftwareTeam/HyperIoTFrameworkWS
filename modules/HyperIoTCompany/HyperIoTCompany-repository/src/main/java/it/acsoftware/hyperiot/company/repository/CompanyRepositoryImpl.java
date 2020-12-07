@@ -13,7 +13,7 @@ import it.acsoftware.hyperiot.company.api.CompanyRepository ;
 import it.acsoftware.hyperiot.company.model.Company;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of the Company. This
  *         class is used to interact with the persistence layer.
  *
@@ -33,12 +33,12 @@ public class CompanyRepositoryImpl extends HyperIoTBaseRepositoryImpl<Company> i
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The current jpaTemplate
 	 */
 	@Override
 	protected JpaTemplate getJpa() {
-		log.log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
+		getLog().log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
 		return jpa;
 	}
 
@@ -48,7 +48,7 @@ public class CompanyRepositoryImpl extends HyperIoTBaseRepositoryImpl<Company> i
 	@Override
 	@Reference(target = "(osgi.unit.name=hyperiot-company-persistence-unit)")
 	protected void setJpa(JpaTemplate jpa) {
-		log.log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
+		getLog().log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
 		this.jpa = jpa;
 	}
 }

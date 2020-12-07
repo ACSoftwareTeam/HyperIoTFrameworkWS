@@ -35,7 +35,7 @@ public class RoleRepositoryImpl extends HyperIoTBaseRepositoryImpl<Role> impleme
      */
     @Override
     protected JpaTemplate getJpa() {
-        log.log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
+        getLog().log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
         return jpa;
     }
 
@@ -45,23 +45,23 @@ public class RoleRepositoryImpl extends HyperIoTBaseRepositoryImpl<Role> impleme
     @Override
     @Reference(target = "(osgi.unit.name=hyperiot-role-persistence-unit)")
     protected void setJpa(JpaTemplate jpa) {
-        log.log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
+        getLog().log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
         this.jpa = jpa;
     }
 
     @Override
     public Role findByName(String name) {
-        log.log(Level.FINE, "Invoking findByName: " + name);
+        getLog().log(Level.FINE, "Invoking findByName: " + name);
         return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
-            log.log(Level.FINE, "Transaction found, invoke persist");
+            getLog().log(Level.FINE, "Transaction found, invoke persist");
 
             Role entity = null;
             try {
                 entity = entityManager.createQuery("from Role r where r.name = :name", Role.class).setParameter("name", name)
                         .getSingleResult();
-                log.log(Level.FINE, "Entity found: " + entity);
+                getLog().log(Level.FINE, "Entity found: " + entity);
             } catch (NoResultException e) {
-                log.log(Level.FINE, "Entity Not Found ");
+                getLog().log(Level.FINE, "Entity Not Found ");
             }
             return entity;
         });

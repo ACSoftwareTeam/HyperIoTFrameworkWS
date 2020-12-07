@@ -50,7 +50,7 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
      */
     @Override
     protected JpaTemplate getJpa() {
-        log.log(Level.FINEST, "invoking getJpa, returning: {}", jpa);
+        getLog().log(Level.FINEST, "invoking getJpa, returning: {}", jpa);
         return jpa;
     }
 
@@ -60,7 +60,7 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
     @Override
     @Reference(target = "(osgi.unit.name=hyperiot-sharedEntity-persistence-unit)")
     protected void setJpa(JpaTemplate jpa) {
-        log.log(Level.FINEST, "invoking setJpa, setting: " + jpa);
+        getLog().log(Level.FINEST, "invoking setJpa, setting: " + jpa);
         this.jpa = jpa;
     }
 
@@ -68,7 +68,7 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
     public SharedEntity save(SharedEntity entity) {
         //override save method in order to add check on duplicate by primary key because default checkDuplicate()
         //compare ids of this entity with whose returned by db, but for SharedEntity id is meaningless
-        log.log(Level.FINE,
+        getLog().log(Level.FINE,
             "Repository Saving entity {0}: {1}", new Object[]{this.type.getSimpleName(), entity});
         this.checkDuplicateByPK(entity);
         return super.save(entity);
@@ -96,16 +96,16 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
 
     @Override
     public void removeByPK(String entityResourceName, long entityId, long userId) {
-        this.log.log(Level.FINE,
+        this.getLog().log(Level.FINE,
             "Repository Remove entity {0} with primary key: (entityResourceName: {1}, entityId: {2}, userId: {3})",
             new Object[]{this.type.getSimpleName(), entityResourceName, entityId, userId});
         this.getJpa().tx(TransactionType.Required, (entityManager) -> {
-            this.log.log(Level.FINE, "Transaction found, invoke remove");
+            this.getLog().log(Level.FINE, "Transaction found, invoke remove");
             SharedEntity entity = findByPK(entityResourceName, entityId, userId, (HashMap) null);
             entityManager.remove(entity);
             //this..manageAssets(entity, true);
             entityManager.flush();
-            this.log.log(Level.FINE,
+            this.getLog().log(Level.FINE,
                 "Entity {0} with primary key: (entityResourceName: {1}, entityId: {2}, userId: {3}) removed",
                 new Object[]{this.type.getSimpleName(), entityResourceName, entityId, userId});
             HyperIoTUtil.invokePostActions(entity, HyperIoTPostRemoveAction.class);
@@ -114,11 +114,11 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
 
     @Override
     public SharedEntity findByPK(String entityResourceName, long entityId, long userId, HashMap<String, Object> filter) {
-        this.log.log(Level.FINE,
+        this.getLog().log(Level.FINE,
             "Repository Find entity {0} with primary key: (entityResourceName: {1}, entityId: {2}, userId: {3})",
             new Object[]{this.type.getSimpleName(), entityResourceName, entityId, userId});
         return this.getJpa().txExpr(TransactionType.Required, (entityManager) -> {
-            this.log.log(Level.FINE, "Transaction found, invoke find");
+            this.getLog().log(Level.FINE, "Transaction found, invoke find");
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<SharedEntity> query = criteriaBuilder.createQuery(this.type);
             Root<SharedEntity> entityDef = query.from(this.type);
@@ -145,10 +145,10 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
 
             try {
                 SharedEntity entity = q.getSingleResult();
-                this.log.log(Level.FINE, "Found entity: {0}", entity);
+                this.getLog().log(Level.FINE, "Found entity: {0}", entity);
                 return entity;
             } catch (Exception var14) {
-                this.log.log(Level.SEVERE, var14.getMessage(), var14);
+                this.getLog().log(Level.SEVERE, var14.getMessage(), var14);
                 throw var14;
             }
         });
@@ -156,9 +156,9 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
 
     @Override
     public List<SharedEntity> findByEntity(String entityResourceName, long entityId, HashMap<String, Object> filter) {
-        this.log.log(Level.FINE, "Repository Find entities {0} with entityResourceName {1} and entityId {2}", new Object[]{this.type.getSimpleName(), entityResourceName, entityId});
+        this.getLog().log(Level.FINE, "Repository Find entities {0} with entityResourceName {1} and entityId {2}", new Object[]{this.type.getSimpleName(), entityResourceName, entityId});
         return (List<SharedEntity>) this.getJpa().txExpr(TransactionType.RequiresNew, (entityManager) -> {
-            this.log.log(Level.FINE, "Transaction found, invoke findByEntity");
+            this.getLog().log(Level.FINE, "Transaction found, invoke findByEntity");
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<SharedEntity> query = criteriaBuilder.createQuery(this.type);
             Root<SharedEntity> entityDef = query.from(this.type);
@@ -189,10 +189,10 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
 
             try {
                 List<SharedEntity> results = q.getResultList();
-                this.log.log(Level.FINE, "Query results: {0}", results);
+                this.getLog().log(Level.FINE, "Query results: {0}", results);
                 return results;
             } catch (Exception var12) {
-                this.log.log(Level.SEVERE, var12.getMessage(), var12);
+                this.getLog().log(Level.SEVERE, var12.getMessage(), var12);
                 throw var12;
             }
         });
@@ -200,9 +200,9 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
 
     @Override
     public List<SharedEntity> findByUser(long userId, HashMap<String, Object> filter) {
-        this.log.log(Level.FINE, "Repository Find entities {0} with userId {1}", new Object[]{this.type.getSimpleName(), userId});
+        this.getLog().log(Level.FINE, "Repository Find entities {0} with userId {1}", new Object[]{this.type.getSimpleName(), userId});
         return this.getJpa().txExpr(TransactionType.RequiresNew, (entityManager) -> {
-            this.log.log(Level.FINE, "Transaction found, invoke findByUser");
+            this.getLog().log(Level.FINE, "Transaction found, invoke findByUser");
             CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
             CriteriaQuery<SharedEntity> query = criteriaBuilder.createQuery(this.type);
             Root<SharedEntity> entityDef = query.from(this.type);
@@ -232,10 +232,10 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
 
             try {
                 List<SharedEntity> results = q.getResultList();
-                this.log.log(Level.FINE, "Query results: {0}", results);
+                this.getLog().log(Level.FINE, "Query results: {0}", results);
                 return results;
             } catch (Exception var12) {
-                this.log.log(Level.SEVERE, var12.getMessage(), var12);
+                this.getLog().log(Level.SEVERE, var12.getMessage(), var12);
                 throw var12;
             }
         });
@@ -243,7 +243,7 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
 
     @Override
     public List<HyperIoTUser> getSharingUsers(String entityResourceName, long entityId) {
-        this.log.log(Level.FINE,
+        this.getLog().log(Level.FINE,
             "Repository invoke getSharingUsers with entityResourceName {0} and entityId {1}",
             new Object[]{this.type.getSimpleName(), entityResourceName, entityId});
         return this.getJpa().txExpr(TransactionType.RequiresNew, (entityManager) -> {
@@ -268,20 +268,20 @@ public class SharedEntityRepositoryImpl extends HyperIoTBaseRepositoryImpl<Share
     }
 
     private void checkDuplicateByPK(SharedEntity entity) {
-        log.log(Level.FINE, "Checking duplicates for entity {0}", this.type.getName());
+        getLog().log(Level.FINE, "Checking duplicates for entity {0}", this.type.getName());
         Table[] tableAnnotation = entity.getClass().getAnnotationsByType(Table.class);
         if (tableAnnotation != null && tableAnnotation.length > 0) {
             UniqueConstraint[] uniqueConstraints = tableAnnotation[0].uniqueConstraints();
             if (uniqueConstraints != null && uniqueConstraints.length > 0) {
                 String[] columnNames = uniqueConstraints[0].columnNames();
-                log.log(Level.FINE, "Found UniqueConstraints {0}", Arrays.toString(columnNames));
+                getLog().log(Level.FINE, "Found UniqueConstraints {0}", Arrays.toString(columnNames));
                 try {
                     SharedEntity result = this.findByPK(entity.getEntityResourceName(), entity.getEntityId(), entity.getUserId(), null);
                     // if the entity is the same then it's duplicated
                     if (result != null)
                         throw new HyperIoTDuplicateEntityException(columnNames);
                 } catch (NoResultException e) {
-                    log.log(Level.FINE, "Entity duplicate check passed!");
+                    getLog().log(Level.FINE, "Entity duplicate check passed!");
                 }
             }
         }

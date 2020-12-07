@@ -36,7 +36,7 @@ public class AssetTagRepositoryImpl extends HyperIoTBaseRepositoryImpl<AssetTag>
      */
     @Override
     protected JpaTemplate getJpa() {
-        log.log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
+        getLog().log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
         return jpa;
     }
 
@@ -46,7 +46,7 @@ public class AssetTagRepositoryImpl extends HyperIoTBaseRepositoryImpl<AssetTag>
     @Override
     @Reference(target = "(osgi.unit.name=hyperiot-assetTag-persistence-unit)")
     protected void setJpa(JpaTemplate jpa) {
-        log.log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
+        getLog().log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
         this.jpa = jpa;
     }
 

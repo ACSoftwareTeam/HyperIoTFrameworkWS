@@ -50,7 +50,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
      */
     @Override
     protected JpaTemplate getJpa() {
-        log.log(Level.FINEST, "invoking getJpa, returning: {0}", jpa);
+        getLog().log(Level.FINEST, "invoking getJpa, returning: {0}", jpa);
         return jpa;
     }
 
@@ -59,7 +59,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
      */
     @Reference(target = "(osgi.unit.name=hyperiot-permission-persistence-unit)")
     protected void setJpa(JpaTemplate jpa) {
-        log.log(Level.FINEST, "invoking setJpa, setting: {0}", jpa);
+        getLog().log(Level.FINEST, "invoking setJpa, setting: {0}", jpa);
         this.jpa = jpa;
     }
 
@@ -89,7 +89,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
      */
     @Override
     public Permission findByRoleAndResource(HyperIoTRole role, HyperIoTResource resource) {
-        log.log(Level.FINEST, "invoking findByRoleAndResource Role: {0} Resource: {1}", new Object[]{role, resource.getResourceName()});
+        getLog().log(Level.FINEST, "invoking findByRoleAndResource Role: {0} Resource: {1}", new Object[]{role, resource.getResourceName()});
         return this.findByRoleAndResourceName(role, resource.getResourceName());
     }
 
@@ -102,7 +102,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
      */
     @Override
     public Permission findByRoleAndResourceName(HyperIoTRole role, String entityResourceName) {
-        log.log(Level.FINEST, "invoking findByRoleAndResourceName Role: {0} Resource: {1}", new Object[]{role, entityResourceName});
+        getLog().log(Level.FINEST, "invoking findByRoleAndResourceName Role: {0} Resource: {1}", new Object[]{role, entityResourceName});
         return jpa.txExpr(TransactionType.Required, entityManager -> {
             Permission p = null;
             try {
@@ -111,7 +111,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
                         Permission.class).setParameter("roleId", role.getId())
                         .setParameter("entityResourceName", entityResourceName).getSingleResult();
             } catch (NoResultException e) {
-                log.log(Level.FINE, e.getMessage(), e);
+                getLog().log(Level.FINE, e.getMessage(), e);
             }
             return p;
         });
@@ -125,7 +125,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
      */
     @Override
     public Collection<Permission> findByRole(HyperIoTRole role) {
-        log.log(Level.FINEST, "invoking findByRoleAndResourceName Role: {0}", role.getName());
+        getLog().log(Level.FINEST, "invoking findByRoleAndResourceName Role: {0}", role.getName());
         return jpa.txExpr(TransactionType.Required, entityManager -> {
             return entityManager
                     .createQuery("from Permission p where p.role.id = :roleId",
@@ -145,7 +145,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
     @Override
     public Permission findByRoleAndResourceNameAndResourceId(HyperIoTRole role,
                                                              String entityResourceName, long id) {
-        log.log(Level.FINEST, "invoking findByRoleAndResourceNameAndResourceId Role: {0}", new Object[]{role, entityResourceName, id});
+        getLog().log(Level.FINEST, "invoking findByRoleAndResourceNameAndResourceId Role: {0}", new Object[]{role, entityResourceName, id});
         return jpa.txExpr(TransactionType.Required, entityManager -> {
             return entityManager.createQuery(
                     "from Permission p where p.role.id = :roleId and p.entityResourceName = :entityResourceName and p.resourceId = :id",
@@ -164,7 +164,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
             try {
                 r = this.roleRepository.findByName(roleName);
             } catch (NoResultException e) {
-                log.log(Level.FINE, "No role found with name: {0}", roleName);
+                getLog().log(Level.FINE, "No role found with name: {0}", roleName);
             }
 
             HashMap<String, Integer> actionsIds = new HashMap<>();
@@ -184,7 +184,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
                 //Checks if permission already exists for that resource
                 Permission p = this.findByRoleAndResourceName(r, action.getResourceName());
                 if (p == null)
-                    log.log(Level.FINE, "No permission found for resource: {0} and role {1}", new Object[]{action.getResourceName(), r.getName()});
+                    getLog().log(Level.FINE, "No permission found for resource: {0} and role {1}", new Object[]{action.getResourceName(), r.getName()});
                 else
                     existingPermissions.put(action.getResourceName(), p);
 
@@ -227,7 +227,7 @@ public class PermissionRepositoryImpl extends HyperIoTBaseRepositoryImpl<Permiss
                         else
                             entityManager.merge(p);
                     } catch (Exception e) {
-                        log.log(Level.SEVERE, e.getMessage(), e);
+                        getLog().log(Level.SEVERE, e.getMessage(), e);
                     }
                 }
             }

@@ -37,7 +37,7 @@ public class AssetCategoryRepositoryImpl extends HyperIoTBaseRepositoryImpl<Asse
      */
     @Override
     protected JpaTemplate getJpa() {
-        log.log(Level.FINEST, "invoking getJpa, returning: {0}", jpa);
+        getLog().log(Level.FINEST, "invoking getJpa, returning: {0}", jpa);
         return jpa;
     }
 
@@ -47,7 +47,7 @@ public class AssetCategoryRepositoryImpl extends HyperIoTBaseRepositoryImpl<Asse
     @Override
     @Reference(target = "(osgi.unit.name=hyperiot-assetCategory-persistence-unit)")
     protected void setJpa(JpaTemplate jpa) {
-        log.log(Level.FINEST, "invoking setJpa, setting: {0}", jpa);
+        getLog().log(Level.FINEST, "invoking setJpa, setting: {0}", jpa);
         this.jpa = jpa;
     }
 
@@ -73,7 +73,7 @@ public class AssetCategoryRepositoryImpl extends HyperIoTBaseRepositoryImpl<Asse
      */
     @Override
     public void addAssetCategory(String resourceName, long resourceId, long categoryId) {
-        log.log(Level.FINEST,
+        getLog().log(Level.FINEST,
                 "invoking addAssetCategory for resource:  {0} - {1}", new Object[]{resourceName, resourceId});
         AssetCategory category = this.find(categoryId, null);
         AssetCategoryResource acr = new AssetCategoryResource();
@@ -89,7 +89,7 @@ public class AssetCategoryRepositoryImpl extends HyperIoTBaseRepositoryImpl<Asse
      */
     @Override
     public void addAssetCategories(String resourceName, long resourceId, long[] categoriesId) {
-        log.log(Level.FINEST,
+        getLog().log(Level.FINEST,
                 "invoking addAssetCategories for resource: {0} - {1}", new Object[]{resourceName, resourceId});
         for (int i = 0; i < categoriesId.length; i++) {
             AssetCategory category = this.find(categoriesId[i], null);
@@ -107,7 +107,7 @@ public class AssetCategoryRepositoryImpl extends HyperIoTBaseRepositoryImpl<Asse
      */
     @Override
     public void removeAssetCategory(String resourceName, long resourceId, long categoryId) {
-        log.log(Level.FINEST,
+        getLog().log(Level.FINEST,
                 "invoking removeAssetCategory for resource: {0} - {1}", new Object[]{resourceName, resourceId});
         AssetCategory category = this.find(categoryId, null);
         AssetCategoryResource acr = this.findAssetCategoryResource(resourceName, resourceId,
@@ -121,7 +121,7 @@ public class AssetCategoryRepositoryImpl extends HyperIoTBaseRepositoryImpl<Asse
      */
     @Override
     public void removeAssetCategories(String resourceName, long resourceId, long[] categoriesId) {
-        log.log(Level.FINEST,
+        getLog().log(Level.FINEST,
                 "invoking removeAssetCategories for resource: {0} - {1}", new Object[]{resourceName, resourceId});
         for (int i = 0; i < categoriesId.length; i++) {
             AssetCategory category = this.find(categoriesId[i], null);

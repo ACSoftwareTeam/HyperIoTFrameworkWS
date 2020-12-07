@@ -42,7 +42,7 @@ import java.util.logging.Logger;
  */
 public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
     implements HyperIoTBaseRepository<T> {
-    protected Logger log = Logger.getLogger(HyperIoTBaseRepositoryImpl.class.getName());
+    private Logger log = Logger.getLogger(HyperIoTBaseRepositoryImpl.class.getName());
 
     /**
      * Generic class for HyperIoT platform
@@ -565,5 +565,13 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                     log.log(Level.SEVERE, e.getMessage(), e);
                 }
         }
+    }
+
+    /**
+     *
+     * @return logger of this class
+     */
+    protected Logger getLog() {
+        return log;
     }
 }

@@ -23,7 +23,7 @@ import it.acsoftware.hyperiot.mail.api.MailRepository;
 import it.acsoftware.hyperiot.mail.model.MailTemplate;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Implementation class of the Mail. This class is
  *         used to interact with the persistence layer.
  *
@@ -44,12 +44,12 @@ public class MailRepositoryImpl extends HyperIoTBaseRepositoryImpl<MailTemplate>
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The current jpaTemplate
 	 */
 	@Override
 	protected JpaTemplate getJpa() {
-		log.log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
+		getLog().log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
 		return jpa;
 	}
 
@@ -59,19 +59,19 @@ public class MailRepositoryImpl extends HyperIoTBaseRepositoryImpl<MailTemplate>
 	@Override
 	@Reference(target = "(osgi.unit.name=hyperiot-mail-persistence-unit)")
 	protected void setJpa(JpaTemplate jpa) {
-		log.log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
+		getLog().log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
 		this.jpa = jpa;
 	}
 
 	@Override
 	public MailTemplate findByName(String name) {
-		log.log(Level.FINE, "Repository findByName " + name);
+		getLog().log(Level.FINE, "Repository findByName " + name);
 		return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
-			log.log(Level.FINE, "Transaction found, invoke findByUsername");
+			getLog().log(Level.FINE, "Transaction found, invoke findByUsername");
 			MailTemplate template = entityManager
 					.createQuery("from MailTemplate mt where mt.name=:name ", MailTemplate.class)
 					.setParameter("name", name).getSingleResult();
-			log.log(Level.FINE, "Query results: {0}" , template);
+			getLog().log(Level.FINE, "Query results: {0}" , template);
 			return template;
 		});
 	}
@@ -91,7 +91,7 @@ public class MailRepositoryImpl extends HyperIoTBaseRepositoryImpl<MailTemplate>
 					try {
 						this.findByName(name);
 					} catch (NoResultException e) {
-						log.log(Level.WARNING, "Creating custom mail template from name: {0}" , name);
+						getLog().log(Level.WARNING, "Creating custom mail template from name: {0}" , name);
 						MailTemplate mt = new MailTemplate();
 						InputStream is = templatePath.openStream();
 						BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -111,7 +111,7 @@ public class MailRepositoryImpl extends HyperIoTBaseRepositoryImpl<MailTemplate>
 
 			}
 		} catch (IOException e) {
-			log.log(Level.SEVERE, e.getMessage(), e);
+			getLog().log(Level.SEVERE, e.getMessage(), e);
 		}
 	}
 }

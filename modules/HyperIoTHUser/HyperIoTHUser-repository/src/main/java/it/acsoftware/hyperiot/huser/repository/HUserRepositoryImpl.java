@@ -45,7 +45,7 @@ public class HUserRepositoryImpl extends HyperIoTBaseRepositoryImpl<HUser> imple
      */
     @Override
     protected JpaTemplate getJpa() {
-        log.log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
+        getLog().log(Level.FINEST, "invoking getJpa, returning: {0}" , jpa);
         return jpa;
     }
 
@@ -55,7 +55,7 @@ public class HUserRepositoryImpl extends HyperIoTBaseRepositoryImpl<HUser> imple
     @Override
     @Reference(target = "(osgi.unit.name=hyperiot-hUser-persistence-unit)")
     protected void setJpa(JpaTemplate jpa) {
-        log.log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
+        getLog().log(Level.FINEST, "invoking setJpa, setting: {0}" , jpa);
         this.jpa = jpa;
     }
 
@@ -75,18 +75,18 @@ public class HUserRepositoryImpl extends HyperIoTBaseRepositoryImpl<HUser> imple
      */
     @Override
     public HUser findHAdmin() {
-        log.log(Level.FINE, "Invoking findHAdmin ");
+        getLog().log(Level.FINE, "Invoking findHAdmin ");
         return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
-            log.log(Level.FINE, "Transaction found, invoke persist");
+            getLog().log(Level.FINE, "Transaction found, invoke persist");
             HUser entity = null;
             try {
                 entity = entityManager.createQuery("from HUser h where h.username = 'hadmin'", HUser.class)
                         .getSingleResult();
-                log.log(Level.FINE, "Entity persisted: " + entity);
+                getLog().log(Level.FINE, "Entity persisted: " + entity);
             } catch (NoResultException e) {
-                log.log(Level.FINE, "Entity NOT FOUND ");
+                getLog().log(Level.FINE, "Entity NOT FOUND ");
             } catch(Exception e){
-                log.log(Level.SEVERE, e.getMessage(),e);
+                getLog().log(Level.SEVERE, e.getMessage(),e);
             }
             return entity;
         });
@@ -99,19 +99,19 @@ public class HUserRepositoryImpl extends HyperIoTBaseRepositoryImpl<HUser> imple
      * @return the user with username entered
      */
     public HUser findByUsername(String username) {
-        log.log(Level.FINE, "Repository findByUsername {0}", username);
+        getLog().log(Level.FINE, "Repository findByUsername {0}", username);
         return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
-            log.log(Level.FINE, "Transaction found, invoke findByUsername");
+            getLog().log(Level.FINE, "Transaction found, invoke findByUsername");
             HUser user = null;
             try {
                 user = entityManager
                         .createQuery("from HUser h left join fetch h.roles where lower(h.username)=lower(:username) ", HUser.class)
                         .setParameter("username", username).getSingleResult();
-                log.log(Level.FINE, "Query results: {0}" , user);
+                getLog().log(Level.FINE, "Query results: {0}" , user);
             } catch (NoResultException e) {
-                log.log(Level.FINE, "Entity Not Found ");
+                getLog().log(Level.FINE, "Entity Not Found ");
             } catch(Exception e){
-                log.log(Level.SEVERE, e.getMessage(),e);
+                getLog().log(Level.SEVERE, e.getMessage(),e);
             }
             return user;
         });
@@ -119,19 +119,19 @@ public class HUserRepositoryImpl extends HyperIoTBaseRepositoryImpl<HUser> imple
 
     @Override
     public HUser findByEmail(String email) {
-        log.log(Level.FINE, "Repository findByEmail {0}" , email);
+        getLog().log(Level.FINE, "Repository findByEmail {0}" , email);
         return this.getJpa().txExpr(TransactionType.Required, entityManager -> {
-            log.log(Level.FINE, "Transaction found, invoke findByEmail");
+            getLog().log(Level.FINE, "Transaction found, invoke findByEmail");
             HUser user = null;
             try {
                 user = entityManager
                         .createQuery("from HUser h left join fetch h.roles where h.email=:email ", HUser.class)
                         .setParameter("email", email).getSingleResult();
-                log.log(Level.FINE, "Query results: {0}" , user);
+                getLog().log(Level.FINE, "Query results: {0}" , user);
             } catch (NoResultException e) {
-                log.log(Level.FINE, "Entity Not Found ");
+                getLog().log(Level.FINE, "Entity Not Found ");
             } catch(Exception e){
-                log.log(Level.SEVERE, e.getMessage(),e);
+                getLog().log(Level.SEVERE, e.getMessage(),e);
             }
             return user;
         });
