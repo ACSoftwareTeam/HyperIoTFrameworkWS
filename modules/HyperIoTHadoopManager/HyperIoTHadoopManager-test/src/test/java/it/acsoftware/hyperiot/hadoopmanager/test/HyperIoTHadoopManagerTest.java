@@ -40,7 +40,7 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 		// the standard configuration has been moved to the HyperIoTHadoopManagerConfiguration class
 		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
 //				.withDebug("5010", false)
-				.append(getBaseConfiguration()).build();
+				.append(getConfiguration()).build();
 	}
 
 	public HyperIoTContext impersonateUser(HyperIoTBaseRestApi restApi,HyperIoTUser user) {
@@ -51,8 +51,6 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 	@Test
 	public void test000_hyperIoTFrameworkShouldBeInstalled() {
 		// assert on an available service
-		// hyperiot-core import the following features: base, mail, permission, huser, company, role, authentication,
-		// assetcategory, assettag, sharedentity.
 		assertServiceAvailable(FeaturesService.class);
 		String features = executeCommand("feature:list -i");
 		assertContains("HyperIoTBase-features ", features);
@@ -81,15 +79,15 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 		String hyperIoTHadoopManagerService = executeCommand("bundle:list | grep HyperIoTHadoopManager-service");
 		boolean fileCfgHadoopManagerFound = false;
 		String fileConfigHadoopManager = executeCommand("config:list | grep it.acsoftware.hyperiot.hadoopmanager.cfg");
-		if (hyperIoTHadoopManagerService.contains("│ Active  │")) {
-			Assert.assertTrue(hyperIoTHadoopManagerService.contains("│ Active  │"));
+		if (hyperIoTHadoopManagerService.contains("Active")) {
+			Assert.assertTrue(hyperIoTHadoopManagerService.contains("Active"));
 			if (fileConfigHadoopManager.contains("it.acsoftware.hyperiot.hadoopmanager.cfg")) {
 				Assert.assertTrue(fileConfigHadoopManager.contains("it.acsoftware.hyperiot.hadoopmanager.cfg"));
 				fileCfgHadoopManagerFound = true;
 			}
 		}
-		if (hyperIoTHadoopManagerService.contains("│ Waiting │")) {
-			Assert.assertTrue(hyperIoTHadoopManagerService.contains("│ Waiting │"));
+		if (hyperIoTHadoopManagerService.contains("Waiting")) {
+			Assert.assertTrue(hyperIoTHadoopManagerService.contains("Waiting"));
 			if (fileConfigHadoopManager.isEmpty()) {
 				Assert.assertTrue(fileConfigHadoopManager.isEmpty());
 				Assert.assertFalse(fileCfgHadoopManagerFound);
