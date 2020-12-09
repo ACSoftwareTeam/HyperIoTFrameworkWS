@@ -63,16 +63,16 @@ public class HyperIoTQueryFilterBuilder {
      * @return
      */
     public static <T> Predicate createPredicateByQueryFilter(Root<T> entityDef, CriteriaBuilder criteriaBuilder, HyperIoTQueryFilter filter) {
-        if (filter instanceof HyperIoTQueryEqualsFilter) {
+        if (filter!= null && filter instanceof HyperIoTQueryEqualsFilter) {
             return createEqualPredicate(entityDef, criteriaBuilder, (HyperIoTQueryEqualsFilter) filter);
         }
-        if (filter instanceof HyperIoTQueryInFilter) {
+        if (filter!= null && filter instanceof HyperIoTQueryInFilter) {
             return createInPredicate(entityDef, criteriaBuilder, (HyperIoTQueryInFilter) filter);
         }
-        if (filter instanceof HyperIoTQueryFilterAndCondition) {
+        if (filter!= null && filter instanceof HyperIoTQueryFilterAndCondition) {
             return createAndPredicate(entityDef, criteriaBuilder, (HyperIoTQueryFilterAndCondition) filter);
         }
-        if (filter instanceof HyperIoTQueryFilterOrCondition) {
+        if (filter!= null && filter instanceof HyperIoTQueryFilterOrCondition) {
             return createOrPredicate(entityDef, criteriaBuilder, (HyperIoTQueryFilterOrCondition) filter);
         }
         return null;

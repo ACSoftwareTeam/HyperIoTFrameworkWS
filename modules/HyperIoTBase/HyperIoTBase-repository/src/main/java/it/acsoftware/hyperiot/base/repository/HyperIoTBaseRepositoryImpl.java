@@ -205,7 +205,8 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
             CriteriaQuery<T> query = criteriaBuilder.createQuery(this.type);
             Root<T> entityDef = query.from(this.type);
             Predicate condition = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDef, criteriaBuilder, filter);
-            Query q = entityManager.createQuery(query.select(entityDef).where(condition));
+            CriteriaQuery<T> criteriaQuery = (condition != null)?query.select(entityDef).where(condition):query.select(entityDef);
+            Query q = entityManager.createQuery(criteriaQuery);
             try {
                 T entity = (T) q.getSingleResult();
                 log.log(Level.FINE, "Found entity: {0}", entity);
@@ -257,18 +258,20 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                 CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
                 CriteriaQuery<T> query = criteriaBuilder.createQuery(this.type);
                 Root<T> entityDef = query.from(this.type);
+                Root<T> entityDefCount = countQuery.from(this.type);
                 Predicate condition = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDef, criteriaBuilder, filter);
-                countQuery = (condition != null) ? countQuery.select(criteriaBuilder.count(entityDef)).where(condition) : countQuery.select(criteriaBuilder.count(entityDef));
+                Predicate conditionCount = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDef, criteriaBuilder, filter);
+                countQuery = (condition != null) ? countQuery.select(criteriaBuilder.count(entityDefCount)).where(conditionCount) : countQuery.select(criteriaBuilder.count(entityDefCount));
                 query = (condition != null) ? query.select(entityDef).where(condition) : query.select(entityDef);
                 //Executing count query
                 Query countQueryFinal = entityManager.createQuery(countQuery);
                 Long countResults = (Long) countQueryFinal.getSingleResult();
-                int lastPageNumber = (int) (Math.ceil(countResults / delta));
+                int lastPageNumber = (int) (Math.ceil(countResults / (double)delta));
                 int nextPage = (page <= lastPageNumber - 1) ? page + 1 : 1;
                 //Executing paginated query
                 Query q = entityManager.createQuery(query);
                 int firstResult = (lastPageNumber - 1) * delta;
-                if (lastPageNumber == 0) {
+                if (lastPageNumber == 1) {
                     firstResult = 0;
                 }
                 q.setFirstResult(firstResult);
@@ -276,7 +279,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                 try {
                     Collection<T> results = q.getResultList();
                     HyperIoTPaginatedResult<T> paginatedResult = new HyperIoTPaginatedResult<>(
-                        lastPageNumber, page, delta, nextPage, results);
+                        lastPageNumber, page, nextPage,delta, results);
                     log.log(Level.FINE, "Query results: {0}", results);
                     return paginatedResult;
                 } catch (Exception e) {
