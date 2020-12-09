@@ -179,61 +179,12 @@ public class HyperIoTTestConfiguration {
                         keyStoreFile),
                 // Adding hyperiot repositories
                 new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.base/HyperIoTBase-features/"
+                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg", "featuresRepositories"),
+                        ",mvn:it.acsoftware.hyperiot.core/HyperIoTCore-features/"
                                 + this.hyperiotVersion + "/xml/features"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.permission/HyperIoTPermission-features/"
-                                + this.hyperiotVersion + "/xml/features"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.role/HyperIoTRole-features/"
-                                + this.hyperiotVersion + "/xml/features"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.huser/HyperIoTHUser-features/"
-                                + this.hyperiotVersion + "/xml/features"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.authentication/HyperIoTAuthentication-features/"
-                                + this.hyperiotVersion + "/xml/features"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.mail/HyperIoTMail-features/"
-                                + this.hyperiotVersion + "/xml/features"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.kafka.connector/HyperIoTKafkaConnector-features/"
-                                + "1.0.0" + "/xml/features"),
                 // bootstraping components
                 new KarafDistributionConfigurationFileExtendOption(new ConfigurationPointer(
-                        "etc/org.apache.karaf.features.cfg", "featuresBoot"), ",hyperiot-base"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresBoot"),
-                        ",hyperiot-permission"),
-                new KarafDistributionConfigurationFileExtendOption(new ConfigurationPointer(
-                        "etc/org.apache.karaf.features.cfg", "featuresBoot"), ",hyperiot-role"),
-                new KarafDistributionConfigurationFileExtendOption(new ConfigurationPointer(
-                        "etc/org.apache.karaf.features.cfg", "featuresBoot"), ",hyperiot-huser"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresBoot"),
-                        ",hyperiot-authentication"),
-                new KarafDistributionConfigurationFileExtendOption(new ConfigurationPointer(
-                        "etc/org.apache.karaf.features.cfg", "featuresBoot"), ",hyperiot-mail"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
-                                "featuresBoot"),
-                        ",hyperiot-kafkaconnector"),
+                        "etc/org.apache.karaf.features.cfg", "featuresBoot"), ",hyperiot-core"),
                 new KarafDistributionConfigurationFileExtendOption(new ConfigurationPointer(
                         "etc/org.apache.karaf.features.cfg", "featuresBoot"), ",pax-jdbc-h2"),
                 new KarafDistributionConfigurationFileExtendOption(
