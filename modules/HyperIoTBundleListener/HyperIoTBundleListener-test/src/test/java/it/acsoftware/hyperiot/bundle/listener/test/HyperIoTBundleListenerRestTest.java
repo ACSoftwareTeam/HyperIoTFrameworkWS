@@ -26,7 +26,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-import static it.acsoftware.hyperiot.bundle.listener.test.HyperIoTBundleListenerConfiguration.getBaseConfiguration;
+import static it.acsoftware.hyperiot.bundle.listener.test.HyperIoTBundleListenerConfiguration.getConfiguration;
 
 /**
  * 
@@ -44,7 +44,7 @@ public class HyperIoTBundleListenerRestTest extends KarafTestSupport {
 		// the standard configuration has been moved to the HyperIoTBundleListenerConfiguration class
 		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
 //				.withDebug("5010", false)
-				.append(getBaseConfiguration()).build();
+				.append(getConfiguration()).build();
 	}
 
 	public HyperIoTContext impersonateUser(HyperIoTBaseRestApi restApi,HyperIoTUser user) {
@@ -55,8 +55,6 @@ public class HyperIoTBundleListenerRestTest extends KarafTestSupport {
 	@Test
 	public void test00_hyperIoTFrameworkShouldBeInstalled() {
 		// assert on an available service
-		// hyperiot-core import the following features: base, mail, authentication, permission, huser, company, role,
-		// assetcategory, assettag, sharedentity.
 		assertServiceAvailable(FeaturesService.class);
 		String features = executeCommand("feature:list -i");
 		assertContains("HyperIoTBase-features ", features);

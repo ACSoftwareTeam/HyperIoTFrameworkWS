@@ -23,7 +23,7 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 
 import javax.ws.rs.core.Response;
 
-import static it.acsoftware.hyperiot.authentication.test.HyperIoTAuthenticationConfiguration.getBaseConfiguration;
+import static it.acsoftware.hyperiot.authentication.test.HyperIoTAuthenticationConfiguration.getConfiguration;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -36,7 +36,7 @@ public class HyperIoTAuthenticationRestTest extends KarafTestSupport {
 		// the standard configuration has been moved to the HyperIoTAuthenticationConfiguration class
 		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
 //                .withDebug("5010", false)
-				.append(getBaseConfiguration()).build();
+				.append(getConfiguration()).build();
 	}
 
 	public void impersonateUser(HyperIoTBaseRestApi restApi, HyperIoTUser user) {
@@ -46,8 +46,6 @@ public class HyperIoTAuthenticationRestTest extends KarafTestSupport {
 	@Test
 	public void test00_hyperIoTFrameworkShouldBeInstalled() {
 		// assert on an available service
-		// hyperiot-core import the following features: base, mail, authentication, permission, huser, company, role,
-		// assetcategory, assettag, sharedentity.
 		assertServiceAvailable(FeaturesService.class);
 		String features = executeCommand("feature:list -i");
 		assertContains("HyperIoTBase-features ", features);
