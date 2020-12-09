@@ -52,8 +52,8 @@ public class HyperIoTAssetCategoryRestTest extends KarafTestSupport {
         // starts with HSQL
         // the standard configuration has been moved to the HyperIoTAssetCategoryConfiguration class
         return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
-//				.withDebug("5010", false)
-                .append(getBaseConfiguration()).build();
+				.withDebug("5010", false)
+                .append(getConfiguration()).build();
     }
 
     public HyperIoTContext impersonateUser(HyperIoTBaseRestApi restApi, HyperIoTUser user) {
@@ -70,8 +70,6 @@ public class HyperIoTAssetCategoryRestTest extends KarafTestSupport {
     @Test
     public void test00_hyperIoTFrameworkShouldBeInstalled() {
         // assert on an available service
-        // hyperiot-core import the following features: base, mail, authentication, permission, huser, company, role,
-        // assetcategory, assettag, sharedentity.
         assertServiceAvailable(FeaturesService.class);
         String features = executeCommand("feature:list -i");
         assertContains("HyperIoTBase-features ", features);
@@ -686,7 +684,7 @@ public class HyperIoTAssetCategoryRestTest extends KarafTestSupport {
         Assert.assertEquals(5, listAssetCategory.getResults().size());
         Assert.assertFalse(listAssetCategory.getResults().isEmpty());
         Assert.assertEquals(2, listAssetCategory.getCurrentPage());
-        Assert.assertEquals(5, listAssetCategory.getNextPage());
+        Assert.assertEquals(1, listAssetCategory.getNextPage());
         Assert.assertEquals(200, restResponse.getStatus());
     }
 
