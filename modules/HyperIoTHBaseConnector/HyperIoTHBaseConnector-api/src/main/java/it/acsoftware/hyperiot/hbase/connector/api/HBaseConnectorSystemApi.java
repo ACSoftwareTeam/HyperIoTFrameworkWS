@@ -61,12 +61,6 @@ public interface HBaseConnectorSystemApi extends HyperIoTBaseSystemApi {
     void enableTable(String tableName) throws IOException;
 
     /**
-     * It returns HBase configuration
-     * @return HBase configuration
-     */
-    Configuration getConfiguration();
-
-    /**
      * It returns an HBase scanner, setting on it three filters:
      *  - row keys greater or equal than a lower bound
      *  - row keys less or equal than an upper bound
