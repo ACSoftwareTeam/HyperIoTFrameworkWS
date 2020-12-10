@@ -38,19 +38,13 @@ dependencies {
 
 	testCompile project(":modules:HyperIoTHBaseConnector:HyperIoTHBaseConnector-api")
 
-
-	//Test dependencies
-	testCompile group: "it.acsoftware.hyperiot.base", name: "HyperIoTBase-test", version:project.hyperIoTVersion
-	testCompile group: "org.apache.karaf.itests", name:"common", version:"4.2.3"
-	testCompile group: "org.apache.karaf", name:"apache-karaf", version:"4.2.3"
-	testCompile group: 'org.ops4j.pax.exam', name: 'pax-exam-container-karaf', version: '4.13.1'
-	testCompile group: 'org.jline', name: 'jline-builtins', version: '3.10.0'
-	testCompile group: "org.apache.karaf.shell", name:"org.apache.karaf.shell.core", version:"4.2.3"
-    testCompile group: "org.ops4j.pax.exam", name: "pax-exam-container-karaf",version: "4.13.1"
-    testCompile group: "org.ops4j.pax.exam", name: "pax-exam-junit4",version: "4.13.1"
-    testCompile group: "org.ops4j.pax.exam", name: "pax-exam",version: "4.13.1"
- 	testCompile group: "org.ops4j.pax.url", name: "pax-url-aether",version: "2.6.1"
-    testCompile group: "org.awaitility", name:"awaitility", version:"3.1.6"
+    //Test dependencies
+    testCompile group: "org.apache.karaf.itests", name:"common", version: project.karafVersion
+    testCompile group: "org.apache.karaf", name:"apache-karaf", version: project.karafVersion
+    testCompile group: "org.apache.karaf.shell", name:"org.apache.karaf.shell.core", version: project.karafVersion
+    testCompile group: "org.ops4j.pax.exam", name: "pax-exam-container-karaf",version: project.paxExamVersion
+    testCompile group: "org.ops4j.pax.exam", name: "pax-exam-junit4",version: project.paxExamVersion
+    testCompile group: "org.ops4j.pax.exam", name: "pax-exam",version: project.paxExamVersion
 }
 
 

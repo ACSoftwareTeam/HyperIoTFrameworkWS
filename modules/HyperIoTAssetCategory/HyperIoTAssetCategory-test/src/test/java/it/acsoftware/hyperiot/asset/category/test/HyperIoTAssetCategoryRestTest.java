@@ -27,6 +27,7 @@ import org.junit.runners.MethodSorters;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
+import org.ops4j.pax.exam.karaf.options.LogLevelOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
@@ -51,8 +52,8 @@ public class HyperIoTAssetCategoryRestTest extends KarafTestSupport {
     public Option[] config() {
         // starts with HSQL
         // the standard configuration has been moved to the HyperIoTAssetCategoryConfiguration class
-        return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
-				.withDebug("5010", false)
+        return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
+				//.withDebug("5010", false)
                 .append(getConfiguration()).build();
     }
 

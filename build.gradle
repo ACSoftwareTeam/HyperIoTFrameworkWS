@@ -15,7 +15,7 @@ project.ext.set("acsMavenRepository","https://nexus.acsoftware.it/nexus/reposito
 
 project.ext.set("karafVersion", "4.2.6")
 project.ext.set("activemqVersion", "5.15.9")
-
+project.ext.set("paxExamVersion","4.13.1")
 project.ext.set("hyperIoTVersion", "1.0.0")
 project.ext.set("jettyWSVersion",'9.4.18.v20190429')
 project.ext.set("jacksonVersion", "2.9.6")

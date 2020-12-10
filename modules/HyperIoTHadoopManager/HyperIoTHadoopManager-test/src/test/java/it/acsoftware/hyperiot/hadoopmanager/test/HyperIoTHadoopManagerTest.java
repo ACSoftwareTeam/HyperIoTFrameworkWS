@@ -25,7 +25,7 @@ import java.io.IOException;
 import static it.acsoftware.hyperiot.hadoopmanager.test.HyperIoTHadoopManagerConfiguration.*;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Interface component for HadoopManager System Service.
  *
  */
@@ -38,7 +38,7 @@ public class HyperIoTHadoopManagerTest extends KarafTestSupport {
 	public Option[] config() {
 		// starts with HSQL
 		// the standard configuration has been moved to the HyperIoTHadoopManagerConfiguration class
-		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
+		return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
 //				.withDebug("5010", false)
 				.append(getConfiguration()).build();
 	}

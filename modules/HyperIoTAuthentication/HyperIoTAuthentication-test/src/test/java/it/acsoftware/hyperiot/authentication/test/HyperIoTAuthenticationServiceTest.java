@@ -18,8 +18,6 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
-import static it.acsoftware.hyperiot.authentication.test.HyperIoTAuthenticationConfiguration.getConfiguration;
-
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -29,9 +27,9 @@ public class HyperIoTAuthenticationServiceTest extends KarafTestSupport {
 	public Option[] config() {
 		// starts with HSQL
 		// the standard configuration has been moved to the HyperIoTAuthenticationConfiguration class
-		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
+		return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
 //                .withDebug("5010", false)
-				.append(getConfiguration()).build();
+				.build();
 	}
 
 	@Test

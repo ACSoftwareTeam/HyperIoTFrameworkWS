@@ -22,7 +22,7 @@ import it.acsoftware.hyperiot.base.util.HyperIoTConstants;
 import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilterBuilder;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Interface component for Mail System Service.
  *
  */
@@ -34,7 +34,7 @@ public class MailTest extends KarafTestSupport {
 	@Configuration
 	public Option[] config() {
 		// starts with HSQL
-		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL().build();
+		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().build();
 	}
 
 	public HyperIoTContext impersonateUser(HyperIoTBaseRestApi restApi, HyperIoTUser user) {

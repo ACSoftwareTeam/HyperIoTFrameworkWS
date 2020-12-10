@@ -89,7 +89,7 @@ public class HyperIoTRegisteredUser extends KarafTestSupport {
     public Option[] config() {
         // starts with HSQL
         // the standard configuration has been moved to the HyperIoTHUserConfiguration class
-        return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
+        return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
 //				.withDebug("5010", false)
                 .append(getBaseConfiguration()).build();
     }
@@ -5360,7 +5360,7 @@ public class HyperIoTRegisteredUser extends KarafTestSupport {
         File algorithmFile = new File(jarFilePath + "algorithm_test001.jar");
 
         this.impersonateUser(algorithmRestApi, huser);
-        Response restResponse = algorithmRestApi.updateJar(algorithm.getId(), algorithmFile);
+        Response restResponse = algorithmRestApi.updateJar(algorithm.getId(),"", algorithmFile);
         Assert.assertEquals(403, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTUnauthorizedException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());

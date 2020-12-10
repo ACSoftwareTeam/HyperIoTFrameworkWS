@@ -7,31 +7,26 @@
  */
 package it.acsoftware.hyperiot.base.test;
 
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureConsole;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.configureSecurity;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.debugConfiguration;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.logLevel;
-
-import java.io.File;
-
 import org.apache.karaf.itests.KarafTestSupport;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.karaf.options.ConfigurationPointer;
-import org.ops4j.pax.exam.karaf.options.KarafDistributionConfigurationFileExtendOption;
-import org.ops4j.pax.exam.karaf.options.KarafDistributionConfigurationFileReplacementOption;
 import org.ops4j.pax.exam.karaf.options.KarafDistributionOption;
 import org.ops4j.pax.exam.karaf.options.LogLevelOption;
 import org.ops4j.pax.exam.options.MavenArtifactUrlReference;
+
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.*;
 
 /**
  * Author Aristide Cittadino
  * Helper class for tests
  */
 public class HyperIoTTestConfiguration {
+    private static Logger log = Logger.getLogger(HyperIoTTestConfiguration.class.getName());
     public static final String MIN_RMI_SERVER_PORT = "44444";
     public static final String MAX_RMI_SERVER_PORT = "65534";
     public static final String MIN_HTTP_PORT = "9080";
@@ -45,49 +40,24 @@ public class HyperIoTTestConfiguration {
     private String rmiRegistryPort;
     private String rmiServerPort;
     private String sshPort;
-    private String karafVersion;
     private String hyperiotVersion;
-    private String awaitilityVersion;
+    private String karafVersion;
 
     private Option[] options;
 
-    public HyperIoTTestConfiguration(String karafVersion, String hyperIoTVersion,
-                                     String awaitilityVersion) {
+    public HyperIoTTestConfiguration(String karafVersion, String hyperIoTVersion) {
         httpPort = Integer.toString(KarafTestSupport.getAvailablePort(
-                Integer.parseInt(MIN_HTTP_PORT), Integer.parseInt(MAX_HTTP_PORT)));
+            Integer.parseInt(MIN_HTTP_PORT), Integer.parseInt(MAX_HTTP_PORT)));
         rmiRegistryPort = Integer.toString(KarafTestSupport.getAvailablePort(
-                Integer.parseInt(MIN_RMI_REG_PORT), Integer.parseInt(MAX_RMI_REG_PORT)));
+            Integer.parseInt(MIN_RMI_REG_PORT), Integer.parseInt(MAX_RMI_REG_PORT)));
         rmiServerPort = Integer.toString(KarafTestSupport.getAvailablePort(
-                Integer.parseInt(MIN_RMI_SERVER_PORT), Integer.parseInt(MAX_RMI_SERVER_PORT)));
+            Integer.parseInt(MIN_RMI_SERVER_PORT), Integer.parseInt(MAX_RMI_SERVER_PORT)));
         sshPort = Integer.toString(KarafTestSupport.getAvailablePort(Integer.parseInt(MIN_SSH_PORT),
-                Integer.parseInt(MAX_SSH_PORT)));
-
-        this.karafVersion = karafVersion;
+            Integer.parseInt(MAX_SSH_PORT)));
         this.hyperiotVersion = hyperIoTVersion;
-        this.awaitilityVersion = awaitilityVersion;
+        this.karafVersion = karafVersion;
         this.options = getBaseConfig();
-    }
-
-    public HyperIoTTestConfiguration withPostgresSQL() {
-        Option[] postgresSQL = {
-                // Datasource configuration with Postgres
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "databaseName",
-                        "hyperiot"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "portNumber",
-                        "5432"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "serverName",
-                        "localhost"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "user",
-                        "postgres"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "password", ""),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "dataSourceName",
-                        "hyperiot"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg",
-                        "osgi.jdbc.driver.class", "org.postgresql.Driver"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "xa", "true"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "pool",
-                        "dbcp2")};
-        return append(postgresSQL);
+        log.log(Level.INFO, "SSH PORT: {}", new Object[]{sshPort});
     }
 
     public HyperIoTTestConfiguration withDebug(String port, boolean hold) {
@@ -95,20 +65,20 @@ public class HyperIoTTestConfiguration {
         return append(debugConfig);
     }
 
+    public HyperIoTTestConfiguration keepRuntime() {
+        Option opt = KarafDistributionOption.keepRuntimeFolder();
+        return append(new Option[]{opt});
+    }
+
+    public HyperIoTTestConfiguration withLogLevel(LogLevelOption.LogLevel level) {
+        Option opt = KarafDistributionOption.logLevel(level);
+        return append(new Option[]{opt});
+    }
+
+    @Deprecated
     public HyperIoTTestConfiguration withHSQL() {
-        Option[] hsqlConfig = {
-                // Datasource configuration with HSQL
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "databaseName",
-                        "hyperiot"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "user", "sa"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "password", ""),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "dataSourceName",
-                        "hyperiot"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg",
-                        "osgi.jdbc.driver.name", "H2"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "xa", "true"),
-                editConfigurationFilePut("etc/org.ops4j.datasource-hyperiot.cfg", "pool",
-                        "dbcp2")};
+        //default distribution for test is with HSQL
+        Option[] hsqlConfig = {};
         return append(hsqlConfig);
     }
 
@@ -133,73 +103,25 @@ public class HyperIoTTestConfiguration {
     }
 
     private Option[] getBaseConfig() {
-        MavenArtifactUrlReference karafUrl = maven().groupId("org.apache.karaf")
-                .artifactId("apache-karaf").version(this.karafVersion).type("tar.gz");
-        File keyStoreFile = new File("src/main/resources/karaf-keystore");
-        if (!keyStoreFile.exists())
-            throw new RuntimeException(
-                    "Keystore file needed inside src/main/resources/karaf-keystore for JWT authentication");
-
-        String localRepository = System.getProperty("org.ops4j.pax.url.mvn.localRepository");
-        if (localRepository == null) {
-            localRepository = "";
-        }
-
+        MavenArtifactUrlReference karafUrl = maven().groupId("it.acsoftware.hyperiot.container")
+            .artifactId("hyperiot-karaf-distribution-test").version(this.hyperiotVersion).type("tar.gz");
         return new Option[]{
-                karafDistributionConfiguration().frameworkUrl(karafUrl).name("Apache Karaf")
-                        .unpackDirectory(new File("target/exam")).useDeployFolder(false),
-                KarafDistributionOption.keepRuntimeFolder(),
-                // enable JMX RBAC security, thanks to the KarafMBeanServerBuilder
-                configureSecurity().disableKarafMBeanServerBuilder(),
-                logLevel(LogLevelOption.LogLevel.INFO),
-                configureConsole().startLocalConsole().ignoreRemoteShell(),
-                mavenBundle().groupId("org.apache.karaf.shell")
-                        .artifactId("org.apache.karaf.shell.core").version(this.karafVersion),
-                mavenBundle().groupId("org.awaitility").artifactId("awaitility")
-                        .version(this.awaitilityVersion),
-                mavenBundle().groupId("org.apache.karaf.itests").artifactId("common")
-                        .version(this.karafVersion),
-                // JWT Configuration
-                editConfigurationFilePut("etc/it.acsoftware.hyperiot.jwt.cfg",
-                        "rs.security.keystore.type", "jks"),
-                editConfigurationFilePut("etc/it.acsoftware.hyperiot.jwt.cfg",
-                        "rs.security.keystore.password", "hyperiot"),
-                editConfigurationFilePut("etc/it.acsoftware.hyperiot.jwt.cfg",
-                        "rs.security.keystore.alias", "karaf"),
-                editConfigurationFilePut("etc/it.acsoftware.hyperiot.jwt.cfg",
-                        "rs.security.keystore.file", "${karaf.etc}/karaf-keystore"),
-                editConfigurationFilePut("etc/it.acsoftware.hyperiot.jwt.cfg",
-                        "rs.security.key.password", "hyperiot"),
-                editConfigurationFilePut("etc/it.acsoftware.hyperiot.jwt.cfg",
-                        "rs.security.signature.algorithm", "RS256"),
-                // Setting test mode ON
-                editConfigurationFilePut("etc/it.acsoftware.hyperiot.cfg",
-                        "it.acsoftware.hyperiot.testMode", "true"),
-                new KarafDistributionConfigurationFileReplacementOption("etc/karaf-keystore",
-                        keyStoreFile),
-                // Adding hyperiot repositories
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg", "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.core/HyperIoTCore-features/"
-                                + this.hyperiotVersion + "/xml/features"),
-                // bootstraping components
-                new KarafDistributionConfigurationFileExtendOption(new ConfigurationPointer(
-                        "etc/org.apache.karaf.features.cfg", "featuresBoot"), ",hyperiot-core"),
-                new KarafDistributionConfigurationFileExtendOption(new ConfigurationPointer(
-                        "etc/org.apache.karaf.features.cfg", "featuresBoot"), ",pax-jdbc-h2"),
-                new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.ops4j.pax.url.mvn.cfg",
-                                "org.ops4j.pax.url.mvn.repositories"),
-                        ",https://hyperiot-developer-user:18t7FJ3J3@nexus.acsoftware.it/nexus/repository/maven/"),
-                editConfigurationFilePut("etc/org.ops4j.pax.web.cfg", "org.osgi.service.http.port",
-                        httpPort),
-                editConfigurationFilePut("etc/org.apache.karaf.management.cfg", "rmiRegistryPort",
-                        rmiRegistryPort),
-                editConfigurationFilePut("etc/org.apache.karaf.management.cfg", "rmiServerPort",
-                        rmiServerPort),
-                editConfigurationFilePut("etc/org.apache.karaf.shell.cfg", "sshPort", sshPort),
-                editConfigurationFilePut("etc/org.ops4j.pax.url.mvn.cfg",
-                        "org.ops4j.pax.url.mvn.localRepository", localRepository)};
+            karafDistributionConfiguration().frameworkUrl(karafUrl).name("HyperIoT Karaf Distribution")
+                .unpackDirectory(new File("target/exam")).useDeployFolder(false),
+            // enable JMX RBAC security, thanks to the KarafMBeanServerBuilder
+            configureSecurity().disableKarafMBeanServerBuilder(),
+            // Setting test mode ON
+            mavenBundle().groupId("org.apache.karaf.itests").artifactId("common")
+                .version(this.karafVersion),
+            editConfigurationFilePut("etc/it.acsoftware.hyperiot.cfg",
+                "it.acsoftware.hyperiot.testMode", "true"),
+            editConfigurationFilePut("etc/org.ops4j.pax.web.cfg", "org.osgi.service.http.port",
+                httpPort),
+            editConfigurationFilePut("etc/org.apache.karaf.management.cfg", "rmiRegistryPort",
+                rmiRegistryPort),
+            editConfigurationFilePut("etc/org.apache.karaf.management.cfg", "rmiServerPort",
+                rmiServerPort),
+            editConfigurationFilePut("etc/org.apache.karaf.shell.cfg", "sshPort", sshPort)};
 
     }
 }

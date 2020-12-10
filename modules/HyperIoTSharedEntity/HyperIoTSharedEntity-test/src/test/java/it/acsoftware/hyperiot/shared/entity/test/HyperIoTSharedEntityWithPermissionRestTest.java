@@ -51,7 +51,7 @@ import java.util.*;
 import static it.acsoftware.hyperiot.shared.entity.test.HyperIoTSharedEntityConfiguration.*;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Interface component for SharedEntity System Service.
  *
  */
@@ -64,7 +64,7 @@ public class HyperIoTSharedEntityWithPermissionRestTest extends KarafTestSupport
 	public Option[] config() {
 		// starts with HSQL
 		// the standard configuration has been moved to the HyperIoTSharedEntityConfiguration class
-		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
+		return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
 //				.withDebug("5010", false)
 				.append(getBaseConfiguration()).build();
 	}

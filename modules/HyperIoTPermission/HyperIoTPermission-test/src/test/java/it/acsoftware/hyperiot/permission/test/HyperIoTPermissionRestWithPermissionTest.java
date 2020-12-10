@@ -45,7 +45,7 @@ public class HyperIoTPermissionRestWithPermissionTest extends KarafTestSupport {
     public Option[] config() {
         // starts with HSQL
         // the standard configuration has been moved to the HyperIoTPermissionConfiguration class
-        return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
+        return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
 //                .withDebug("5010", false)
                 .append(getConfiguration()).build();
     }

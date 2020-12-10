@@ -29,7 +29,7 @@ import java.util.List;
 import static it.acsoftware.hyperiot.bundle.listener.test.HyperIoTBundleListenerConfiguration.getConfiguration;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Interface component for BundleListener System Service.
  *
  */
@@ -42,7 +42,7 @@ public class HyperIoTBundleListenerRestTest extends KarafTestSupport {
 	public Option[] config() {
 		// starts with HSQL
 		// the standard configuration has been moved to the HyperIoTBundleListenerConfiguration class
-		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
+		return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
 //				.withDebug("5010", false)
 				.append(getConfiguration()).build();
 	}

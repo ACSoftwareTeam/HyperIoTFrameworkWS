@@ -24,7 +24,7 @@ import it.acsoftware.hyperiot.base.util.HyperIoTConstants;
 import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilterBuilder;
 
 /**
- * 
+ *
  * @author Aristide Cittadino Interface component for HBaseConnector System Service.
  *
  */
@@ -39,12 +39,12 @@ public class HBaseConnectorTest extends KarafTestSupport {
 		Option[] customOptions = { new KarafDistributionConfigurationFileExtendOption(
 				new ConfigurationPointer("etc/org.apache.karaf.features.cfg",
 						"featuresRepositories"),
-				",mvn:it.acsoftware.hyperiot.hbase.connector/HBaseConnector-features/1.0.0" + 
+				",mvn:it.acsoftware.hyperiot.hbase.connector/HBaseConnector-features/1.0.0" +
 						"/xml/features"),
 				new KarafDistributionConfigurationFileExtendOption(
 						new ConfigurationPointer("etc/org.apache.karaf.features.cfg", "featuresBoot"),
 						",hyperiot-hbaseconnector") };
-		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL().append(customOptions).build();
+		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().append(customOptions).build();
 	}
 
 	public HyperIoTContext impersonateUser(HyperIoTBaseRestApi restApi,HyperIoTUser user) {
