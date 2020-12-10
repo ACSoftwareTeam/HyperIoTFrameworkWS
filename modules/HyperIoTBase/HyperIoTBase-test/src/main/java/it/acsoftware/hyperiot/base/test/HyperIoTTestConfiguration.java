@@ -17,8 +17,7 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.*;
 
 /**
@@ -26,6 +25,8 @@ import static org.ops4j.pax.exam.karaf.options.KarafDistributionOption.*;
  * Helper class for tests
  */
 public class HyperIoTTestConfiguration {
+    private static final String ACS_MAVEN_REPO = "https://hyperiot-developer-user:18t7FJ3J3@nexus.acsoftware.it/nexus/repository/maven";
+
     private static Logger log = Logger.getLogger(HyperIoTTestConfiguration.class.getName());
     public static final String MIN_RMI_SERVER_PORT = "44444";
     public static final String MAX_RMI_SERVER_PORT = "65534";
@@ -75,13 +76,6 @@ public class HyperIoTTestConfiguration {
         return append(new Option[]{opt});
     }
 
-    @Deprecated
-    public HyperIoTTestConfiguration withHSQL() {
-        //default distribution for test is with HSQL
-        Option[] hsqlConfig = {};
-        return append(hsqlConfig);
-    }
-
     public HyperIoTTestConfiguration append(Option[] customOptions) {
         Option[] config = new Option[this.options.length + customOptions.length];
         System.arraycopy(this.options, 0, config, 0, this.options.length);
@@ -103,9 +97,11 @@ public class HyperIoTTestConfiguration {
     }
 
     private Option[] getBaseConfig() {
+        System.setProperty("org.ops4j.pax.url.mvn.repositories",ACS_MAVEN_REPO);
         MavenArtifactUrlReference karafUrl = maven().groupId("it.acsoftware.hyperiot.container")
             .artifactId("hyperiot-karaf-distribution-test").version(this.hyperiotVersion).type("tar.gz");
         return new Option[]{
+            propagateSystemProperties("org.ops4j.pax.url.mvn.repositories"),
             karafDistributionConfiguration().frameworkUrl(karafUrl).name("HyperIoT Karaf Distribution")
                 .unpackDirectory(new File("target/exam")).useDeployFolder(false),
             // enable JMX RBAC security, thanks to the KarafMBeanServerBuilder
@@ -122,6 +118,5 @@ public class HyperIoTTestConfiguration {
             editConfigurationFilePut("etc/org.apache.karaf.management.cfg", "rmiServerPort",
                 rmiServerPort),
             editConfigurationFilePut("etc/org.apache.karaf.shell.cfg", "sshPort", sshPort)};
-
     }
 }
