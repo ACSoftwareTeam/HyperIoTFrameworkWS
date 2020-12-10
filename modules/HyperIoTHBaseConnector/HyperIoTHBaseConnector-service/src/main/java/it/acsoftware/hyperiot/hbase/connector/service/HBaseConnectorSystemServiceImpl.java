@@ -138,6 +138,28 @@ public final class HBaseConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
         return table.getScanner(scan);
     }
 
+    // TODO use this method instead of the above one, because it is more generic
+    // however, the previous method supports scan without limit, which timeline needs to count HPacket event
+    private ResultScanner getScanner(String tableName, Map<byte[], List<byte[]>> columns,
+                                    byte[] rowKeyLowerBound, byte[] rowKeyUpperBound, int limit)
+            throws IOException {
+        Table table = connection.getTable(TableName.valueOf(tableName));
+        Filter rowFilterLowerBound =
+                new RowFilter(CompareFilter.CompareOp.GREATER_OR_EQUAL, new BinaryComparator(rowKeyLowerBound));
+        Filter rowFilterUpperBound =
+                new RowFilter(CompareFilter.CompareOp.LESS_OR_EQUAL, new BinaryComparator(rowKeyUpperBound));
+        // if limit is not equal to 0 and not greater than maxScanPageSize, set it
+        PageFilter pageFilter = new PageFilter(limit != 0 && limit <= maxScanPageSize ? limit : maxScanPageSize);
+        List<Filter> rowFilterList = Arrays.asList(rowFilterLowerBound, rowFilterUpperBound, pageFilter);
+        Scan scan = new Scan();
+        for (byte[] columnFamily : columns.keySet()) {
+            for (byte[] column : columns.get(columnFamily))
+                scan.addColumn(columnFamily, column);
+        }
+        scan.setFilter(new FilterList(FilterList.Operator.MUST_PASS_ALL, rowFilterList));
+        return table.getScanner(scan);
+    }
+
     @Override
     public List<byte[]> scan(String tableName, byte[] columnFamily, byte[] column,
                              byte[] rowKeyLowerBound, byte[] rowKeyUpperBound)
@@ -148,6 +170,25 @@ public final class HBaseConnectorSystemServiceImpl extends HyperIoTBaseSystemSer
         for (Result result : scanner)
             cells.add(result.getValue(columnFamily, column));
         return cells;
+    }
+
+    @Override
+    public Map<byte[], Map<byte[], Map<byte[], byte[]>>> scan(String tableName, Map<byte[], List<byte[]>> columns, byte[] rowKeyLowerBound,
+                       byte[] rowKeyUpperBound, int limit) throws IOException {
+        Map<byte[], Map<byte[], Map<byte[], byte[]>>> output = new HashMap<>();
+        ResultScanner scanner = getScanner(tableName, columns, rowKeyLowerBound, rowKeyUpperBound, limit);
+        for (Result result : scanner) {
+            output.put(result.getRow(), new HashMap<>());
+            for (byte[] columnFamily : columns.keySet()) {
+                output.get(result.getRow()).put(columnFamily, new HashMap<>());
+                for (byte[] column : columns.get(columnFamily)) {
+                    byte[] value = result.getValue(columnFamily, column);
+                    if (value != null)
+                        output.get(result.getRow()).get(columnFamily).put(column, result.getValue(columnFamily, column));
+                }
+            }
+        }
+        return output;
     }
 
     /**

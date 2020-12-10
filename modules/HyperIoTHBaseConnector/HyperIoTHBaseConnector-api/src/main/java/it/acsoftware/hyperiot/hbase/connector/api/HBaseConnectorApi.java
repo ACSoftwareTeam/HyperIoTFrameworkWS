@@ -7,6 +7,7 @@ import it.acsoftware.hyperiot.base.exception.HyperIoTUnauthorizedException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -86,5 +87,20 @@ public interface HBaseConnectorApi extends HyperIoTBaseApi {
      */
     void insertData(HyperIoTContext context, String tableName, String rowKey, String columnFamily, String column, String cellValue)
             throws IOException, HyperIoTUnauthorizedException;
+
+    /**
+     * It scans HBase table
+     * @param context HyperIoTContext
+     * @param tableName table name
+     * @param columns map where keys are column families and values are columns belonging to each family
+     * @param rowKeyLowerBound row key lower bound
+     * @param rowKeyUpperBound row key upper bound
+     * @param limit scan limit
+     * @return map
+     * @throws IOException IOException
+     */
+    @SuppressWarnings("unused")
+    Map<byte[], Map<byte[], Map<byte[], byte[]>>> scan(HyperIoTContext context, String tableName, Map<byte[],
+            List<byte[]>> columns, byte[] rowKeyLowerBound, byte[] rowKeyUpperBound, int limit) throws IOException;
 
 }

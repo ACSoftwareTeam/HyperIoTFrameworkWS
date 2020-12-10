@@ -7,6 +7,7 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -108,6 +109,20 @@ public interface HBaseConnectorSystemApi extends HyperIoTBaseSystemApi {
     @SuppressWarnings("unused")
     List<byte[]> scan(String tableName, byte[] columnFamily, byte[] column,
                       byte[] rowKeyLowerBound, byte[] rowKeyUpperBound) throws IOException;
+
+    /**
+     * It scans HBase table. TODO: more generic than the above one, use this wherever
+     * @param tableName table name
+     * @param columns map where keys are column families and values are columns belonging to each family
+     * @param rowKeyLowerBound row key lower bound
+     * @param rowKeyUpperBound row key upper bound
+     * @param limit scan limit
+     * @return map
+     * @throws IOException IOException
+     */
+    Map<byte[], Map<byte[], Map<byte[], byte[]>>> scan(String tableName, Map<byte[], List<byte[]>> columns,
+                                                       byte[] rowKeyLowerBound, byte[] rowKeyUpperBound, int limit)
+            throws IOException;
 
     /**
      * It checks if table exists

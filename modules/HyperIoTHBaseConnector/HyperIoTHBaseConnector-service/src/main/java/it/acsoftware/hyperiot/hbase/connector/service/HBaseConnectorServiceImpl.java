@@ -15,6 +15,7 @@ import org.osgi.service.component.annotations.Reference;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 
@@ -119,6 +120,19 @@ public final class HBaseConnectorServiceImpl extends  HyperIoTBaseServiceImpl im
 		if (HyperIoTSecurityUtil.checkPermission(context, HBaseConnector.class.getName(), HyperIoTActionsUtil
 				.getHyperIoTAction(HBaseConnector.class.getName(), HBaseConnectorAction.INSERT_DATA))) {
 			systemService.insertData(tableName, rowKey, columnFamily, column, cellValue);
+		}
+		else {
+			throw new HyperIoTUnauthorizedException();
+		}
+	}
+
+	@Override
+	public Map<byte[], Map<byte[], Map<byte[], byte[]>>> scan(HyperIoTContext context, String tableName, Map<byte[], List<byte[]>> columns,
+							  byte[] rowKeyLowerBound, byte[] rowKeyUpperBound, int limit)
+			throws IOException {
+		if (HyperIoTSecurityUtil.checkPermission(context, HBaseConnector.class.getName(), HyperIoTActionsUtil
+				.getHyperIoTAction(HBaseConnector.class.getName(), HBaseConnectorAction.READ_DATA))) {
+			return systemService.scan(tableName, columns, rowKeyLowerBound, rowKeyUpperBound, limit);
 		}
 		else {
 			throw new HyperIoTUnauthorizedException();
