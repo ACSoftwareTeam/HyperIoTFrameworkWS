@@ -270,10 +270,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                 int nextPage = (page <= lastPageNumber - 1) ? page + 1 : 1;
                 //Executing paginated query
                 Query q = entityManager.createQuery(query);
-                int firstResult = (lastPageNumber - 1) * delta;
-                if (lastPageNumber == 1) {
-                    firstResult = 0;
-                }
+                int firstResult = (page - 1) * delta;
                 q.setFirstResult(firstResult);
                 q.setMaxResults(delta);
                 try {

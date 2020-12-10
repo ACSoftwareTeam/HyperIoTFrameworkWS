@@ -51,7 +51,7 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         // the standard configuration has been moved to the HyperIoTRoleConfiguration class
         return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
 //                .withDebug("5010", false)
-                .append(getBaseConfiguration()).build();
+                .append(getConfiguration()).build();
     }
 
 
@@ -62,8 +62,6 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
     @Test
     public void test00_hyperIoTFrameworkShouldBeInstalled() {
         // assert on an available service
-        // hyperiot-core import the following features: base, mail, permission, huser, company, role, authentication,
-        // assetcategory, assettag, sharedentity.
         assertServiceAvailable(FeaturesService.class);
         String features = executeCommand("feature:list -i");
         assertContains("HyperIoTBase-features ", features);
@@ -76,15 +74,6 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         assertContains("HyperIoTAssetCategory-features ", features);
         assertContains("HyperIoTAssetTag-features ", features);
         assertContains("HyperIoTSharedEntity-features ", features);
-        assertContains("HyperIoTArea-features ", features);
-        assertContains("HyperIoTAlgorithm-features ", features);
-        assertContains("HyperIoTHProjectAlgorithm-features ", features);
-        assertContains("HyperIoTDashboard-features ", features);
-        assertContains("HyperIoTDashboardWidget-features ", features);
-        assertContains("HyperIoTWidget-features ", features);
-        assertContains("HyperIoTRuleEngine-features ", features);
-        assertContains("HyperIoTHadoopManager-features ", features);
-        assertContains("HyperIoTHBaseConnector-features", features);
         String datasource = executeCommand("jdbc:ds-list");
 //		System.out.println(executeCommand("bundle:list | grep HyperIoT"));
         assertContains("hyperiot", datasource);
@@ -881,6 +870,7 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         Assert.assertEquals(422, restResponse.getStatus());
         Assert.assertEquals(hyperIoTException + "HyperIoTDuplicateEntityException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
+        Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().size());
         boolean nameIsDuplicated = false;
         for (int i = 0; i < ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().size(); i++) {
             if (((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().get(i).contentEquals("name")) {
@@ -889,10 +879,8 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
                         ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().get(i));
             }
         }
-        Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getErrorMessages().size());
         Assert.assertTrue(nameIsDuplicated);
     }
-
 
 
     /*
@@ -960,7 +948,6 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         HyperIoTAction firstAction = HyperIoTActionsUtil.getHyperIoTAction(roleResourceName,
                 HyperIoTCrudAction.REMOVE);
         HUser firstHUser = createHUser(firstAction);
-
 
         // secondHUser has FIND permission
         HyperIoTAction action = HyperIoTActionsUtil.getHyperIoTAction(roleResourceName,
@@ -1037,13 +1024,11 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         Response restRemoveRole = roleRestService.deleteUserRole(role.getId(), secondHUser.getId());
         Assert.assertEquals(200, restRemoveRole.getStatus());
 
-
         // permission is still stored in database
         PermissionRestApi permissionRestApi = getOsgiService(PermissionRestApi.class);
         this.impersonateUser(permissionRestApi, adminUser);
         Response restResponsePermission = permissionRestApi.findPermission(permission.getId());
         Assert.assertEquals(200, restResponsePermission.getStatus());
-
 
         //fail because secondHUser not has user role, deleted with call deleteUserRole
         this.impersonateUser(roleRestService, secondHUser);
@@ -1083,7 +1068,6 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         Response restRemoveRole = roleRestService.deleteUserRole(role.getId(), secondHUser.getId());
         Assert.assertEquals(200, restRemoveRole.getStatus());
 
-
         // permission is still stored in database
         PermissionRestApi permissionRestApi = getOsgiService(PermissionRestApi.class);
         this.impersonateUser(permissionRestApi, adminUser);
@@ -1095,7 +1079,6 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         this.impersonateUser(hUserRestApi, adminUser);
         Response restResponseHUser = hUserRestApi.findHUser(secondHUser.getId());
         Assert.assertEquals(200, restResponseHUser.getStatus());
-
     }
 
 
@@ -1128,7 +1111,6 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         Response restRemoveRole = roleRestService.deleteRole(role.getId());
         Assert.assertEquals(200, restRemoveRole.getStatus());
 
-
         // permission not found, permission has been removed with call deleteRole
         PermissionRestApi permissionRestApi = getOsgiService(PermissionRestApi.class);
         this.impersonateUser(permissionRestApi, adminUser);
@@ -1142,45 +1124,21 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         this.impersonateUser(hUserRestApi, adminUser);
         Response restResponseHUser = hUserRestApi.findHUser(secondHUser.getId());
         Assert.assertEquals(200, restResponseHUser.getStatus());
-
     }
 
+
     @Test
-    public void test51_createDefaultRoleAndPermissionForRegisteredUser() {
+    public void test51_defaultRoleAndPermissionsCreatedInHyperIoTFramework() {
         RoleRepository roleRepository = getOsgiService(RoleRepository.class);
-        // This test checks if role and permissions has been created in the database
+        // This test checks if default role "RegisteredUser" and permissions has been created in HyperIoTFramework
         Role role = roleRepository.findByName("RegisteredUser");
         PermissionSystemApi permissionSystemApi = getOsgiService(PermissionSystemApi.class);
         Collection<Permission> listPermissions = permissionSystemApi.findByRole(role);
         Assert.assertFalse(listPermissions.isEmpty());
-        Assert.assertEquals(12, listPermissions.size());
-        boolean resourceNameArea = false;
-        boolean resourceNameAlgorithm = false;
+        Assert.assertEquals(2, listPermissions.size());
         boolean resourceNameAssetCategory = false;
         boolean resourceNameAssetTag = false;
-        boolean resourceNameHProject = false;
-        boolean resourceNameHDevice = false;
-        boolean resourceNameHPacket = false;
-        boolean resourceNameHProjectAlgorithm = false;
-        boolean resourceNameRule = false;
-        boolean resourceNameDashboard = false;
-        boolean resourceNameDashboardWidget = false;
-        boolean resourceNameWidget = false;
         for (int i = 0; i < listPermissions.size(); i++) {
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionAlgorithm)) {
-                resourceNameAlgorithm = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.algorithm.model.Algorithm", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionAlgorithm + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(16, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionArea)) {
-                resourceNameArea = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.area.model.Area", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionArea + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(63, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
             if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionAssetCategory)) {
                 resourceNameAssetCategory = true;
                 Assert.assertEquals("it.acsoftware.hyperiot.asset.category.model.AssetCategory", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
@@ -1195,116 +1153,26 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
                 Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
                 Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
             }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionHProject)) {
-                resourceNameHProject = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.hproject.model.HProject", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionHProject + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(262143, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionHDevice)) {
-                resourceNameHDevice = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.hdevice.model.HDevice", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionHDevice + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(63, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionHPacket)) {
-                resourceNameHPacket = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.hpacket.model.HPacket", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionHPacket + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(63, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionHProjectAlgorithm)) {
-                resourceNameHProjectAlgorithm = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.hproject.algorithm.model.HProjectAlgorithm", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionHProjectAlgorithm + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionRule)) {
-                resourceNameRule = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.rule.model.Rule", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionRule + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionDashboard)) {
-                resourceNameDashboard = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.dashboard.model.Dashboard", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionDashboard + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(63, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionDashboardWidget)) {
-                resourceNameDashboardWidget = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.dashboard.widget.model.DashboardWidget", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionDashboardWidget + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionWidget)) {
-                resourceNameWidget = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.widget.model.Widget", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionWidget + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(24, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
         }
-        Assert.assertTrue(resourceNameAlgorithm);
-        Assert.assertTrue(resourceNameArea);
         Assert.assertTrue(resourceNameAssetCategory);
         Assert.assertTrue(resourceNameAssetTag);
-        Assert.assertTrue(resourceNameHProject);
-        Assert.assertTrue(resourceNameHDevice);
-        Assert.assertTrue(resourceNameHPacket);
-        Assert.assertTrue(resourceNameHProjectAlgorithm);
-        Assert.assertTrue(resourceNameRule);
-        Assert.assertTrue(resourceNameDashboard);
-        Assert.assertTrue(resourceNameDashboardWidget);
-        Assert.assertTrue(resourceNameWidget);
     }
 
 
     @Test
-    public void test52_deleteInCascadeModeDefaultRoleAndPermissionForRegisteredUser() {
+    public void test52_deleteInCascadeModeDefaultRoleAndPermissionInHyperIoTFramework() {
         RoleRestApi roleRestService = getOsgiService(RoleRestApi.class);
-        // HUser, with permission, delete Role with the following call
+        // HUser, with permission, delete default role "RegisteredUser" with the following call
         // deleteRole
         RoleRepository roleRepository = getOsgiService(RoleRepository.class);
         Role role = roleRepository.findByName("RegisteredUser");
         PermissionSystemApi permissionSystemApi = getOsgiService(PermissionSystemApi.class);
         Collection<Permission> listPermissions = permissionSystemApi.findByRole(role);
         Assert.assertFalse(listPermissions.isEmpty());
-        Assert.assertEquals(12, listPermissions.size());
-        boolean resourceNameArea = false;
-        boolean resourceNameAlgorithm = false;
+        Assert.assertEquals(2, listPermissions.size());
         boolean resourceNameAssetCategory = false;
         boolean resourceNameAssetTag = false;
-        boolean resourceNameHProject = false;
-        boolean resourceNameHDevice = false;
-        boolean resourceNameHPacket = false;
-        boolean resourceNameHProjectAlgorithm = false;
-        boolean resourceNameRule = false;
-        boolean resourceNameDashboard = false;
-        boolean resourceNameDashboardWidget = false;
-        boolean resourceNameWidget = false;
         for (int i = 0; i < listPermissions.size(); i++) {
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionAlgorithm)) {
-                resourceNameAlgorithm = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.algorithm.model.Algorithm", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionAlgorithm + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(16, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionArea)) {
-                resourceNameArea = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.area.model.Area", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionArea + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(63, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
             if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionAssetCategory)) {
                 resourceNameAssetCategory = true;
                 Assert.assertEquals("it.acsoftware.hyperiot.asset.category.model.AssetCategory", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
@@ -1319,75 +1187,9 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
                 Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
                 Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
             }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionHProject)) {
-                resourceNameHProject = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.hproject.model.HProject", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionHProject + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(262143, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionHDevice)) {
-                resourceNameHDevice = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.hdevice.model.HDevice", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionHDevice + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(63, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionHPacket)) {
-                resourceNameHPacket = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.hpacket.model.HPacket", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionHPacket + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(63, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionHProjectAlgorithm)) {
-                resourceNameHProjectAlgorithm = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.hproject.algorithm.model.HProjectAlgorithm", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionHProjectAlgorithm + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionRule)) {
-                resourceNameRule = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.rule.model.Rule", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionRule + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionDashboard)) {
-                resourceNameDashboard = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.dashboard.model.Dashboard", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionDashboard + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(63, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionDashboardWidget)) {
-                resourceNameDashboardWidget = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.dashboard.widget.model.DashboardWidget", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionDashboardWidget + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
-            if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionWidget)) {
-                resourceNameWidget = true;
-                Assert.assertEquals("it.acsoftware.hyperiot.widget.model.Widget", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
-                Assert.assertEquals(permissionWidget + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
-                Assert.assertEquals(24, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
-                Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
-            }
         }
-        Assert.assertTrue(resourceNameAlgorithm);
-        Assert.assertTrue(resourceNameArea);
         Assert.assertTrue(resourceNameAssetCategory);
         Assert.assertTrue(resourceNameAssetTag);
-        Assert.assertTrue(resourceNameHProject);
-        Assert.assertTrue(resourceNameHDevice);
-        Assert.assertTrue(resourceNameHPacket);
-        Assert.assertTrue(resourceNameHProjectAlgorithm);
-        Assert.assertTrue(resourceNameRule);
-        Assert.assertTrue(resourceNameDashboard);
-        Assert.assertTrue(resourceNameDashboardWidget);
-        Assert.assertTrue(resourceNameWidget);
 
         // huser delete, in cascade mode, role and permissions
         // with the following call deleteRole
@@ -1430,6 +1232,7 @@ public class HyperIoTRoleRestWithPermissionTest extends KarafTestSupport {
         Assert.assertEquals(5, listRoles.getNextPage());
         Assert.assertEquals(200, restResponse.getStatus());
     }
+
 
     @Test
     public void test54_findAllRolesPaginationWithPermissionShouldWorkIfDeltaAndPageAreNull() {

@@ -47,7 +47,7 @@ public class HyperIoTPermissionRestWithPermissionTest extends KarafTestSupport {
         // the standard configuration has been moved to the HyperIoTPermissionConfiguration class
         return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
 //                .withDebug("5010", false)
-                .append(getBaseConfiguration()).build();
+                .append(getConfiguration()).build();
     }
 
     public void impersonateUser(HyperIoTBaseRestApi restApi, HyperIoTUser user) {
@@ -60,14 +60,17 @@ public class HyperIoTPermissionRestWithPermissionTest extends KarafTestSupport {
         assertServiceAvailable(FeaturesService.class);
         String features = executeCommand("feature:list -i");
         assertContains("HyperIoTBase-features ", features);
-        assertContains("HyperIoTPermission-features ", features);
-        assertContains("HyperIoTRole-features ", features);
-        assertContains("HyperIoTHUser-features ", features);
         assertContains("HyperIoTMail-features ", features);
         assertContains("HyperIoTAuthentication-features ", features);
-        assertContains("HyperIoTHBaseConnector-features", features);
+        assertContains("HyperIoTPermission-features ", features);
+        assertContains("HyperIoTHUser-features ", features);
+        assertContains("HyperIoTCompany-features ", features);
+        assertContains("HyperIoTRole-features ", features);
+        assertContains("HyperIoTAssetCategory-features", features);
+        assertContains("HyperIoTAssetTag-features", features);
+        assertContains("HyperIoTSharedEntity-features", features);
         String datasource = executeCommand("jdbc:ds-list");
-        // checks that datasource is installed correctly
+//		System.out.println(executeCommand("bundle:list | grep HyperIoT"));
         assertContains("hyperiot", datasource);
     }
 

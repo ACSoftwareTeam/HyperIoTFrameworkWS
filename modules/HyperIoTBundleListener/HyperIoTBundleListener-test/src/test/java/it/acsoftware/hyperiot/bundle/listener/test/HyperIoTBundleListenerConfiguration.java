@@ -7,19 +7,15 @@ import org.ops4j.pax.exam.karaf.options.KarafDistributionConfigurationFileExtend
 public class HyperIoTBundleListenerConfiguration {
     static final String hyperiotVersion = "1.0.0";
 
-    protected static Option[] getBaseConfiguration() {
+    protected static Option[] getConfiguration() {
         return new Option[]{
                 new KarafDistributionConfigurationFileExtendOption(
                         new ConfigurationPointer("etc/org.apache.karaf.features.cfg", "featuresRepositories"),
                         ",mvn:it.acsoftware.hyperiot.bundle.listener/HyperIoTBundleListener-features/" + hyperiotVersion
                                 + "/xml/features"),
                 new KarafDistributionConfigurationFileExtendOption(
-                        new ConfigurationPointer("etc/org.apache.karaf.features.cfg", "featuresRepositories"),
-                        ",mvn:it.acsoftware.hyperiot.core/HyperIoTCore-features/" + hyperiotVersion
-                                + "/xml/features"),
-                new KarafDistributionConfigurationFileExtendOption(
                         new ConfigurationPointer("etc/org.apache.karaf.features.cfg", "featuresBoot"),
-                        ",hyperiot-core,hyperiot-bundlelistener"
+                        ",hyperiot-bundlelistener"
                 )
         };
     }

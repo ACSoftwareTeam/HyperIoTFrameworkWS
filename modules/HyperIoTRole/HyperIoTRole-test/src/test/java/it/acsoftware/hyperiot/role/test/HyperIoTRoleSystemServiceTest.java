@@ -21,15 +21,13 @@ import org.junit.runners.MethodSorters;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
-import org.ops4j.pax.exam.karaf.options.ConfigurationPointer;
-import org.ops4j.pax.exam.karaf.options.KarafDistributionConfigurationFileExtendOption;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
 import java.util.Collection;
 import java.util.UUID;
 
-import static it.acsoftware.hyperiot.role.test.HyperIoTRoleConfiguration.getBaseConfiguration;
+import static it.acsoftware.hyperiot.role.test.HyperIoTRoleConfiguration.getConfiguration;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -42,14 +40,12 @@ public class HyperIoTRoleSystemServiceTest extends KarafTestSupport {
         // the standard configuration has been moved to the HyperIoTRoleConfiguration class
         return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
 //                .withDebug("5010", false)
-                .append(getBaseConfiguration()).build();
+                .append(getConfiguration()).build();
     }
 
     @Test
     public void test00s_hyperIoTFrameworkShouldBeInstalled() {
         // assert on an available service
-        // hyperiot-core import the following features: base, mail, permission, huser, company, role, authentication,
-        // assetcategory, assettag, sharedentity.
         assertServiceAvailable(FeaturesService.class);
         String features = executeCommand("feature:list -i");
         assertContains("HyperIoTBase-features ", features);
@@ -62,15 +58,6 @@ public class HyperIoTRoleSystemServiceTest extends KarafTestSupport {
         assertContains("HyperIoTAssetCategory-features ", features);
         assertContains("HyperIoTAssetTag-features ", features);
         assertContains("HyperIoTSharedEntity-features ", features);
-        assertContains("HyperIoTArea-features ", features);
-        assertContains("HyperIoTAlgorithm-features ", features);
-        assertContains("HyperIoTHProjectAlgorithm-features ", features);
-        assertContains("HyperIoTDashboard-features ", features);
-        assertContains("HyperIoTDashboardWidget-features ", features);
-        assertContains("HyperIoTWidget-features ", features);
-        assertContains("HyperIoTRuleEngine-features ", features);
-        assertContains("HyperIoTHadoopManager-features ", features);
-        assertContains("HyperIoTHBaseConnector-features", features);
         String datasource = executeCommand("jdbc:ds-list");
 //		System.out.println(executeCommand("bundle:list | grep HyperIoT"));
         assertContains("hyperiot", datasource);
@@ -143,7 +130,6 @@ public class HyperIoTRoleSystemServiceTest extends KarafTestSupport {
         Role findRole = roleSystemApi.findByName(role.getName());
         Assert.assertNull(findRole);
     }
-
 
 
     /*

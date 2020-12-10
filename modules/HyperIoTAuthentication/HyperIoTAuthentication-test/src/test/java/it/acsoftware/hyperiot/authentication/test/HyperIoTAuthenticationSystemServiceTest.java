@@ -17,7 +17,7 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
 
-import static it.acsoftware.hyperiot.authentication.test.HyperIoTAuthenticationConfiguration.getBaseConfiguration;
+import static it.acsoftware.hyperiot.authentication.test.HyperIoTAuthenticationConfiguration.getConfiguration;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -30,14 +30,12 @@ public class HyperIoTAuthenticationSystemServiceTest extends KarafTestSupport {
 		// the standard configuration has been moved to the HyperIoTAuthenticationConfiguration class
 		return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
 //                .withDebug("5010", false)
-				.append(getBaseConfiguration()).build();
+				.append(getConfiguration()).build();
 	}
 
 	@Test
 	public void test00_hyperIoTFrameworkShouldBeInstalled() {
 		// assert on an available service
-		// hyperiot-core import the following features: base, mail, authentication, permission, huser, company, role,
-		// assetcategory, assettag, sharedentity.
 		assertServiceAvailable(FeaturesService.class);
 		String features = executeCommand("feature:list -i");
 		assertContains("HyperIoTBase-features ", features);

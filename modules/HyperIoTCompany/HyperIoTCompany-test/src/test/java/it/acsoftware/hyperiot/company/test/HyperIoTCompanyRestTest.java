@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static it.acsoftware.hyperiot.company.test.HyperIoTCompanyConfiguration.hyperIoTException;
-import static it.acsoftware.hyperiot.company.test.HyperIoTCompanyConfiguration.getBaseConfiguration;
+import static it.acsoftware.hyperiot.company.test.HyperIoTCompanyConfiguration.getConfiguration;
 
 /**
  * @author Aristide Cittadino Interface component for Company System Service.
@@ -50,7 +50,7 @@ public class HyperIoTCompanyRestTest extends KarafTestSupport {
         // the standard configuration has been moved to the HyperIoTCompanyConfiguration class
         return HyperIoTTestConfigurationBuilder.createStandardConfiguration().withHSQL()
 //                .withDebug("5010", false)
-                .append(getBaseConfiguration()).build();
+                .append(getConfiguration()).build();
     }
 
     public HyperIoTContext impersonateUser(HyperIoTBaseRestApi restApi, HyperIoTUser user) {
@@ -68,8 +68,6 @@ public class HyperIoTCompanyRestTest extends KarafTestSupport {
     @Test
     public void test00_hyperIoTFrameworkShouldBeInstalled() {
         // assert on an available service
-        // hyperiot-core import the following features: base, mail, authentication, permission, huser, company, role,
-        // assetcategory, assettag, sharedentity.
         assertServiceAvailable(FeaturesService.class);
         String features = executeCommand("feature:list -i");
         assertContains("HyperIoTBase-features ", features);
