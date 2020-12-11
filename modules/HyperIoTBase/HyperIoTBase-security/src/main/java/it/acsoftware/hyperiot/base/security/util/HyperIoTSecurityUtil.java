@@ -246,6 +246,11 @@ public class HyperIoTSecurityUtil {
     }
 
     //Returning keystore save in it.acsoftware.hyperiot.jwt.config
+    public static String getServerKeyPassword() {
+        return props.get("rs.security.key.password").toString();
+    }
+
+    //Returning keystore save in it.acsoftware.hyperiot.jwt.config
     public static String getServerKeystoreAlias() {
         return props.get("rs.security.keystore.alias").toString();
     }
@@ -340,7 +345,7 @@ public class HyperIoTSecurityUtil {
             KeyStore keystore = KeyStore.getInstance("JKS");
             keystore.load(new FileInputStream(new File(getServerKeystoreFilePath())), getServerKeystorePassword().toCharArray());
             String alias = getServerKeystoreAlias();
-            Key key = keystore.getKey(alias, getServerKeystorePassword().toCharArray());
+            Key key = keystore.getKey(alias, getServerKeyPassword().toCharArray());
             if (key instanceof PrivateKey) {
                 // Get certificate of public key
                 Certificate cert = keystore.getCertificate(alias);
