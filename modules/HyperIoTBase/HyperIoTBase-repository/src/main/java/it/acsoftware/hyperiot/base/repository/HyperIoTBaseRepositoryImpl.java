@@ -260,7 +260,7 @@ public abstract class HyperIoTBaseRepositoryImpl<T extends HyperIoTBaseEntity>
                 Root<T> entityDef = query.from(this.type);
                 Root<T> entityDefCount = countQuery.from(this.type);
                 Predicate condition = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDef, criteriaBuilder, filter);
-                Predicate conditionCount = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDef, criteriaBuilder, filter);
+                Predicate conditionCount = HyperIoTQueryFilterBuilder.createPredicateByQueryFilter(entityDefCount, criteriaBuilder, filter);
                 countQuery = (condition != null) ? countQuery.select(criteriaBuilder.count(entityDefCount)).where(conditionCount) : countQuery.select(criteriaBuilder.count(entityDefCount));
                 query = (condition != null) ? query.select(entityDef).where(condition) : query.select(entityDef);
                 //Executing count query
