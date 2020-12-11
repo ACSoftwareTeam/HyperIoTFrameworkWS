@@ -19,6 +19,7 @@ import it.acsoftware.hyperiot.huser.model.HUser;
 import it.acsoftware.hyperiot.osgi.util.filter.OSGiFilterBuilder;
 import org.apache.karaf.features.FeaturesService;
 import org.apache.karaf.itests.KarafTestSupport;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -341,16 +342,16 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         boolean msgValidationErrorsIsNull = false;
         boolean msgValidationErrorsIsEmpty = false;
         for (int i = 0; i < ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size(); i++) {
-            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be null")) {
+            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals(validatorMustNotBeNull)) {
                 msgValidationErrorsIsNull = true;
-                Assert.assertEquals("must not be null",
+                Assert.assertEquals(validatorMustNotBeNull,
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
                 Assert.assertEquals("assettag-name",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
             }
-            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be empty")) {
+            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals(validatorMustNotBeEmpty)) {
                 msgValidationErrorsIsEmpty = true;
-                Assert.assertEquals("must not be empty",
+                Assert.assertEquals(validatorMustNotBeEmpty,
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
                 Assert.assertEquals("assettag-name",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
@@ -383,7 +384,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("must not be empty",
+        Assert.assertEquals(validatorMustNotBeEmpty,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assettag-name",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -415,7 +416,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("{it.acsoftware.hyperiot.validator.nomalitiuscode.message}",
+        Assert.assertEquals(validatorNoMaliciousCode,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assettag-name",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -440,7 +441,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("must not be null",
+        Assert.assertEquals(validatorMustNotBeNull,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assettag-owner",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -469,16 +470,16 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         boolean msgValidationErrorsIsNull = false;
         boolean msgValidationErrorsIsEmpty = false;
         for (int i = 0; i < ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size(); i++) {
-            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be null")) {
+            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals(validatorMustNotBeNull)) {
                 msgValidationErrorsIsNull = true;
-                Assert.assertEquals("must not be null",
+                Assert.assertEquals(validatorMustNotBeNull,
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
                 Assert.assertEquals("assettag-name",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
             }
-            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be empty")) {
+            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals(validatorMustNotBeEmpty)) {
                 msgValidationErrorsIsEmpty = true;
-                Assert.assertEquals("must not be empty",
+                Assert.assertEquals(validatorMustNotBeEmpty,
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
                 Assert.assertEquals("assettag-name",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
@@ -505,7 +506,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("must not be empty",
+        Assert.assertEquals(validatorMustNotBeEmpty,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assettag-name",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -531,7 +532,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("{it.acsoftware.hyperiot.validator.nomalitiuscode.message}",
+        Assert.assertEquals(validatorNoMaliciousCode,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assettag-name",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -557,7 +558,7 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("must not be null",
+        Assert.assertEquals(validatorMustNotBeNull,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assettag-owner",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -692,25 +693,59 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        Integer delta = 5;
-        Integer page = 2;
+        int delta = 5;
+        int page = 3;
         List<AssetTag> tags = new ArrayList<>();
-        for (int i = 0; i < delta; i++) {
+        int numbEntities = 13;
+        for (int i = 0; i < numbEntities; i++) {
             AssetTag assetTag = createAssetTag();
             Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
-        Assert.assertEquals((int)delta, tags.size());
+        Assert.assertEquals(numbEntities, tags.size());
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, page);
-        HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
+        HyperIoTPaginableResult<AssetTag> listAssetTags = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
                 });
-        Assert.assertEquals(5, listAssetTag.getResults().size());
-        Assert.assertFalse(listAssetTag.getResults().isEmpty());
-        Assert.assertEquals(2, listAssetTag.getCurrentPage());
-        Assert.assertEquals(5, listAssetTag.getNextPage());
+        Assert.assertFalse(listAssetTags.getResults().isEmpty());
+        Assert.assertEquals(3, listAssetTags.getResults().size());
+        Assert.assertEquals(delta, listAssetTags.getDelta());
+        Assert.assertEquals(page, listAssetTags.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetTags.getNextPage());
+        // delta is 5, page is 3: 13 entities stored in database
+        Assert.assertEquals(3, listAssetTags.getNumPages());
         Assert.assertEquals(200, restResponse.getStatus());
+
+        //checks with page = 1
+        this.impersonateUser(assetTagRestApi, adminUser);
+        Response restResponsePage1 = assetTagRestApi.findAllAssetTagPaginated(delta, 1);
+        HyperIoTPaginableResult<AssetTag> listAssetTagsPage1 = restResponsePage1
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
+                });
+        Assert.assertFalse(listAssetTagsPage1.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetTagsPage1.getResults().size());
+        Assert.assertEquals(delta, listAssetTagsPage1.getDelta());
+        Assert.assertEquals(defaultPage, listAssetTagsPage1.getCurrentPage());
+        Assert.assertEquals(defaultPage + 1, listAssetTagsPage1.getNextPage());
+        // delta is 5, page is 1: 13 entities stored in database
+        Assert.assertEquals(3, listAssetTagsPage1.getNumPages());
+        Assert.assertEquals(200, restResponsePage1.getStatus());
+
+        //checks with page = 2
+        this.impersonateUser(assetTagRestApi, adminUser);
+        Response restResponsePage2 = assetTagRestApi.findAllAssetTagPaginated(delta, 2);
+        HyperIoTPaginableResult<AssetTag> listAssetTagsPage2 = restResponsePage2
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
+                });
+        Assert.assertFalse(listAssetTagsPage2.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetTagsPage2.getResults().size());
+        Assert.assertEquals(delta, listAssetTagsPage2.getDelta());
+        Assert.assertEquals(defaultPage + 1, listAssetTagsPage2.getCurrentPage());
+        Assert.assertEquals(page, listAssetTagsPage2.getNextPage());
+        // delta is 5, page is 2: 13 entities stored in database
+        Assert.assertEquals(3, listAssetTagsPage2.getNumPages());
+        Assert.assertEquals(200, restResponsePage2.getStatus());
     }
 
     @Test
@@ -724,21 +759,25 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Integer delta = null;
         Integer page = null;
         List<AssetTag> tags = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        int numbEntities = 7;
+        for (int i = 0; i < numbEntities; i++) {
             AssetTag assetTag = createAssetTag();
             Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
-        Assert.assertEquals(10, tags.size());
+        Assert.assertEquals(numbEntities, tags.size());
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, page);
-        HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
+        HyperIoTPaginableResult<AssetTag> listAssetTags = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
                 });
-        Assert.assertEquals(10, listAssetTag.getResults().size());
-        Assert.assertFalse(listAssetTag.getResults().isEmpty());
-        Assert.assertEquals(1, listAssetTag.getCurrentPage());
-        Assert.assertEquals(10, listAssetTag.getNextPage());
+        Assert.assertFalse(listAssetTags.getResults().isEmpty());
+        Assert.assertEquals(numbEntities, listAssetTags.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetTags.getDelta());
+        Assert.assertEquals(defaultPage, listAssetTags.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetTags.getNextPage());
+        // default delta is 10, default page is 1: 7 entities stored in database
+        Assert.assertEquals(1, listAssetTags.getNumPages());
         Assert.assertEquals(200, restResponse.getStatus());
     }
 
@@ -750,24 +789,44 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        Integer page = 2;
+        int delta = -1;
+        int page = 2;
         List<AssetTag> tags = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        int numbEntities = 12;
+        for (int i = 0; i < numbEntities; i++) {
             AssetTag assetTag = createAssetTag();
             Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
-        Assert.assertEquals(10, tags.size());
+        Assert.assertEquals(numbEntities, tags.size());
         this.impersonateUser(assetTagRestApi, adminUser);
-        Response restResponse = assetTagRestApi.findAllAssetTagPaginated(-1, page);
-        HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
+        Response restResponsePage2 = assetTagRestApi.findAllAssetTagPaginated(delta, page);
+        HyperIoTPaginableResult<AssetTag> listAssetTagsPage2 = restResponsePage2
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
                 });
-        Assert.assertEquals(10, listAssetTag.getResults().size());
-        Assert.assertFalse(listAssetTag.getResults().isEmpty());
-        Assert.assertEquals(2, listAssetTag.getCurrentPage());
-        Assert.assertEquals(10, listAssetTag.getNextPage());
-        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertFalse(listAssetTagsPage2.getResults().isEmpty());
+        Assert.assertEquals(2, listAssetTagsPage2.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetTagsPage2.getDelta());
+        Assert.assertEquals(page, listAssetTagsPage2.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetTagsPage2.getNextPage());
+        // default delta is 10, page is 2: 12 entities stored in database
+        Assert.assertEquals(2, listAssetTagsPage2.getNumPages());
+        Assert.assertEquals(200, restResponsePage2.getStatus());
+
+        //checks with page = 1
+        this.impersonateUser(assetTagRestApi, adminUser);
+        Response restResponsePage1 = assetTagRestApi.findAllAssetTagPaginated(delta, 1);
+        HyperIoTPaginableResult<AssetTag> listAssetTagsPage1 = restResponsePage1
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
+                });
+        Assert.assertFalse(listAssetTagsPage1.getResults().isEmpty());
+        Assert.assertEquals(defaultDelta, listAssetTagsPage1.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetTagsPage1.getDelta());
+        Assert.assertEquals(defaultPage, listAssetTagsPage1.getCurrentPage());
+        Assert.assertEquals(page, listAssetTagsPage1.getNextPage());
+        // default delta is 10, page is 1: 12 entities stored in database
+        Assert.assertEquals(2, listAssetTagsPage1.getNumPages());
+        Assert.assertEquals(200, restResponsePage1.getStatus());
     }
 
     @Test
@@ -778,24 +837,59 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        Integer page = 3;
+        int delta = 0;
+        int page = 3;
         List<AssetTag> tags = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        int numbEntities = 23;
+        for (int i = 0; i < numbEntities; i++) {
             AssetTag assetTag = createAssetTag();
             Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
-        Assert.assertEquals(10, tags.size());
+        Assert.assertEquals(numbEntities, tags.size());
         this.impersonateUser(assetTagRestApi, adminUser);
-        Response restResponse = assetTagRestApi.findAllAssetTagPaginated(0, page);
-        HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
+        Response restResponsePage3 = assetTagRestApi.findAllAssetTagPaginated(delta, page);
+        HyperIoTPaginableResult<AssetTag> listAssetTagsPage3 = restResponsePage3
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
                 });
-        Assert.assertEquals(10, listAssetTag.getResults().size());
-        Assert.assertFalse(listAssetTag.getResults().isEmpty());
-        Assert.assertEquals(3, listAssetTag.getCurrentPage());
-        Assert.assertEquals(10, listAssetTag.getNextPage());
-        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertFalse(listAssetTagsPage3.getResults().isEmpty());
+        Assert.assertEquals(3, listAssetTagsPage3.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetTagsPage3.getDelta());
+        Assert.assertEquals(page, listAssetTagsPage3.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetTagsPage3.getNextPage());
+        // default delta is 10, page is 3: 23 entities stored in database
+        Assert.assertEquals(3, listAssetTagsPage3.getNumPages());
+        Assert.assertEquals(200, restResponsePage3.getStatus());
+
+        //checks with page = 1
+        this.impersonateUser(assetTagRestApi, adminUser);
+        Response restResponsePage1 = assetTagRestApi.findAllAssetTagPaginated(delta, 1);
+        HyperIoTPaginableResult<AssetTag> listAssetTagsPage1 = restResponsePage1
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
+                });
+        Assert.assertFalse(listAssetTagsPage1.getResults().isEmpty());
+        Assert.assertEquals(defaultDelta, listAssetTagsPage1.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetTagsPage1.getDelta());
+        Assert.assertEquals(defaultPage, listAssetTagsPage1.getCurrentPage());
+        Assert.assertEquals(defaultPage + 1, listAssetTagsPage1.getNextPage());
+        // default delta is 10, page is 1: 23 entities stored in database
+        Assert.assertEquals(3, listAssetTagsPage1.getNumPages());
+        Assert.assertEquals(200, restResponsePage1.getStatus());
+
+        //checks with page = 2
+        this.impersonateUser(assetTagRestApi, adminUser);
+        Response restResponsePage2 = assetTagRestApi.findAllAssetTagPaginated(delta, 2);
+        HyperIoTPaginableResult<AssetTag> listAssetTagsPage2 = restResponsePage2
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
+                });
+        Assert.assertFalse(listAssetTagsPage2.getResults().isEmpty());
+        Assert.assertEquals(defaultDelta, listAssetTagsPage2.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetTagsPage2.getDelta());
+        Assert.assertEquals(defaultPage + 1, listAssetTagsPage2.getCurrentPage());
+        Assert.assertEquals(page, listAssetTagsPage2.getNextPage());
+        // default delta is 10, page is 2: 23 entities stored in database
+        Assert.assertEquals(3, listAssetTagsPage2.getNumPages());
+        Assert.assertEquals(200, restResponsePage2.getStatus());
     }
 
     @Test
@@ -806,25 +900,43 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        Integer delta = 5;
-        Integer page = -1;
+        int delta = 5;
+        int page = -1;
         List<AssetTag> tags = new ArrayList<>();
-        for (int i = 0; i < delta; i++) {
+        for (int i = 0; i < defaultDelta; i++) {
             AssetTag assetTag = createAssetTag();
             Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
-        Assert.assertEquals((int)delta, tags.size());
+        Assert.assertEquals(defaultDelta, tags.size());
         this.impersonateUser(assetTagRestApi, adminUser);
         Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, page);
-        HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
+        HyperIoTPaginableResult<AssetTag> listAssetTags = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
                 });
-        Assert.assertEquals(5, listAssetTag.getResults().size());
-        Assert.assertFalse(listAssetTag.getResults().isEmpty());
-        Assert.assertEquals(1, listAssetTag.getCurrentPage());
-        Assert.assertEquals(5, listAssetTag.getNextPage());
+        Assert.assertFalse(listAssetTags.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetTags.getResults().size());
+        Assert.assertEquals(delta, listAssetTags.getDelta());
+        Assert.assertEquals(defaultPage, listAssetTags.getCurrentPage());
+        Assert.assertEquals(defaultPage + 1, listAssetTags.getNextPage());
+        // delta is 5, default page is 1: 10 entities stored in database
+        Assert.assertEquals(2, listAssetTags.getNumPages());
         Assert.assertEquals(200, restResponse.getStatus());
+
+        //checks with page = 2
+        this.impersonateUser(assetTagRestApi, adminUser);
+        Response restResponsePage2 = assetTagRestApi.findAllAssetTagPaginated(delta, 2);
+        HyperIoTPaginableResult<AssetTag> listAssetTagsPage2 = restResponsePage2
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
+                });
+        Assert.assertFalse(listAssetTagsPage2.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetTagsPage2.getResults().size());
+        Assert.assertEquals(delta, listAssetTagsPage2.getDelta());
+        Assert.assertEquals(defaultPage + 1, listAssetTagsPage2.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetTagsPage2.getNextPage());
+        // default delta is 10, page is 2: 22 entities stored in database
+        Assert.assertEquals(2, listAssetTagsPage2.getNumPages());
+        Assert.assertEquals(200, restResponsePage2.getStatus());
     }
 
     @Test
@@ -835,23 +947,27 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         // response status code '200'
         AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
         HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
-        Integer delta = 5;
+        int delta = 5;
+        int page = 0;
         List<AssetTag> tags = new ArrayList<>();
         for (int i = 0; i < delta; i++) {
             AssetTag assetTag = createAssetTag();
             Assert.assertNotEquals(0, assetTag.getId());
             tags.add(assetTag);
         }
-        Assert.assertEquals((int)delta, tags.size());
+        Assert.assertEquals(delta, tags.size());
         this.impersonateUser(assetTagRestApi, adminUser);
-        Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, 0);
-        HyperIoTPaginableResult<AssetTag> listAssetTag = restResponse
+        Response restResponse = assetTagRestApi.findAllAssetTagPaginated(delta, page);
+        HyperIoTPaginableResult<AssetTag> listAssetTags = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetTag>>() {
                 });
-        Assert.assertEquals(5, listAssetTag.getResults().size());
-        Assert.assertFalse(listAssetTag.getResults().isEmpty());
-        Assert.assertEquals(1, listAssetTag.getCurrentPage());
-        Assert.assertEquals(5, listAssetTag.getNextPage());
+        Assert.assertFalse(listAssetTags.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetTags.getResults().size());
+        Assert.assertEquals(delta, listAssetTags.getDelta());
+        Assert.assertEquals(defaultPage, listAssetTags.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetTags.getNextPage());
+        // delta is 5, default page is 1: 5 entities stored in database
+        Assert.assertEquals(1, listAssetTags.getNumPages());
         Assert.assertEquals(200, restResponse.getStatus());
     }
 
@@ -932,6 +1048,25 @@ public class HyperIoTAssetTagRestTest extends KarafTestSupport {
         Assert.assertEquals(company.getVatNumber(), ((Company) restResponse.getEntity()).getVatNumber());
         Assert.assertEquals(huser.getId(), ((Company) restResponse.getEntity()).getHUserCreator().getId());
         return company;
+    }
+
+    @After
+    public void afterTest() {
+        AssetTagRestApi assetTagRestApi = getOsgiService(AssetTagRestApi.class);
+        AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
+        HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
+        this.impersonateUser(assetTagRestApi, adminUser);
+        Response restResponse = assetTagRestApi.findAllAssetTag();
+        List<AssetTag> listTags = restResponse.readEntity(new GenericType<List<AssetTag>>() {
+        });
+        if (!listTags.isEmpty()) {
+            Assert.assertFalse(listTags.isEmpty());
+            for (AssetTag assetTag : listTags) {
+                this.impersonateUser(assetTagRestApi, adminUser);
+                Response restResponse1 = assetTagRestApi.deleteAssetTag(assetTag.getId());
+                Assert.assertEquals(200, restResponse1.getStatus());
+            }
+        }
     }
 
 }

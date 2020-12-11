@@ -23,6 +23,7 @@ import it.acsoftware.hyperiot.role.model.Role;
 import it.acsoftware.hyperiot.role.service.rest.RoleRestApi;
 import org.apache.karaf.features.FeaturesService;
 import org.apache.karaf.itests.KarafTestSupport;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -36,12 +37,10 @@ import org.ops4j.pax.exam.spi.reactors.PerClass;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static it.acsoftware.hyperiot.asset.category.test.HyperIoTAssetCategoryConfiguration.*;
+
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
@@ -52,9 +51,12 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
     public Option[] config() {
         // starts with HSQL
         // the standard configuration has been moved to the HyperIoTAssetCategoryConfiguration class
+//        return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
+//				.withDebug("5010", false)
+//                .append(getConfiguration()).build();
         return HyperIoTTestConfigurationBuilder.createStandardConfiguration()
-				.withDebug("5010", true)
-                .append(getConfiguration()).build();
+                .withDebug("5010", false)
+                .build();
     }
 
     public void impersonateUser(HyperIoTBaseRestApi restApi, HyperIoTUser user) {
@@ -415,16 +417,16 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         boolean msgValidationErrorsIsNull = false;
         boolean msgValidationErrorsIsEmpty = false;
         for (int i = 0; i < ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size(); i++) {
-            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be null")) {
+            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals(validatorMustNotBeNull)) {
                 msgValidationErrorsIsNull = true;
-                Assert.assertEquals("must not be null",
+                Assert.assertEquals(validatorMustNotBeNull,
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
                 Assert.assertEquals("assetcategory-name",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
             }
-            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be empty")) {
+            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals(validatorMustNotBeEmpty)) {
                 msgValidationErrorsIsEmpty = true;
-                Assert.assertEquals("must not be empty",
+                Assert.assertEquals(validatorMustNotBeEmpty,
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
                 Assert.assertEquals("assetcategory-name",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
@@ -460,7 +462,7 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("must not be empty",
+        Assert.assertEquals(validatorMustNotBeEmpty,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assetcategory-name",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -495,7 +497,7 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("{it.acsoftware.hyperiot.validator.nomalitiuscode.message}",
+        Assert.assertEquals(validatorNoMaliciousCode,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assetcategory-name",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -521,7 +523,7 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("must not be null",
+        Assert.assertEquals(validatorMustNotBeNull,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assetcategory-owner",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -547,16 +549,16 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         boolean msgValidationErrorsIsNull = false;
         boolean msgValidationErrorsIsEmpty = false;
         for (int i = 0; i < ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size(); i++) {
-            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be null")) {
+            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals(validatorMustNotBeNull)) {
                 msgValidationErrorsIsNull = true;
-                Assert.assertEquals("must not be null",
+                Assert.assertEquals(validatorMustNotBeNull,
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
                 Assert.assertEquals("assetcategory-name",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
             }
-            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals("must not be empty")) {
+            if (((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage().contentEquals(validatorMustNotBeEmpty)) {
                 msgValidationErrorsIsEmpty = true;
-                Assert.assertEquals("must not be empty",
+                Assert.assertEquals(validatorMustNotBeEmpty,
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getMessage());
                 Assert.assertEquals("assetcategory-name",
                         ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(i).getField());
@@ -583,7 +585,7 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("must not be empty",
+        Assert.assertEquals(validatorMustNotBeEmpty,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assetcategory-name",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -609,7 +611,7 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("{it.acsoftware.hyperiot.validator.nomalitiuscode.message}",
+        Assert.assertEquals(validatorNoMaliciousCode,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assetcategory-name",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -634,7 +636,7 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Assert.assertEquals(hyperIoTException + "HyperIoTValidationException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
         Assert.assertEquals(1, ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().size());
-        Assert.assertEquals("must not be null",
+        Assert.assertEquals(validatorMustNotBeNull,
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getMessage());
         Assert.assertEquals("assetcategory-owner",
                 ((HyperIoTBaseError) restResponse.getEntity()).getValidationErrors().get(0).getField());
@@ -792,23 +794,43 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         HyperIoTAction action = HyperIoTActionsUtil.getHyperIoTAction(assetCategoryResourceName,
                 HyperIoTCrudAction.FINDALL);
         HUser huser = createHUser(action);
-        Integer delta = 5;
-        Integer page = 2;
+        int delta = 5;
+        int page = 2;
         List<AssetCategory> categories = new ArrayList<>();
-        for (int i = 0; i < delta; i++) {
+        for (int i = 0; i < defaultDelta; i++) {
             AssetCategory assetCategory = createAssetCategory(huser);
+            Assert.assertNotEquals(0, assetCategory.getId());
             categories.add(assetCategory);
         }
+        Assert.assertEquals(defaultDelta, categories.size());
         this.impersonateUser(assetCategoryRestApi, huser);
         Response restResponse = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, page);
         HyperIoTPaginableResult<AssetCategory> listAssetCategories = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
                 });
-        Assert.assertEquals(5, listAssetCategories.getResults().size());
         Assert.assertFalse(listAssetCategories.getResults().isEmpty());
-        Assert.assertEquals(2, listAssetCategories.getCurrentPage());
-        Assert.assertEquals(5, listAssetCategories.getNextPage());
+        Assert.assertEquals(delta, listAssetCategories.getResults().size());
+        Assert.assertEquals(delta, listAssetCategories.getDelta());
+        Assert.assertEquals(page, listAssetCategories.getCurrentPage());
+        Assert.assertEquals(page - 1, listAssetCategories.getNextPage());
+        // delta is 5, page 2: 10 entities stored in database
+        Assert.assertEquals(2, listAssetCategories.getNumPages());
         Assert.assertEquals(200, restResponse.getStatus());
+
+        //checks with page = 1
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponsePage1 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 1);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage1 = restResponsePage1
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategoriesPage1.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetCategoriesPage1.getResults().size());
+        Assert.assertEquals(delta, listAssetCategoriesPage1.getDelta());
+        Assert.assertEquals(defaultPage, listAssetCategoriesPage1.getCurrentPage());
+        Assert.assertEquals(page, listAssetCategoriesPage1.getNextPage());
+        // delta is 5, page is 1: 10 entities stored in database
+        Assert.assertEquals(2, listAssetCategoriesPage1.getNumPages());
+        Assert.assertEquals(200, restResponsePage1.getStatus());
     }
 
     @Test
@@ -823,19 +845,25 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Integer delta = null;
         Integer page = null;
         List<AssetCategory> categories = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        int numbEntities = 6;
+        for (int i = 0; i < numbEntities; i++) {
             AssetCategory assetCategory = createAssetCategory(huser);
+            Assert.assertNotEquals(0, assetCategory.getId());
             categories.add(assetCategory);
         }
+        Assert.assertEquals(numbEntities, categories.size());
         this.impersonateUser(assetCategoryRestApi, huser);
         Response restResponse = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, page);
         HyperIoTPaginableResult<AssetCategory> listAssetCategories = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
                 });
-        Assert.assertEquals(10, listAssetCategories.getResults().size());
         Assert.assertFalse(listAssetCategories.getResults().isEmpty());
-        Assert.assertEquals(1, listAssetCategories.getCurrentPage());
-        Assert.assertEquals(10, listAssetCategories.getNextPage());
+        Assert.assertEquals(numbEntities, listAssetCategories.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetCategories.getDelta());
+        Assert.assertEquals(defaultPage, listAssetCategories.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetCategories.getNextPage());
+        // default delta is 10, default page is 1: 6 entities stored in database
+        Assert.assertEquals(1, listAssetCategories.getNumPages());
         Assert.assertEquals(200, restResponse.getStatus());
     }
 
@@ -848,22 +876,44 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         HyperIoTAction action = HyperIoTActionsUtil.getHyperIoTAction(assetCategoryResourceName,
                 HyperIoTCrudAction.FINDALL);
         HUser huser = createHUser(action);
-        Integer page = 2;
+        int delta = -1;
+        int page = 2;
         List<AssetCategory> categories = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        int numbEntities = 17;
+        for (int i = 0; i < numbEntities; i++) {
             AssetCategory assetCategory = createAssetCategory(huser);
+            Assert.assertNotEquals(0, assetCategory.getId());
             categories.add(assetCategory);
         }
+        Assert.assertEquals(numbEntities, categories.size());
         this.impersonateUser(assetCategoryRestApi, huser);
-        Response restResponse = assetCategoryRestApi.findAllAssetCategoryPaginated(-1, page);
-        HyperIoTPaginableResult<AssetCategory> listAssetCategories = restResponse
+        Response restResponsePage2 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, page);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage2 = restResponsePage2
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
                 });
-        Assert.assertEquals(10, listAssetCategories.getResults().size());
-        Assert.assertFalse(listAssetCategories.getResults().isEmpty());
-        Assert.assertEquals(2, listAssetCategories.getCurrentPage());
-        Assert.assertEquals(10, listAssetCategories.getNextPage());
-        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertFalse(listAssetCategoriesPage2.getResults().isEmpty());
+        Assert.assertEquals(7, listAssetCategoriesPage2.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetCategoriesPage2.getDelta());
+        Assert.assertEquals(page, listAssetCategoriesPage2.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetCategoriesPage2.getNextPage());
+        // default delta is 10, page is 2: 17 entities stored in database
+        Assert.assertEquals(2, listAssetCategoriesPage2.getNumPages());
+        Assert.assertEquals(200, restResponsePage2.getStatus());
+
+        //checks with page = 1
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponsePage1 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 1);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage1 = restResponsePage1
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategoriesPage1.getResults().isEmpty());
+        Assert.assertEquals(defaultDelta, listAssetCategoriesPage1.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetCategoriesPage1.getDelta());
+        Assert.assertEquals(defaultPage, listAssetCategoriesPage1.getCurrentPage());
+        Assert.assertEquals(page, listAssetCategoriesPage1.getNextPage());
+        // default delta is 10, page is 1: 17 entities stored in database
+        Assert.assertEquals(2, listAssetCategoriesPage1.getNumPages());
+        Assert.assertEquals(200, restResponsePage1.getStatus());
     }
 
     @Test
@@ -875,22 +925,60 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         HyperIoTAction action = HyperIoTActionsUtil.getHyperIoTAction(assetCategoryResourceName,
                 HyperIoTCrudAction.FINDALL);
         HUser huser = createHUser(action);
-        Integer page = 3;
+        int delta = 0;
+        int page = 3;
         List<AssetCategory> categories = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        int numEntities = 22;
+        for (int i = 0; i < numEntities; i++) {
             AssetCategory assetCategory = createAssetCategory(huser);
+            Assert.assertNotEquals(0, assetCategory.getId());
             categories.add(assetCategory);
         }
+        Assert.assertEquals(numEntities, categories.size());
         this.impersonateUser(assetCategoryRestApi, huser);
-        Response restResponse = assetCategoryRestApi.findAllAssetCategoryPaginated(0, page);
-        HyperIoTPaginableResult<AssetCategory> listAssetCategories = restResponse
+        Response restResponsePage3 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, page);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage3 = restResponsePage3
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
                 });
-        Assert.assertEquals(10, listAssetCategories.getResults().size());
-        Assert.assertFalse(listAssetCategories.getResults().isEmpty());
-        Assert.assertEquals(3, listAssetCategories.getCurrentPage());
-        Assert.assertEquals(10, listAssetCategories.getNextPage());
-        Assert.assertEquals(200, restResponse.getStatus());
+        //entities showed in page 3
+        Assert.assertFalse(listAssetCategoriesPage3.getResults().isEmpty());
+        Assert.assertEquals(2, listAssetCategoriesPage3.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetCategoriesPage3.getDelta());
+        Assert.assertEquals(page, listAssetCategoriesPage3.getCurrentPage());
+        Assert.assertEquals(1, listAssetCategoriesPage3.getNextPage());
+        // default delta is 10, page is 3: 22 entities stored in database
+        Assert.assertEquals(3, listAssetCategoriesPage3.getNumPages());
+        Assert.assertEquals(200, restResponsePage3.getStatus());
+
+        //checks with page = 1
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponsePage1 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 1);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage1 = restResponsePage1
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategoriesPage1.getResults().isEmpty());
+        Assert.assertEquals(defaultDelta, listAssetCategoriesPage1.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetCategoriesPage1.getDelta());
+        Assert.assertEquals(defaultPage, listAssetCategoriesPage1.getCurrentPage());
+        Assert.assertEquals(defaultPage + 1, listAssetCategoriesPage1.getNextPage());
+        // default delta is 10, page is 1: 22 entities stored in database
+        Assert.assertEquals(3, listAssetCategoriesPage1.getNumPages());
+        Assert.assertEquals(200, restResponsePage1.getStatus());
+
+        //checks with page = 2
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponsePage2 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 2);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage2 = restResponsePage2
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategoriesPage2.getResults().isEmpty());
+        Assert.assertEquals(defaultDelta, listAssetCategoriesPage2.getResults().size());
+        Assert.assertEquals(defaultDelta, listAssetCategoriesPage2.getDelta());
+        Assert.assertEquals(defaultPage + 1, listAssetCategoriesPage2.getCurrentPage());
+        Assert.assertEquals(page, listAssetCategoriesPage2.getNextPage());
+        // default delta is 10, page is 2: 22 entities stored in database
+        Assert.assertEquals(3, listAssetCategoriesPage2.getNumPages());
+        Assert.assertEquals(200, restResponsePage2.getStatus());
     }
 
     @Test
@@ -902,22 +990,27 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         HyperIoTAction action = HyperIoTActionsUtil.getHyperIoTAction(assetCategoryResourceName,
                 HyperIoTCrudAction.FINDALL);
         HUser huser = createHUser(action);
-        Integer delta = 5;
-        Integer page = -1;
+        int delta = 5;
+        int page = -1;
         List<AssetCategory> categories = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < delta; i++) {
             AssetCategory assetCategory = createAssetCategory(huser);
+            Assert.assertNotEquals(0, assetCategory.getId());
             categories.add(assetCategory);
         }
+        Assert.assertEquals(delta, categories.size());
         this.impersonateUser(assetCategoryRestApi, huser);
         Response restResponse = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, page);
         HyperIoTPaginableResult<AssetCategory> listAssetCategories = restResponse
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
                 });
-        Assert.assertEquals(5, listAssetCategories.getResults().size());
         Assert.assertFalse(listAssetCategories.getResults().isEmpty());
-        Assert.assertEquals(1, listAssetCategories.getCurrentPage());
-        Assert.assertEquals(5, listAssetCategories.getNextPage());
+        Assert.assertEquals(delta, listAssetCategories.getResults().size());
+        Assert.assertEquals(delta, listAssetCategories.getDelta());
+        Assert.assertEquals(defaultPage, listAssetCategories.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetCategories.getNextPage());
+        // delta is 5, page 1: 5 entities stored in database
+        Assert.assertEquals(1, listAssetCategories.getNumPages());
         Assert.assertEquals(200, restResponse.getStatus());
     }
 
@@ -930,22 +1023,43 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         HyperIoTAction action = HyperIoTActionsUtil.getHyperIoTAction(assetCategoryResourceName,
                 HyperIoTCrudAction.FINDALL);
         HUser huser = createHUser(action);
-        Integer delta = 5;
+        int delta = 5;
+        int page = 0;
         List<AssetCategory> categories = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < defaultDelta; i++) {
             AssetCategory assetCategory = createAssetCategory(huser);
+            Assert.assertNotEquals(0, assetCategory.getId());
             categories.add(assetCategory);
         }
+        Assert.assertEquals(defaultDelta, categories.size());
         this.impersonateUser(assetCategoryRestApi, huser);
-        Response restResponse = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 0);
-        HyperIoTPaginableResult<AssetCategory> listAssetCategories = restResponse
+        Response restResponsePage1 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, page);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage1 = restResponsePage1
                 .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
                 });
-        Assert.assertEquals(5, listAssetCategories.getResults().size());
-        Assert.assertFalse(listAssetCategories.getResults().isEmpty());
-        Assert.assertEquals(1, listAssetCategories.getCurrentPage());
-        Assert.assertEquals(5, listAssetCategories.getNextPage());
-        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertFalse(listAssetCategoriesPage1.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetCategoriesPage1.getResults().size());
+        Assert.assertEquals(delta, listAssetCategoriesPage1.getDelta());
+        Assert.assertEquals(defaultPage, listAssetCategoriesPage1.getCurrentPage());
+        Assert.assertEquals(defaultPage + 1, listAssetCategoriesPage1.getNextPage());
+        // delta is 5, default page is 1: 10 entities stored in database
+        Assert.assertEquals(2, listAssetCategoriesPage1.getNumPages());
+        Assert.assertEquals(200, restResponsePage1.getStatus());
+
+        //checks with page = 2
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponsePage2 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 2);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage2 = restResponsePage2
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategoriesPage2.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetCategoriesPage2.getResults().size());
+        Assert.assertEquals(delta, listAssetCategoriesPage2.getDelta());
+        Assert.assertEquals(defaultPage + 1, listAssetCategoriesPage2.getCurrentPage());
+        Assert.assertEquals(defaultPage, listAssetCategoriesPage2.getNextPage());
+        // delta is 5, page is 2: 10 entities stored in database
+        Assert.assertEquals(2, listAssetCategoriesPage2.getNumPages());
+        Assert.assertEquals(200, restResponsePage2.getStatus());
     }
 
     @Test
@@ -961,6 +1075,7 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Assert.assertEquals(hyperIoTException + "HyperIoTUnauthorizedException",
                 ((HyperIoTBaseError) restResponse.getEntity()).getType());
     }
+
 
     /*
      *
@@ -1015,8 +1130,9 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
                 permission.setActionIds(action.getActionId());
                 permission.setEntityResourceName(action.getResourceName());
                 permission.setRole(role);
+                testPermission = permission;
                 this.impersonateUser(permissionRestApi, adminUser);
-                Response restResponse = permissionRestApi.savePermission(permission);
+                Response restResponse = permissionRestApi.savePermission(testPermission);
                 Assert.assertEquals(200, restResponse.getStatus());
             } else {
                 this.impersonateUser(permissionRestApi, adminUser);
@@ -1097,6 +1213,325 @@ public class HyperIoTAssetCategoryRestWithPermissionTest extends KarafTestSuppor
         Assert.assertEquals(company.getVatNumber(), ((Company) restResponse.getEntity()).getVatNumber());
         Assert.assertEquals(huser.getId(), ((Company) restResponse.getEntity()).getHUserCreator().getId());
         return company;
+    }
+
+
+    /*
+     *
+     *
+     * TEST WITH DEFAULT PERMISSIONS
+     *
+     *
+     */
+
+
+    private HUser huserWithDefaultPermissionInHyperIoTFramework(boolean isActive) {
+        HUserRestApi hUserRestApi = getOsgiService(HUserRestApi.class);
+        AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
+        HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
+        this.impersonateUser(hUserRestApi, adminUser);
+        String username = "TestUser";
+        List<Object> roles = new ArrayList<>();
+        HUser huser = new HUser();
+        huser.setName("name");
+        huser.setLastname("lastname");
+        huser.setUsername(username + UUID.randomUUID().toString().replaceAll("-", ""));
+        huser.setEmail(huser.getUsername() + "@hyperiot.com");
+        huser.setPassword("passwordPass&01");
+        huser.setPasswordConfirm("passwordPass&01");
+        huser.setAdmin(false);
+        huser.setActive(false);
+        Assert.assertNull(huser.getActivateCode());
+        Response restResponse = hUserRestApi.register(huser);
+        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertNotEquals(0, ((HUser) restResponse.getEntity()).getId());
+        Assert.assertEquals("name", ((HUser) restResponse.getEntity()).getName());
+        Assert.assertEquals("lastname", ((HUser) restResponse.getEntity()).getLastname());
+        Assert.assertEquals(huser.getUsername(), ((HUser) restResponse.getEntity()).getUsername());
+        Assert.assertEquals(huser.getEmail(), ((HUser) restResponse.getEntity()).getEmail());
+        Assert.assertFalse(huser.isAdmin());
+        Assert.assertFalse(huser.isActive());
+        Assert.assertTrue(roles.isEmpty());
+        if (isActive) {
+            //Activate huser and checks if default role has been assigned
+            Role role = null;
+            Assert.assertFalse(huser.isActive());
+            String activationCode = huser.getActivateCode();
+            Assert.assertNotNull(activationCode);
+            Response restResponseActivateUser = hUserRestApi.activate(huser.getEmail(), activationCode);
+            Assert.assertEquals(200, restResponseActivateUser.getStatus());
+            huser = (HUser) authService.login(huser.getUsername(), "passwordPass&01");
+            roles = Arrays.asList(huser.getRoles().toArray());
+            Assert.assertFalse(roles.isEmpty());
+            Assert.assertTrue(huser.isActive());
+
+            // checks: default role has been assigned to new huser
+            Assert.assertEquals(1, huser.getRoles().size());
+            Assert.assertEquals(roles.size(), huser.getRoles().size());
+            Assert.assertFalse(roles.isEmpty());
+            for (int i = 0; i < roles.size(); i++){
+                role = ((Role) roles.get(i));
+            }
+            Assert.assertNotNull(role);
+            Assert.assertEquals("RegisteredUser", role.getName());
+            Assert.assertEquals("Role associated with the registered user",
+                    role.getDescription());
+            PermissionSystemApi permissionSystemApi = getOsgiService(PermissionSystemApi.class);
+            Collection<Permission> listPermissions = permissionSystemApi.findByRole(role);
+            Assert.assertFalse(listPermissions.isEmpty());
+            Assert.assertEquals(2, listPermissions.size());
+            boolean resourceNameAssetCategory = false;
+            for (int i = 0; i < listPermissions.size(); i++) {
+                if (((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName().contains(permissionAssetCategory)) {
+                    resourceNameAssetCategory = true;
+                    Assert.assertEquals("it.acsoftware.hyperiot.asset.category.model.AssetCategory", ((Permission) ((ArrayList) listPermissions).get(i)).getEntityResourceName());
+                    Assert.assertEquals(permissionAssetCategory + nameRegisteredPermission, ((Permission) ((ArrayList) listPermissions).get(i)).getName());
+                    Assert.assertEquals(31, ((Permission) ((ArrayList) listPermissions).get(i)).getActionIds());
+                    Assert.assertEquals(role.getName(), ((Permission) ((ArrayList) listPermissions).get(i)).getRole().getName());
+                }
+            }
+            Assert.assertTrue(resourceNameAssetCategory);
+        }
+        return huser;
+    }
+
+
+    // AssetCategory action save: 1
+    @Test
+    public void test36_saveAssetCategoryWithDefaultPermissionShouldWork() {
+        AssetCategoryRestApi assetCategoryRestApi = getOsgiService(AssetCategoryRestApi.class);
+        // HUser, with default permission, save AssetCategory with the following call saveAssetCategory
+        // response status code '200'
+        HUser huser = huserWithDefaultPermissionInHyperIoTFramework(true);
+        Assert.assertNotEquals(0, huser.getId());
+        Assert.assertTrue(huser.isActive());
+
+        Company company = createCompany(huser);
+        Assert.assertNotEquals(0, company.getId());
+        Assert.assertEquals(huser.getId(), company.getHUserCreator().getId());
+
+        AssetCategory assetCategory = new AssetCategory();
+        assetCategory.setName("Category " + java.util.UUID.randomUUID());
+        HyperIoTAssetOwnerImpl owner = new HyperIoTAssetOwnerImpl();
+        owner.setOwnerResourceName(companyResourceName);
+        owner.setOwnerResourceId(company.getId());
+        owner.setUserId(huser.getId());
+        assetCategory.setOwner(owner);
+
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponse = assetCategoryRestApi.saveAssetCategory(assetCategory);
+        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertNotEquals(0,
+                ((AssetCategory) restResponse.getEntity()).getId());
+        Assert.assertEquals(assetCategory.getName(), ((AssetCategory) restResponse.getEntity()).getName());
+        Assert.assertEquals(companyResourceName,
+                ((AssetCategory) restResponse.getEntity()).getOwner().getOwnerResourceName());
+        Assert.assertEquals((Long)company.getId(),
+                ((AssetCategory) restResponse.getEntity()).getOwner().getOwnerResourceId());
+        Assert.assertEquals(huser.getId(),
+                ((AssetCategory) restResponse.getEntity()).getOwner().getUserId());
+    }
+
+
+    // AssetCategory action update: 2
+    @Test
+    public void test37_updateAssetCategoryWithDefaultPermissionShouldWork() {
+        AssetCategoryRestApi assetCategoryRestApi = getOsgiService(AssetCategoryRestApi.class);
+        // HUser, with default permission, update AssetCategory with the following call updateAssetCategory
+        // response status code '200'
+        HUser huser = huserWithDefaultPermissionInHyperIoTFramework(true);
+        Assert.assertNotEquals(0, huser.getId());
+        Assert.assertTrue(huser.isActive());
+
+        AssetCategory assetCategory = createAssetCategory(huser);
+        Assert.assertNotEquals(0, assetCategory.getId());
+
+        Date date = new Date();
+        assetCategory.setName("name edited in date: " + date);
+
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponse = assetCategoryRestApi.updateAssetCategory(assetCategory);
+        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertEquals("name edited in date: " + date,
+                ((AssetCategory) restResponse.getEntity()).getName());
+        Assert.assertEquals(assetCategory.getEntityVersion() + 1,
+                (((AssetCategory) restResponse.getEntity()).getEntityVersion()));
+    }
+
+
+    // AssetCategory action remove: 4
+    @Test
+    public void test38_deleteAssetCategoryWithDefaultPermissionShouldWork() {
+        AssetCategoryRestApi assetCategoryRestApi = getOsgiService(AssetCategoryRestApi.class);
+        // HUser, with default permission, delete AssetCategory with the following call deleteAssetCategory
+        // response status code '200'
+        HUser huser = huserWithDefaultPermissionInHyperIoTFramework(true);
+        Assert.assertNotEquals(0, huser.getId());
+        Assert.assertTrue(huser.isActive());
+
+        AssetCategory assetCategory = createAssetCategory(huser);
+        Assert.assertNotEquals(0, assetCategory.getId());
+
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponse = assetCategoryRestApi.deleteAssetCategory(assetCategory.getId());
+        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertNull(restResponse.getEntity());
+    }
+
+
+    // AssetCategory action find: 8
+    @Test
+    public void test39_findAssetCategoryWithDefaultPermissionShouldWork() {
+        AssetCategoryRestApi assetCategoryRestApi = getOsgiService(AssetCategoryRestApi.class);
+        // HUser, with default permission, find AssetCategory with the following call findAssetCategory
+        // response status code '200'
+        HUser huser = huserWithDefaultPermissionInHyperIoTFramework(true);
+        Assert.assertNotEquals(0, huser.getId());
+        Assert.assertTrue(huser.isActive());
+
+        AssetCategory assetCategory = createAssetCategory(huser);
+        Assert.assertNotEquals(0, assetCategory.getId());
+
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponse = assetCategoryRestApi.findAssetCategory(assetCategory.getId());
+        Assert.assertEquals(200, restResponse.getStatus());
+        Assert.assertEquals(assetCategory.getId(), ((AssetCategory) restResponse.getEntity()).getId());
+        Assert.assertEquals(assetCategory.getName(), ((AssetCategory) restResponse.getEntity()).getName());
+        Assert.assertEquals(assetCategory.getOwner().getOwnerResourceName(),
+                ((AssetCategory) restResponse.getEntity()).getOwner().getOwnerResourceName());
+        Assert.assertEquals(assetCategory.getOwner().getOwnerResourceId(),
+                ((AssetCategory) restResponse.getEntity()).getOwner().getOwnerResourceId());
+        Assert.assertEquals(assetCategory.getOwner().getUserId(),
+                ((AssetCategory) restResponse.getEntity()).getOwner().getUserId());
+    }
+
+
+    // AssetCategory action find-all: 16
+    @Test
+    public void test40_findAllAssetCategoriesWithDefaultPermissionShouldWork() {
+        AssetCategoryRestApi assetCategoryRestApi = getOsgiService(AssetCategoryRestApi.class);
+        // HUser, with default permission, find all AssetCategories with the following call findAllAssetCategories
+        // response status code '200'
+        HUser huser = huserWithDefaultPermissionInHyperIoTFramework(true);
+        Assert.assertNotEquals(0, huser.getId());
+        Assert.assertTrue(huser.isActive());
+
+        AssetCategory assetCategory = createAssetCategory(huser);
+        Assert.assertNotEquals(0, assetCategory.getId());
+
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponse = assetCategoryRestApi.findAllAssetCategory();
+        Assert.assertEquals(200, restResponse.getStatus());
+        List<AssetCategory> listCategories = restResponse.readEntity(new GenericType<List<AssetCategory>>() {
+        });
+        Assert.assertFalse(listCategories.isEmpty());
+        boolean assetCategoryFound = false;
+        for (AssetCategory category : listCategories) {
+            if (category.getId() == assetCategory.getId()) {
+                assetCategoryFound = true;
+            }
+        }
+        Assert.assertTrue(assetCategoryFound);
+    }
+
+
+    // AssetCategory action find-all: 16
+    @Test
+    public void test41_findAllAssetCategoriesPaginatedWithDefaultPermissionShouldWork() {
+        AssetCategoryRestApi assetCategoryRestApi = getOsgiService(AssetCategoryRestApi.class);
+        // In this following call findAllAssetCategories, HUser, with default permission,
+        // find all AssetCategories with pagination
+        // response status code '200'
+        int delta = 5;
+        int page = 4;
+        HUser huser = huserWithDefaultPermissionInHyperIoTFramework(true);
+        Assert.assertNotEquals(0, huser.getId());
+        Assert.assertTrue(huser.isActive());
+        List<AssetCategory> categories = new ArrayList<>();
+        int numEntities = 16;
+        for (int i = 0; i < numEntities; i++) {
+            AssetCategory assetCategory = createAssetCategory(huser);
+            Assert.assertNotEquals(0, assetCategory.getId());
+            categories.add(assetCategory);
+        }
+        Assert.assertEquals(numEntities, categories.size());
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponse = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, page);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategories = restResponse
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategories.getResults().isEmpty());
+        Assert.assertEquals(1, listAssetCategories.getResults().size());
+        Assert.assertEquals(delta, listAssetCategories.getDelta());
+        Assert.assertEquals(page, listAssetCategories.getCurrentPage());
+        Assert.assertEquals(1, listAssetCategories.getNextPage());
+        // delta is 5, page 4: 16 entities stored in database
+        Assert.assertEquals(4, listAssetCategories.getNumPages());
+        Assert.assertEquals(200, restResponse.getStatus());
+
+        //checks with page = 1
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponsePage1 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 1);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage1 = restResponsePage1
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategoriesPage1.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetCategoriesPage1.getResults().size());
+        Assert.assertEquals(delta, listAssetCategoriesPage1.getDelta());
+        Assert.assertEquals(defaultPage, listAssetCategoriesPage1.getCurrentPage());
+        Assert.assertEquals(defaultPage + 1, listAssetCategoriesPage1.getNextPage());
+        // delta is 5, page 1: 16 entities stored in database
+        Assert.assertEquals(4, listAssetCategoriesPage1.getNumPages());
+        Assert.assertEquals(200, restResponsePage1.getStatus());
+
+        //checks with page = 2
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponsePage2 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 2);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage2 = restResponsePage2
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategoriesPage2.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetCategoriesPage2.getResults().size());
+        Assert.assertEquals(delta, listAssetCategoriesPage2.getDelta());
+        Assert.assertEquals(defaultPage + 1, listAssetCategoriesPage2.getCurrentPage());
+        Assert.assertEquals(page - 1, listAssetCategoriesPage2.getNextPage());
+        // delta is 5, page 2: 16 entities stored in database
+        Assert.assertEquals(4, listAssetCategoriesPage2.getNumPages());
+        Assert.assertEquals(200, restResponsePage2.getStatus());
+
+        //checks with page = 3
+        this.impersonateUser(assetCategoryRestApi, huser);
+        Response restResponsePage3 = assetCategoryRestApi.findAllAssetCategoryPaginated(delta, 3);
+        HyperIoTPaginableResult<AssetCategory> listAssetCategoriesPage3 = restResponsePage3
+                .readEntity(new GenericType<HyperIoTPaginableResult<AssetCategory>>() {
+                });
+        Assert.assertFalse(listAssetCategoriesPage3.getResults().isEmpty());
+        Assert.assertEquals(delta, listAssetCategoriesPage3.getResults().size());
+        Assert.assertEquals(delta, listAssetCategoriesPage3.getDelta());
+        Assert.assertEquals(page - 1, listAssetCategoriesPage3.getCurrentPage());
+        Assert.assertEquals(page, listAssetCategoriesPage3.getNextPage());
+        // delta is 5, page 3: 16 entities stored in database
+        Assert.assertEquals(4, listAssetCategoriesPage3.getNumPages());
+        Assert.assertEquals(200, restResponsePage3.getStatus());
+    }
+
+    @After
+    public void afterTest() {
+        AssetCategoryRestApi assetCategoryRestApi = getOsgiService(AssetCategoryRestApi.class);
+        AuthenticationApi authService = getOsgiService(AuthenticationApi.class);
+        HyperIoTUser adminUser = (HUser) authService.login("hadmin", "admin");
+        this.impersonateUser(assetCategoryRestApi, adminUser);
+        Response restResponse = assetCategoryRestApi.findAllAssetCategory();
+        List<AssetCategory> listCategories = restResponse.readEntity(new GenericType<List<AssetCategory>>() {
+        });
+        if (!listCategories.isEmpty()) {
+            Assert.assertFalse(listCategories.isEmpty());
+            for (AssetCategory assetCategory : listCategories) {
+                this.impersonateUser(assetCategoryRestApi, adminUser);
+                Response restResponse1 = assetCategoryRestApi.deleteAssetCategory(assetCategory.getId());
+                Assert.assertEquals(200, restResponse1.getStatus());
+            }
+        }
     }
 
 }
